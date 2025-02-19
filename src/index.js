@@ -1,17 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { Suspense } from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+//
+import App from "./App";
+import { loadTranslations } from "./translation/server-side";
+import { localStorageGetItem } from "./utils/storage-available";
+import { HelmetProvider } from "react-helmet-async";
+// anything here is server side
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+// loadTranslations(localStorageGetItem("i18nextlng") || "ar").then(() => {
+  // ----------------------------------------------------------------------
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+  // Virtual DOM (Client side)
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+
+  root.render(
+    <HelmetProvider>
+      <BrowserRouter>
+        <Suspense>
+          <App />
+        </Suspense>
+      </BrowserRouter>
+    </HelmetProvider>
+  );
+

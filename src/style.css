@@ -1,0 +1,88 @@
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+  }
+}
+
+.fadeInOut {
+  animation: fadeInOut 1.25s infinite alternate;
+}
+
+.highlight {
+  background-color: yellow !important;
+  color: black !important;
+}
+
+.animated-card {
+  position: relative;
+}
+
+.animated-card::before,
+.animated-card::after {
+  content: '';
+  width: 0;
+  height: 2px;
+  position: absolute;
+  transition: all 0.25s linear;
+  background: #be9a42;
+}
+
+.content::before,
+.content::after {
+  content: '';
+  width: 2px;
+  height: 0;
+  position: absolute;
+  transition: all 0.25s linear;
+  background: #be9a42;
+}
+
+.animated-card:hover::before,
+.animated-card:hover::after {
+  width: 100%;
+}
+
+.animated-card:hover .content::before,
+.animated-card:hover .content::after {
+  height: 100%;
+}
+
+.animated-card::before,
+.animated-card::after {
+  transition-delay: 0s;
+}
+
+.animated-card .content::before,
+.animated-card .content::after {
+  transition-delay: 0.25s;
+}
+
+.animated-card::before {
+  right: 0;
+  top: 0;
+}
+
+.animated-card::after {
+  left: 0;
+  bottom: 0;
+}
+
+.animated-card .content::before {
+  left: 0;
+  top: 0;
+}
+
+.animated-card .content::after {
+  right: 0;
+  bottom: 0;
+}
+
+.animated-card:hover::before,
+.animated-card:hover::after {
+  transition-delay: 0.25s;
+}
+
+.animated-card:hover .content::before,
+.animated-card:hover .content::after {
+  transition-delay: 0s;
+}
