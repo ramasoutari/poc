@@ -246,7 +246,7 @@ const handleSubmit = async (data) => {
 
   return (
     <>
-      <Box sx={{pb:2}}>
+      <Box sx={{pb:5}}>
       <DynamicForm
         {...form}
         loading={loading}

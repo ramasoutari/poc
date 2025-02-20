@@ -32,7 +32,7 @@ export default function JwtInstitutionView() {
         </Box>
       ),
       dialogProps: {
-        maxWidth: "md",
+        maxWidth: "lg",
       },
     });
   };
@@ -89,7 +89,7 @@ export default function JwtInstitutionView() {
               cursor: "pointer",
               textDecoration: "underline",
               marginRight: "16px",
-              color: "#ED8539",
+              color: "#1D3E6E",
             }}
           >
             {t("forgot_password")}
@@ -100,7 +100,7 @@ export default function JwtInstitutionView() {
             style={{
               cursor: "pointer",
               textDecoration: "underline",
-              color: "#ED8539",
+              color: "#1D3E6E",
             }}
           >
             {t("help")}

@@ -211,7 +211,7 @@ export default function Header({ onOpenNav }) {
               width: 1,
               bgcolor: "common.white",
               height: HEADER.H_DESKTOP_OFFSET,
-              borderBottom: `1px solid ${"#ED8539"}`,
+              borderBottom: `1px solid ${"#1D3E6E"}`,
             }),
             ...(isNavMini && {
               width: `calc(100% - ${NAV.W_MINI + 1}px)`,

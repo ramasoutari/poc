@@ -14,6 +14,7 @@ import { HOST_API } from "../../../config-global";
 import DynamicForm, { getForm } from "../../../components/dynamic-form";
 import axiosInstance from "../../../utils/axios";
 import { useLocales } from "../../../locales";
+import i18n from "../../../locales/i18n";
 
 export default function ForgotPassDialog({ isCPD = false }) {
   const [timer, setTimer] = useState(0);
@@ -30,7 +31,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
   const { t } = useLocales();
   const { user } = useAuthContext();
   const globalDialog = useGlobalDialogContext();
-
+  const direction = i18n.language === "ar" ? "ltr" : "rtl";
   const OTP_RESEND_INTERVAL_SECONDS = 300;
 
   const startTimer = () => {
@@ -41,12 +42,12 @@ export default function ForgotPassDialog({ isCPD = false }) {
 
   const form = getForm([
     {
-      label: "inst_national_id",
+      label: "entityNumber",
       fieldVariable: "national_id",
       type: "input",
       inputType: "numeric-text",
       typeValue: "string",
-      placeholder: "inst_national_id",
+      placeholder: "entityNumber",
       gridOptions: [
         {
           breakpoint: "xs",
@@ -352,6 +353,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
         backgroundColor: "background.default",
         borderRadius: 2,
         mb: 2,
+        direction,
       }}
     >
       {error && (

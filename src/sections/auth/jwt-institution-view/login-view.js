@@ -4,6 +4,7 @@ import { useRouter } from "../../../routes/hooks";
 import DynamicForm, { getForm } from "../../../components/dynamic-form";
 import { Alert, Box, Button, Stack, Typography } from "@mui/material";
 import { useLocales } from "../../../locales";
+import { color } from "framer-motion";
 
 export default function LoginView() {
   const { entityLogin } = useAuthContext();
@@ -173,6 +174,7 @@ export default function LoginView() {
             onSubmit={handleLogin}
             submitButtonProps={{
               label: t("login"),
+              backgroundColor:"#1D3E6E",
               alignment: "center",
               width: "100%",
               loading,

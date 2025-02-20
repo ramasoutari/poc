@@ -30,7 +30,7 @@ export function tabs(theme) {
             },
           },
           [`&:not(.${tabClasses.selected})`]: {
-            color: "#ED8539",
+            color: "#1D3E6E",
           },
         },
       },

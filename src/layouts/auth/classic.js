@@ -39,6 +39,7 @@ export default function AuthClassicLayout({ children }) {
       sx={{
         display: "flex",
         minHeight: "100vh",
+        position: "relative",
       }}
     >
       {/* Left Side - Image Section */}
@@ -73,8 +74,8 @@ export default function AuthClassicLayout({ children }) {
         <Box
           sx={{
             position: "absolute",
-            top: "370.95px",
-            left: "350.11px",
+            top: "360.95px",
+            left: "450.11px",
             transform: "translate(-50%, -50%)",
             textAlign: "center",
           }}
@@ -84,8 +85,8 @@ export default function AuthClassicLayout({ children }) {
             color="common.white"
             sx={{
               fontFamily: "Droid Arabic Kufi",
-              fontWeight: 700,
-              fontSize: "20px",
+              fontWeight: 550,
+              fontSize: "10px",
               lineHeight: "60px",
               textAlign: "center",
             }}
@@ -103,12 +104,13 @@ export default function AuthClassicLayout({ children }) {
           alignItems: "center",
           width: "782.1265258789062",
           height: "1024",
-          left: "30.87px",
           backgroundColor: "common.white",
           borderTopRightRadius: "37px",
           borderBottomRightRadius: "37px",
           position: "relative",
           zIndex: 55,
+          mr: "-40px",
+          boxShadow: "-4px 0 10px rgba(0,0,0,0.1)",
         }}
       >
         <Container maxWidth="lg">
@@ -134,8 +136,7 @@ export default function AuthClassicLayout({ children }) {
                   backgroundColor: "common.white",
                   // border: (t) => `solid 1px ${t.palette.divider}`,
                   // borderRadius: 1.5,
-                  py: 1,
-                  my: 1,
+               
                 }}
               >
                 {" "}

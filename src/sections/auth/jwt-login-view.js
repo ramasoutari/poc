@@ -87,7 +87,7 @@ export default function JwtLoginView() {
             },
             "&::-webkit-scrollbar-thumb": {
               borderRadius: "8px",
-              backgroundColor: (t) => alpha("#ED8539", 0.8),
+              backgroundColor: (t) => alpha("#1D3E6E", 0.8),
             },
             "&::-webkit-scrollbar-thumb:hover": {
               backgroundColor: "primary.light",

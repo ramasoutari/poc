@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useLocales } from "../../../locales";
 import { useEffect } from "react";
 
@@ -28,16 +28,22 @@ export default function EntityDataBox({ data }) {
           padding: 2,
         }}
       >
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+        <Grid container spacing={4}>
           {data?.map(({ label, value }) => (
-            <Box sx={{ width: "27.33%" }} key={label}>
+            <Grid item xs={12} sm={6} md={4} key={label}>
               <Typography component="span" sx={{ fontWeight: "bold" }}>
                 {t(label)}:
               </Typography>{" "}
-              <Typography component="span">{value}</Typography>
-            </Box>
+              <Typography
+                component="span"
+                color=" #B0B0B0;
+"
+              >
+                {value}
+              </Typography>
+            </Grid>
           ))}
-        </Box>
+        </Grid>
       </Box>
     </>
   );

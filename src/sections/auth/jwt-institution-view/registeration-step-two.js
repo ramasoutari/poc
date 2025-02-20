@@ -20,8 +20,42 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
-  const [formattedData, setFormattedData] = useState(false);
+  const [isVerified, setIsVerified] = useState(true);
+  const [formattedData, setFormattedData] = useState([
+  {
+    label: "officerNationalNumber",
+    value: "1234567890",
+  },
+  {
+    label: "officerName",
+    value: "John Doe",
+  },
+  {
+    label: "OfficerAge",
+    value: "35",
+  },
+  {
+    label: "gender",
+    value: "Male",
+  },
+  {
+    label: "phoneNumber",
+    value: "+962791234567",
+  },
+  {
+    label: "officerPhoneNumber",
+    value: "+962798765432",
+  },
+  {
+    label: "email",
+    value: "john.doe@example.com",
+  },
+  {
+    label: "OfficerEmail",
+    value: "officer.doe@example.com",
+  },
+]
+);
 
   const globalDialog = useGlobalDialogContext();
 
@@ -37,11 +71,11 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
       placeholder: "inst_rep_national_id",
       gridOptions: [
         {
-          breakpoint: "xs",
+          breakpoint: "lg",
           size: 12,
         },
         {
-          breakpoint: "xs",
+          breakpoint: "md",
           size: 6,
         },
       ],
@@ -286,7 +320,7 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
   return (
     <>
       <Box sx={{ py: 1, px: 3 }}>
-        <Box sx={{ py: 3 }}>
+        <Box sx={{ py: 4 }}>
           {" "}
           <Typography variant="h6">{t("inst_rep_info")}</Typography>
         </Box>
@@ -298,14 +332,16 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
           loading={loading}
           extraButtons={
             <>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{ width: "300px" }}
-                onClick={() => setStep(0)}
-              >
-                {t("previous")}
-              </Button>
+              {!isVerified && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  sx={{ width: "300px" }}
+                  onClick={() => setStep(0)}
+                >
+                  {t("previous")}
+                </Button>
+              )}
             </>
           }
           submitButtonProps={{
@@ -319,7 +355,7 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
 
         {isVerified && (
           <>
-            <Box sx={{ py: 1 }}>
+            <Box sx={{ py: 3 }}>
               <EntityDataBox data={formattedData} />
             </Box>
             <DynamicForm
