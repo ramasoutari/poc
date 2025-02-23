@@ -1,10 +1,4 @@
-import {
-  Alert,
-  AlertTitle,
-  Box,
-  Button,
-  Stack,
-} from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Stack } from "@mui/material";
 import React, { useMemo, useState } from "react";
 
 import { useGlobalDialogContext } from "../../../components/global-dialog";
@@ -12,10 +6,7 @@ import DynamicForm, { getForm } from "../../../components/dynamic-form";
 import axiosInstance from "../../../utils/axios";
 import { useLocales } from "../../../locales";
 
-export default function RegisterationStepThree({
-  setRegData,
-  regData,
-}) {
+export default function RegisterationStepThree({ setRegData, regData }) {
   const { t } = useLocales();
 
   const globalDialog = useGlobalDialogContext();
@@ -138,40 +129,38 @@ export default function RegisterationStepThree({
     [form?.defaultValues]
   );
 
-const handleSubmit = async (data) => {
-  setLoading(true);
-  setError("");
+  const handleSubmit = async (data) => {
+    setLoading(true);
+    setError("");
 
-  if (!regData || Object.keys(regData).length === 0) {
-    setError("Registration data is missing.");
-    setLoading(false);
-    return;
-  }
-
-  const payload = {
-    ...regData,
-    password: data.password,
-  };
-
-  console.log("Payload before API call:", payload);
-
-  try {
-    const response = await axiosInstance.post(
-      "http://192.168.0.181:6001/api/prf/Entity/Register",
-      payload
-    );
-
-    if (response.status === 200 || response.status === 201) {
-      setRegData(payload);
-      setShowOTP(true);
+    if (!regData || Object.keys(regData).length === 0) {
+      setError("Registration data is missing.");
+      setLoading(false);
+      return;
     }
-  } catch (error) {
-    console.error("API Error:", error);
-    setError("Error registering user.");
-  } finally {
-    setLoading(false);
-  }
-};
+
+    const payload = {
+      ...regData,
+      password: data.password,
+    };
+
+    try {
+      const response = await axiosInstance.post(
+        "http://192.168.0.181:6001/api/prf/Entity/Register",
+        payload
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        setRegData(payload);
+        setShowOTP(true);
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+      setError("Error registering user.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const verifyOTP = async () => {
     setLoading(true);
@@ -184,7 +173,6 @@ const handleSubmit = async (data) => {
       );
 
       if (response.status === 200 || response.status === 201) {
-        console.log("Registration completed successfully.");
         setIsVerified(true);
         setRegData({ ...regData, otp });
       }
@@ -246,20 +234,20 @@ const handleSubmit = async (data) => {
 
   return (
     <>
-      <Box sx={{pb:5}}>
-      <DynamicForm
-        {...form}
-        loading={loading}
-        onSubmit={handleSubmit}
-        defaultValues={defaultValues}
-        submitButtonProps={{
-          alignment: "center",
-          width: "100%",
-          loading,
-          disabled: isVerified,
-        }}
+      <Box sx={{ pb: 5 }}>
+        <DynamicForm
+          {...form}
+          loading={loading}
+          onSubmit={handleSubmit}
+          defaultValues={defaultValues}
+          submitButtonProps={{
+            alignment: "center",
+            width: "100%",
+            loading,
+            disabled: isVerified,
+          }}
         />
-        </Box>
+      </Box>
       {showOTP && (
         <DynamicForm
           {...otpForm}
@@ -267,7 +255,7 @@ const handleSubmit = async (data) => {
           onSubmit={verifyOTP}
           defaultValues={defaultValues}
           submitButtonProps={{
-            label:t("register"),
+            label: t("register"),
             alignment: "center",
             width: "100%",
             loading,

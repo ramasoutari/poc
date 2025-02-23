@@ -7,9 +7,6 @@ import RegisterationStepThree from "./registration-step-three";
 export default function RegistrationView() {
   const [step, setStep] = useState(0);
   const [regData, setRegData] = useState(null);
-  useEffect(() => {
-    console.log("Updated regData:", regData);
-  }, [regData]);
 
   return (
     <Box>

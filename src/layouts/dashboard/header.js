@@ -5,34 +5,23 @@ import Stack from "@mui/material/Stack";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import { Box, Button, Typography } from "@mui/material";
-// theme
-// hooks
-// components
+import { Box } from "@mui/material";
 import { AccessibilityToolbar } from "../../components/accessibility";
-//
 import { HEADER, NAV } from "../config-layout";
-import {
-  AccountPopover,
-  NotificationsPopover,
-  DateTimeOverview,
-  LanguagePopover,
-} from "../_common";
+import { AccountPopover } from "../_common";
 import { useNavData } from "./config-navigation";
-import { useEffect } from "react";
-import { varHover } from "../../components/animate";
-import { Navigate, useNavigate } from "react-router";
-import HelpButton from "../_common/help-button";
 import { useAuthContext } from "../../auth/hooks";
-import { useTranslation } from "react-i18next";
 import { useSettingsContext } from "../../components/settings/context";
 import { useResponsive } from "../../hooks/use-responsive";
 import { bgBlur } from "../../theme/css";
 import { useOffSetTop } from "../../hooks/use-off-set-top";
 import NavSectionHorizontal from "../../components/nav-section/horizontal/nav-section-horizontal";
 import SvgColor from "../../components/svg-color";
-import Logo from "../../components/logo";
 import i18n from "../../locales/i18n";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import TranslateIcon from "@mui/icons-material/Translate";
 
 // ----------------------------------------------------------------------
 
@@ -62,7 +51,16 @@ export default function Header({ onOpenNav }) {
   const renderContent = (
     <>
       <Stack flexGrow={1} direction="row" alignItems="center">
-        {lgUp && isNavHorizontal && <Logo sx={{ mr: 2, height: 20 }} />}
+        {smUp && (
+          <>
+            <IconButton aria-label="account" color="primary">
+              <AccountCircleIcon />
+            </IconButton>
+            <IconButton aria-label="notification" color="primary">
+              <NotificationsIcon />
+            </IconButton>
+          </>
+        )}
 
         {!lgUp && (
           <Box data-tour-id="nav-toggle">
@@ -124,7 +122,7 @@ export default function Header({ onOpenNav }) {
 
         {user && <AccountPopover />}
       </Stack>
-      {lgUp && (
+      {smUp && (
         <Stack
           flexGrow={1}
           direction="row"
@@ -145,13 +143,10 @@ export default function Header({ onOpenNav }) {
         direction="row"
         alignItems="center"
         justifyContent="flex-end"
-        spacing={{ xs: 0.5, sm: 1, lg: 6 }}
       >
         {/* {process.env.REACT_APP_ENVIRONMENT !== "production" && (
           <LanguagePopover />
         )} */}
-
-        {/* <NotificationsPopover /> */}
 
         {/* <ContactsPopover /> */}
 
@@ -159,7 +154,16 @@ export default function Header({ onOpenNav }) {
 
         {/* <Searchbar /> */}
 
-        {smUp && <DateTimeOverview />}
+        {smUp && (
+          <>
+            <IconButton aria-label="help" color="primary">
+              <HelpOutlineIcon />
+            </IconButton>
+            <IconButton aria-label="language" color="primary">
+              <TranslateIcon />
+            </IconButton>
+          </>
+        )}
 
         {/* 
         {smUp && (
@@ -198,7 +202,7 @@ export default function Header({ onOpenNav }) {
           transition: theme.transitions.create(["height"], {
             duration: theme.transitions.duration.shorter,
           }),
-          ...(lgUp && {
+          ...(smUp && {
             width: `calc(100% - ${NAV.W_VERTICAL + 1}px)`,
             height: HEADER.H_DESKTOP,
             ...(offsetTop && {

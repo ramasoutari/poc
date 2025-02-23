@@ -1,45 +1,36 @@
-import PropTypes from 'prop-types';
-import { useReducer, useCallback, useMemo } from 'react';
-// utils
-//
-import { AuthContext } from './auth-context';
-import { setSession } from './utils';
-import { useAuthContext } from '../hooks';
-import { HOST_API } from '../../config-global';
-import axiosInstance from '../../utils/axios';
-
 // ----------------------------------------------------------------------
-
-// NOTE:
-// We only build demo at basic level.
-// Customer will need to do some extra handling yourself if you want to extend the logic and other features...
-
-// ----------------------------------------------------------------------
+import PropTypes from "prop-types";
+import { useCallback, useMemo, useReducer } from "react";
+import { useAuthContext } from "../hooks";
+import axiosInstance from "../../utils/axios";
+import { HOST_API } from "../../config-global";
+import { AuthContext } from "./auth-context";
+import { setSession } from "./utils";
 
 const initialState = {
   user: null,
   loading: true,
 };
 const reducer = (state, action) => {
-  if (action.type === 'INITIAL') {
+  if (action.type === "INITIAL") {
     return {
       loading: false,
       user: action.payload.user,
     };
   }
-  if (action.type === 'LOGIN') {
+  if (action.type === "LOGIN") {
     return {
       ...state,
       user: action.payload.user,
     };
   }
-  if (action.type === 'REGISTER') {
+  if (action.type === "REGISTER") {
     return {
       ...state,
       user: action.payload.user,
     };
   }
-  if (action.type === 'LOGOUT') {
+  if (action.type === "LOGOUT") {
     return {
       ...state,
       user: null,
@@ -50,7 +41,7 @@ const reducer = (state, action) => {
 
 // ----------------------------------------------------------------------
 
-const STORAGE_KEY = 'accessToken';
+const STORAGE_KEY = "accessToken";
 
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -76,15 +67,17 @@ export function AuthProvider({ children }) {
         delete user.token;
 
         dispatch({
-          type: 'INITIAL',
+          type: "INITIAL",
           payload: {
             user,
           },
         });
       } else {
+        console.log("hiiii");
         logout();
+        console.log("state.usewwwr", state.user);
         dispatch({
-          type: 'INITIAL',
+          type: "INITIAL",
           payload: {
             user: null,
           },
@@ -94,7 +87,7 @@ export function AuthProvider({ children }) {
       logout();
       console.error(error);
       dispatch({
-        type: 'INITIAL',
+        type: "INITIAL",
         payload: {
           user: null,
         },
@@ -105,26 +98,29 @@ export function AuthProvider({ children }) {
   // LOGIN
   const login = useCallback(async (data, onSuccess) => {
     try {
-      const response = await axiosInstance.post(`${HOST_API}/JordanianUserLogin`, data);
+      const response = await axiosInstance.post(
+        `${HOST_API}/JordanianUserLogin`,
+        data
+      );
 
       const user = response?.data?.data;
       const { token, ...userWithoutToken } = user;
       let myUser = {
         ...userWithoutToken,
-        nationalityType_code: '001',
+        nationalityType_code: "001",
       };
 
       setSession(token);
 
       onSuccess?.();
       dispatch({
-        type: 'LOGIN',
+        type: "LOGIN",
         payload: {
           user: myUser,
         },
       });
     } catch (error) {
-      console.log('error1', JSON.stringify(error));
+      console.log("error1", JSON.stringify(error));
       throw error;
     }
   }, []);
@@ -138,12 +134,12 @@ export function AuthProvider({ children }) {
       setSession(token);
       let myUser = {
         ...userWithoutToken,
-        nationalityType_code: '001',
+        nationalityType_code: "001",
       };
 
       onSuccess?.();
       dispatch({
-        type: 'LOGIN',
+        type: "LOGIN",
         payload: {
           user: myUser,
         },
@@ -153,27 +149,25 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const entityLogin = useCallback(async (data, onSuccess, onOtpSent) => {
+  const entityLogin = useCallback(async (data, onSuccess) => {
     try {
-      const response = await axiosInstance.post(`${HOST_API}/EntityLogin`, data);
-      if (!response?.data?.data?.token) {
-        const error = response.data?.error && JSON.parse(response.data?.error)
-
-
-        return onOtpSent(
-          error && error.error
-        )
+      const response = await axiosInstance.post(
+        `${HOST_API}/Entity/Login`,
+        data
+      );
+      if (!response?.data.token) {
+        throw new Error("Login failed: No token received.");
       }
-      const user = response?.data?.data;
-      const { token, ...userWithoutToken } = user;
-      setSession(token);
-      let myUser = {
-        ...userWithoutToken,
-      };
+      const user = response.data;
+      localStorage.setItem("sessionId", user.sessionId);
+      localStorage.setItem("accessToken", user.token);
+
+      setSession(user.token);
+      let myUser = { ...user };
 
       onSuccess?.();
       dispatch({
-        type: 'LOGIN',
+        type: "LOGIN",
         payload: {
           user: myUser,
         },
@@ -182,38 +176,6 @@ export function AuthProvider({ children }) {
       throw error;
     }
   }, []);
-
-  // const cpdLogin = useCallback(async (data, onSuccess, onOtpSent) => {
-  //   try {
-  //     const response = await axiosInstance.post(cpdEndpoints.loginEntity, data);
-  //     if (!response?.data?.data?.token) {
-  //       const error = response.data?.error && JSON.parse(response.data?.error)
-
-
-  //       return onOtpSent(
-  //         error && error.error
-  //       )
-  //     }
-  //     const user = response?.data?.data;
-  //     // const user = FAKE_USER_CPD;
-
-  //     const { token, ...userWithoutToken } = user;
-  //     setSession(token);
-  //     let myUser = {
-  //       ...userWithoutToken,
-  //     };
-
-  //     onSuccess?.();
-  //     dispatch({
-  //       type: 'LOGIN',
-  //       payload: {
-  //         user: myUser,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }, []);
 
   const loginWithSanad = useCallback(async (data, onSuccess) => {
     try {
@@ -226,20 +188,20 @@ export function AuthProvider({ children }) {
       const { token, ...userWithoutToken } = user;
       let myUser = {
         ...userWithoutToken,
-        nationalityType_code: '001',
+        nationalityType_code: "001",
       };
 
       setSession(token);
 
       onSuccess?.();
       dispatch({
-        type: 'LOGIN',
+        type: "LOGIN",
         payload: {
           user: myUser,
         },
       });
     } catch (error) {
-      console.log('error1', JSON.stringify(error));
+      console.log("error1", JSON.stringify(error));
       throw error;
     }
   }, []);
@@ -247,7 +209,10 @@ export function AuthProvider({ children }) {
   // REGISTER
   const register = useCallback(async (data, onSuccess) => {
     try {
-      const response = await axiosInstance.post(`${HOST_API}/JordanianUserRegister`, data);
+      const response = await axiosInstance.post(
+        `${HOST_API}/JordanianUserRegister`,
+        data
+      );
 
       onSuccess?.();
       const user = response.data.data;
@@ -255,13 +220,13 @@ export function AuthProvider({ children }) {
       setSession(token);
       let myUser = {
         ...userWithoutToken,
-        nationalityType_code: '001',
+        nationalityType_code: "001",
       };
 
       onSuccess?.();
 
       dispatch({
-        type: 'REGISTER',
+        type: "REGISTER",
         payload: {
           user: {
             data: myUser,
@@ -270,12 +235,46 @@ export function AuthProvider({ children }) {
       });
 
       dispatch({
-        type: 'LOGIN',
+        type: "LOGIN",
         payload: {
           user,
         },
       });
     } catch (error) {
+      throw error;
+    }
+  }, []);
+  const mockLogin = useCallback(async (data, onSuccess) => {
+    try {
+      const user = {
+        id: "12345",
+        age: 46,
+        name: "راما سعيد لسوطري",
+        email: "test@example.com",
+        role: { id: 1, role: "admin" },
+        nationalityType_code: "001",
+        token:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwOEJCMDBBQi1BRUVFLUVGMTEtQjlDQi05ODU5N0FCNUUyMTEiLCJ0eXBlIjoiZW50aXR5IiwiaWF0IjoxNzQwMzIxMDMyLCJleHAiOjE3NDAzMjE5MzJ9.TOLHj8_jDqyrOaL_jfHHQbZVzhxdyDedTiVR7hz_b9Q",
+      };
+      const { token, ...userWithoutToken } = user;
+
+      setSession(token);
+      let myUser = {
+        ...userWithoutToken,
+        nationalityType_code: "001",
+      };
+      console.log("Session token stored:", localStorage.getItem(STORAGE_KEY)); // Debugging
+
+      onSuccess?.();
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          user: myUser,
+        },
+      });
+      console.log("User state after login:", user); // Add this for debugging
+    } catch (error) {
+      console.error("Mock login error:", error);
       throw error;
     }
   }, []);
@@ -285,23 +284,25 @@ export function AuthProvider({ children }) {
     setSession(null);
 
     dispatch({
-      type: 'LOGOUT',
+      type: "LOGOUT",
     });
   }, []);
 
   // ----------------------------------------------------------------------
 
-  const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
+  const checkAuthenticated = state.user ? "authenticated" : "unauthenticated";
+  console.log(" state.user", state);
 
-  const status = state.loading ? 'loading' : checkAuthenticated;
+  const status = state.loading ? "loading" : checkAuthenticated;
+  console.log(" status", status);
 
   const memoizedValue = useMemo(
     () => ({
       user: state.user,
-      method: 'jwt',
-      loading: status === 'loading',
-      authenticated: status === 'authenticated',
-      unauthenticated: status === 'unauthenticated',
+      method: "jwt",
+      loading: status === "loading",
+      authenticated: status === "authenticated",
+      unauthenticated: status === "unauthenticated",
       accessToken: localStorage.getItem(STORAGE_KEY),
       //
       initialize,
@@ -311,11 +312,26 @@ export function AuthProvider({ children }) {
       entityLogin,
       register,
       logout,
+      mockLogin,
     }),
-    [login, rmsLogin, entityLogin, loginWithSanad, logout, register, state.user, status]
+    [
+      login,
+      rmsLogin,
+      entityLogin,
+      loginWithSanad,
+      logout,
+      register,
+      state.user,
+      status,
+      mockLogin,
+    ]
   );
 
-  return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={memoizedValue}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 AuthProvider.propTypes = {

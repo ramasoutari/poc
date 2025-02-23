@@ -6,7 +6,7 @@ import DashboardLayout from "../../layouts/dashboard/layout";
 
 // ----------------------------------------------------------------------
 
-const IndexPage = lazy(() => import("../../pages/dashboard/my-orders/list"));
+const MyOrdersPage = lazy(() => import("../../pages/dashboard/my-orders/list"));
 const SettingsPage = lazy(() =>
   import("../../pages/dashboard/settings/settings")
 );
@@ -14,21 +14,20 @@ const ServicesListPage = lazy(() =>
   import("../../pages/dashboard/services/list")
 );
 
-
 export const dashboardRoutes = [
   {
     path: "dashboard",
     element: (
-      // <AuthGuard>
+      <AuthGuard>
         <DashboardLayout>
           <Suspense fallback={<LoadingScreen />}>
             <Outlet />
           </Suspense>
         </DashboardLayout>
-      // </AuthGuard>
+      </AuthGuard>
     ),
     children: [
-      { element: <IndexPage />, index: true },
+      { element: <MyOrdersPage />, index: true },
       {
         path: "settings",
         element: <SettingsPage />,

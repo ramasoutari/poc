@@ -18,7 +18,7 @@
   "login_with_sanad": "الدخول الموحد",
   "or": "أو",
   "logout": "الخروج",
-  "my_orders": "طلباتي/مزاولاتي",
+  "my_orders": "طلباتي",
   "service_name": "اسم الخدمة",
   "submission_date": "تاريخ تقديم الطلب",
   "order_status": "حالة الطلب",
@@ -375,5 +375,11 @@
   "sorry": "نعتذر",
   "warning_msg": "  لا يمكنك التقديم على الخدمة يجب أن يكون عمر مقدم الطلب 45 سنة فما فوق",
   "exit": "الخروج",
-  "choose": "اختر"
+  "choose": "اختر",
+  "environmentalAttachment": "دراسة الأثر البيئي (مرفق من وزارة البيئة)",
+  "soilTestAttachment": "تقرير فحص التربة (مرفق من مكتب هندسي معتمد)",
+  "addittional_attachments": "مرفقات اضافية",
+  "national_id": "الرقم الوطني",
+  "new_password_confirm": "تأكيد كلمة السر الجديدة",
+  "noObjectionAttachment":"عدم الممانعة"
 }

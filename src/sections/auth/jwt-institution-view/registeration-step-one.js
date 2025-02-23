@@ -186,7 +186,6 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
       setRegData((prev) => ({ ...prev, ...formattedRegData }));
       setEntityData(newRegData);
       setIsVerified(true);
-      console.log("regData", newRegData);
     } catch (error) {
       console.error("Verification error:", error);
       setError(

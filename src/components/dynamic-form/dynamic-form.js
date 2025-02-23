@@ -20,11 +20,11 @@ import {
   CircularProgress,
   GlobalStyles,
   Grid,
-  Grid2,
   Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { useTheme } from "@mui/material/styles";
 // hooks
 // components
@@ -685,7 +685,7 @@ const DynamicForm = forwardRef(
                 sx={{
                   mt: 0.25,
                   color: "text.secondary",
-                  fontSize: 12,
+                  fontSize: 100,
                 }}
               />
             )}
@@ -1024,7 +1024,6 @@ const DynamicForm = forwardRef(
               )}
             >
               <Grid container spacing={2} gap={0}>
-                {console.log("fields:", fields)}{" "}
                 {fields.map((field, index) => {
                   let isHidden = false;
                   const { visibilityRules, gridOptions, ...fieldProps } = field;

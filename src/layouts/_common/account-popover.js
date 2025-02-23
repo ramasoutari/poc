@@ -27,6 +27,7 @@ import CustomPopover, { usePopover } from "../../components/custom-popover";
 import { useGlobalDialogContext } from "../../components/global-dialog";
 import { useLocales } from "../../locales";
 import SvgColor from "../../components/svg-color";
+import i18n from "../../locales/i18n";
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +45,7 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
 
 export default function AccountPopover() {
   const router = useRouter();
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
 
   const accessibility = useAccessibilityContext();
 
@@ -75,7 +77,7 @@ export default function AccountPopover() {
   };
   const handleOpenPassResetDialog = () => {
     globalDialog.onOpen({
-      title: t["password_reset"],
+      title: t("password_reset"),
       content: (
         <Box p={2}>
           <ResetPasswordDialog />
@@ -117,10 +119,10 @@ export default function AccountPopover() {
         {/* <TextMaxLine sx={{ filter: 'blur(5px)' }} variant="body2" fontWeight="fontWeightBold" line={2}> */}
 
         <TextMaxLine variant="body2" fontWeight="fontWeightBold" line={2}>
-          {user?.fullName}
+          {user?.name}
         </TextMaxLine>
 
-        {user?.desc && (
+        {/* {user?.desc && (
           <Typography
             component="p"
             variant="caption"
@@ -132,13 +134,13 @@ export default function AccountPopover() {
           >
             {user.desc}
           </Typography>
-        )}
+        )} */}
       </Box>
     </Box>
   );
 
   return (
-    <div data-tour-id="user_option_menu">
+    <div data-tour-id="user_option_menu" sx={{ direction }}>
       <Button component={m.button} onClick={popover.onOpen}>
         <Box
           sx={{
@@ -200,7 +202,7 @@ export default function AccountPopover() {
           <StyledMenuItem onClick={accessibility.onToggleColorBlind}>
             <Stack direction="row" gap={1}>
               <SvgColor src="/assets/icons/designer/color-swatch.svg" />
-              {t["color_blind_mode"]}
+              {t("color_blind_mode")}
             </Stack>
             <Switch checked={accessibility.colorBlind} />
           </StyledMenuItem>
@@ -209,12 +211,12 @@ export default function AccountPopover() {
             onClick={() => handleClickItem(paths.dashboard.settings)}
           >
             <SvgColor src="/assets/icons/designer/settings.svg" />
-            {t["settings"]}
+            {t("settings")}
           </StyledMenuItem>
           {user?.type !== "user" && !user?.clinic && (
             <StyledMenuItem onClick={handleOpenPassResetDialog}>
               <SvgColor src="/assets/icons/designer/password_reset.svg" />
-              {t["password_reset"]}
+              {t("password_reset")}
             </StyledMenuItem>
           )}
         </Stack>
@@ -227,7 +229,7 @@ export default function AccountPopover() {
         >
           <StyledMenuItem onClick={handleLogout}>
             <SvgColor src="/assets/icons/designer/logout.svg" />
-            {t["logout"]}
+            {t("logout")}
           </StyledMenuItem>
         </Stack>
       </CustomPopover>

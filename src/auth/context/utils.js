@@ -7,14 +7,14 @@ import { paths } from "../../routes/paths";
 // ----------------------------------------------------------------------
 
 function jwtDecode(token) {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
   const jsonPayload = decodeURIComponent(
     window
       .atob(base64)
-      .split('')
+      .split("")
       .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
-      .join('')
+      .join("")
   );
 
   return JSON.parse(jsonPayload);
@@ -49,9 +49,9 @@ export const tokenExpired = (exp) => {
   clearTimeout(expiredTimer);
 
   expiredTimer = setTimeout(() => {
-    alert('Token expired');
+    alert("Token expired");
 
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem("accessToken");
 
     window.location.href = paths.auth.jwt.login;
   }, timeLeft);
@@ -61,18 +61,10 @@ export const tokenExpired = (exp) => {
 
 export const setSession = (accessToken) => {
   if (accessToken) {
-    localStorage.setItem('accessToken', accessToken);
-
+    localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-
-    // This function below will handle when token is expired
-    // const { exp } = jwtDecode(accessToken);
-    // console.log(' jwtDecode(accessToken)', jwtDecode(accessToken))
-    // console.log('exp', exp)
-    // tokenExpired(exp);
   } else {
-    localStorage.removeItem('accessToken');
-
+    localStorage.removeItem("accessToken");
     delete axios.defaults.headers.common.Authorization;
   }
 };

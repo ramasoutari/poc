@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^4.1.0",
+    "@mui/icons-material": "^6.4.5",
     "@mui/lab": "^5.0.0-alpha.139",
     "@mui/material": "^5.14.4",
     "@mui/x-data-grid": "^6.11.1",

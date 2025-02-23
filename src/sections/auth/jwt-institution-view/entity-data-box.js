@@ -4,9 +4,6 @@ import { useEffect } from "react";
 
 export default function EntityDataBox({ data }) {
   const { t } = useLocales();
-  useEffect(() => {
-    console.log("data", data);
-  }, [data]);
 
   return (
     <>

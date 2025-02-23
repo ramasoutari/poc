@@ -87,15 +87,15 @@ export default function NavItem({ item, open, depth, active, config, externalLin
   // External link
   if (externalLink)
     return (
+  
       <Link
         href={path}
         target="_blank"
         rel="noopener"
         underline="none"
-        color="inherit"
         sx={{
           ...(disabled && {
-            cursor: 'default',
+            cursor: "default",
           }),
         }}
       >

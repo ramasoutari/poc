@@ -73,30 +73,30 @@ export function button(theme) {
       ...(ownerState.color === color && {
         // CONTAINED
         ...(containedVariant && {
-          '&:hover': {
+          "&:hover": {
             boxShadow: theme.customShadows[color],
           },
         }),
         // SOFT
         ...(softVariant && {
-          color: theme.palette[color][lightMode ? 'dark' : 'light'],
+          color: theme.palette[color][lightMode ? "dark" : "light"],
           backgroundColor: alpha(theme.palette[color].main, 0.16),
-          '&:hover': {
+          "&:hover": {
             backgroundColor: alpha(theme.palette[color].main, 0.32),
           },
         }),
         // If variant is link
         ...(linkVariant && {
           color: theme.palette[color].main,
-          '&:hover': {
+          "&:hover": {
             color: theme.palette[color].light,
           },
-          '&:active': {
-            color: theme.palette[color].dark,
+          "&:active": {
+            color: " #1D3E6E",
           },
           // Disable ripple
-          '& .MuiTouchRipple-root': {
-            display: 'none',
+          "& .MuiTouchRipple-root": {
+            display: "none",
           },
         }),
       }),
@@ -114,7 +114,7 @@ export function button(theme) {
     const size = {
       ...(smallSize && {
         height: 30,
-        fontSize: 13,
+        fontSize: 17,
         paddingLeft: 8,
         paddingRight: 8,
         ...(textVariant && {

@@ -1,54 +1,62 @@
 // @mui
-import { styled } from '@mui/material/styles';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemButton from '@mui/material/ListItemButton';
+import { styled } from "@mui/material/styles";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemButton from "@mui/material/ListItemButton";
 
 // ----------------------------------------------------------------------
 
 export const StyledItem = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'active',
+  shouldForwardProp: (prop) => prop !== "active",
 })(({ active, open, depth, config, theme }) => {
   const subItem = depth !== 1;
 
   const activeStyles = {
-    color: theme.palette.text.primary,
-    backgroundColor: theme.palette.action.selected,
-
-    borderStyle: 'none',
+    color: theme.palette.common.white,
+    backgroundColor: "#1D3E6E",
   };
 
   return {
-    // Root item
-    flexShrink: 0,
-    padding: config.itemPadding,
+    width: "147.06px",
+    height: "39.48px",
     marginRight: config.itemGap,
-    borderRadius: config.itemRadius,
+    borderRadius: "8px",
     minHeight: config.itemRootHeight,
     color: theme.palette.text.secondary,
     borderColor: theme.palette.text.secondary,
-    borderWidth: 1,
+    borderWidth: "1px",
+    borderStyle: !subItem && "solid",
 
-    borderStyle: !subItem && 'solid',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    transition: "all 0.3s ease",
 
-
-    // Active item
+    // Active item styles
     ...(active && {
       ...activeStyles,
     }),
 
-    // Sub item
+    // Sub item styles
     ...(subItem && {
       margin: 0,
       padding: theme.spacing(0, 1),
       minHeight: config.itemSubHeight,
     }),
 
-    // Open
+    // Hover styles
+    "&:hover": {
+      backgroundColor: active ? "#1D3E6E" : "#15325A", // Darker blue on hover
+      color: theme.palette.common.white, // White text on hover
+      borderColor: "#1D3E6E", // Border color changes
+    },
+
+    // Open item styles (when hovered but not active)
     ...(open &&
       !active && {
-      color: theme.palette.text.primary,
-      backgroundColor: theme.palette.action.hover,
-    }),
+        color: theme.palette.text.primary,
+        backgroundColor: theme.palette.action.hover,
+      }),
   };
 });
 

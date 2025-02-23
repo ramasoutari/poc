@@ -5,6 +5,7 @@ import DynamicForm, { getForm } from "../../../components/dynamic-form";
 import { Alert, Box, Button, Stack, Typography } from "@mui/material";
 import { useLocales } from "../../../locales";
 import { color } from "framer-motion";
+import { PATH_AFTER_LOGIN } from "../../../config-global";
 
 export default function LoginView() {
   const { entityLogin } = useAuthContext();
@@ -12,31 +13,15 @@ export default function LoginView() {
   const [loading, setLoading] = useState(false);
   const [loginData, setLoginData] = useState("");
   const [timer, setTimer] = useState(0);
-  const [resendOTPCounter, setResendOTPCounter] = useState(0);
   const { t } = useLocales();
-
-  const OTP_RESEND_INTERVAL_SECONDS = 300;
-
-  const startTimer = () => {
-    if (!timer) {
-      setTimer(OTP_RESEND_INTERVAL_SECONDS);
-    }
-  };
-
-  const resendOTP = () => {
-    setResendOTPCounter((prev) => prev + 1);
-    handleLogin(loginData);
-    setError();
-    setTimer();
-    // setWrongOtp(false)
-  };
+  const router = useRouter();
 
   let loginFnc = entityLogin;
 
   const loginForm = getForm([
     {
       label: "entityNumber",
-      fieldVariable: "NationalNo",
+      fieldVariable: "username",
       type: "input",
       inputType: "numeric-text",
       typeValue: "string",
@@ -66,7 +51,7 @@ export default function LoginView() {
     },
     {
       label: "password",
-      fieldVariable: "Password",
+      fieldVariable: "password",
       placeholder: "password",
       type: "input",
       inputType: "password",
@@ -112,12 +97,11 @@ export default function LoginView() {
       await loginFnc?.(
         { ...payload },
         () => {
-          // router.push(PATH_AFTER_LOGIN_CPD);
+          router.push(PATH_AFTER_LOGIN);
           setLoading(false);
         },
         () => {
           setLoginData(payload);
-          startTimer();
           setLoading(false);
         }
       );
@@ -127,15 +111,6 @@ export default function LoginView() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (timer > 0) {
-      // if started
-      setTimeout(() => {
-        setTimer((currTimer) => currTimer - 1);
-      }, 1000);
-    }
-  }, [timer]);
 
   return (
     <Box>
@@ -151,21 +126,7 @@ export default function LoginView() {
                 textAlign: "center",
                 pt: 2,
               }}
-            >
-              <Typography component="p" textAlign="center" mb={2}>
-                {timer <= 60
-                  ? t?.translateValue("you_can_have_new_otp_in_seconds", {
-                      seconds: timer,
-                    })
-                  : t?.translateValue(
-                      "you_can_have_new_otp_in_minutes_seconds",
-                      {
-                        minutes: Math.floor(timer / 60).toString(),
-                        seconds: (timer % 60).toString().padStart(2, "0"),
-                      }
-                    )}
-              </Typography>
-            </Box>
+            ></Box>
           )}
 
           <DynamicForm
@@ -174,7 +135,7 @@ export default function LoginView() {
             onSubmit={handleLogin}
             submitButtonProps={{
               label: t("login"),
-              backgroundColor:"#1D3E6E",
+              backgroundColor: "#1D3E6E",
               alignment: "center",
               width: "100%",
               loading,

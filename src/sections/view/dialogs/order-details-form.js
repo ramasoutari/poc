@@ -123,7 +123,6 @@ export default function OrderDetailsForm({
 
         setSubmitted(true);
         reloadOrders();
-        console.log("Submitting Payload:", payload);
       } catch (error) {
         setError(error);
       } finally {

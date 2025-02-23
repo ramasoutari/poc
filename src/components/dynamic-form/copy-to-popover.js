@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 // @mui
-import { Box, Button, Grid2 } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+
 // locales
 // components
 import Iconify from "../iconify";

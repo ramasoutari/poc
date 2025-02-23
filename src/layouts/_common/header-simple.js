@@ -12,10 +12,7 @@ import { Box, Button } from "@mui/material";
 import { AccessibilityToolbar } from "../../components/accessibility";
 //
 import { HEADER, NAV } from "../config-layout";
-import {
-  AccountPopover,
-  DateTimeOverview,
-} from "../_common";
+import { AccountPopover, DateTimeOverview } from "../_common";
 import { useEffect } from "react";
 import { useNavData } from "../dashboard/config-navigation";
 import { useAuthContext } from "../../auth/hooks";
@@ -28,6 +25,7 @@ import { useOffSetTop } from "../../hooks/use-off-set-top";
 import NavSectionHorizontal from "../../components/nav-section/horizontal/nav-section-horizontal";
 import { useLocales } from "../../locales";
 import SvgColor from "../../components/svg-color";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 // ----------------------------------------------------------------------
 
 export default function HeaderSimple({ onOpenNav }) {
@@ -37,9 +35,7 @@ export default function HeaderSimple({ onOpenNav }) {
 
   const navData = useNavData();
 
-
   const { user, initialize } = useAuthContext();
-
 
   const isNavVertical = settings.themeLayout === "vertical";
 
@@ -58,7 +54,7 @@ export default function HeaderSimple({ onOpenNav }) {
   const renderContent = (
     <>
       <Stack flexGrow={1} direction="row" alignItems="center">
-        {lgUp && isNavHorizontal && <Logo sx={{ mr: 2.5, height: 60 }} />}
+        {lgUp && isNavHorizontal && <AccountCircleIcon />}
 
         {!lgUp && (
           <IconButton onClick={onOpenNav}>
@@ -107,7 +103,6 @@ export default function HeaderSimple({ onOpenNav }) {
           </Stack>
         )}
 
-        {user && <AccountPopover />}
       </Stack>
       {lgUp && (
         <Stack
@@ -132,9 +127,7 @@ export default function HeaderSimple({ onOpenNav }) {
         justifyContent="flex-end"
         spacing={{ xs: 0.5, sm: 1, lg: 6 }}
       >
-      {/* <LanguagePopover /> */}
-
-        {/* <NotificationsPopover /> */}
+        {/* <LanguagePopover /> */}
 
         {/* <ContactsPopover /> */}
 

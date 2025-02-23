@@ -9,13 +9,18 @@ import { useAuthContext } from "../../auth/hooks";
 import useTabs from "../../hooks/use-tabs";
 import DynamicForm, { getForm } from "../../components/dynamic-form";
 import { useLocales } from "../../locales";
+import { useNavigate } from "react-router-dom";
 
 export default function JwtIndividualLoginView() {
   const loginTabs = useTabs(["persons", "establishments"]);
-
+  const navigate = useNavigate();
+  const { login, mockLogin } = useAuthContext();
+  console.log(mockLogin);
   const router = useRouter();
-  const { login, loginWithSanad } = useAuthContext();
+
   const [errorMsg, setErrorMsg] = useState("");
+  const [loginData, setLoginData] = useState("");
+
   const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const form = getForm([
@@ -94,30 +99,61 @@ export default function JwtIndividualLoginView() {
 
   const handleSubmit = async (data) => {
     const { national_id, password } = data;
-
-    // Create the payload object with both fields
     const payload = {
       NationalNo: national_id,
       Password: password,
     };
-    let loginFnc = login;
-
-    // if (loginTabs.currentTab === 2) {
-    //   loginFnc = rmsLogin;
-    // }
 
     try {
       setLoading(true);
-      await loginFnc?.(payload, () => {
-        router.push(PATH_AFTER_LOGIN);
-        setLoading(false);
-      });
+      await mockLogin(
+        payload,
+        () => {
+          setTimeout(() => {
+            router.push(PATH_AFTER_LOGIN);
+            setLoading(false);
+          }, 5000);
+        },
+        (error) => {
+          setErrorMsg(error.message);
+          setLoading(false);
+        }
+      );
     } catch (error) {
-      console.error(error.message);
-      setErrorMsg(error.message);
+      console.error("Login failed:", error.message);
       setLoading(false);
     }
   };
+
+  // const handleSubmit = async (data) => {
+  //   const { national_id, password } = data;
+
+  //   const payload = {
+  //     NationalNo: national_id,
+  //     Password: password,
+  //   };
+
+  //   let loginFnc = mockLogin;
+
+  //   try {
+  //     setLoading(true);
+  //     console.log("PATH_AFTER_LOGIN", PATH_AFTER_LOGIN);
+  //     await loginFnc?.(payload, () => {
+  //       router.push(PATH_AFTER_LOGIN);
+  //       setLoading(false);
+  //     });
+
+  //   //  await loginFnc?.(payload, async () => {
+  //   //    await new Promise((resolve) => setTimeout(resolve, 100)); // Delay
+  //   //    router.push(PATH_AFTER_LOGIN);
+  //   //    setLoading(false);
+  //   //  });
+  //   } catch (error) {
+  //     console.error("Login failed:", error.message);
+  //     setErrorMsg(error.message);
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <Box height="auto">
@@ -129,20 +165,20 @@ export default function JwtIndividualLoginView() {
           justifyContent="space-between"
           alignItems="center"
         >
-          {/* {process.env.REACT_APP_ENVIRONMENT !== 'production' &&
+          {/* {process.env.REACT_APP_ENVIRONMENT !== 'production' && */}
 
-            <DynamicForm
-              {...form}
-              defaultValues={defaultValues}
-              onSubmit={handleSubmit}
-              submitButtonProps={{
-                label: tl['login'],
-                alignment: 'center',
-                width: '100%',
-                loading,
-              }}
-            />
-          } */}
+          <DynamicForm
+            {...form}
+            defaultValues={defaultValues}
+            onSubmit={handleSubmit}
+            submitButtonProps={{
+              label: t("login"),
+              alignment: "center",
+              width: "100%",
+              loading,
+            }}
+          />
+          {/* } */}
           {/* {process.env.REACT_APP_ENVIRONMENT !== "production" && (
             <DynamicForm
               {...form}
@@ -156,7 +192,7 @@ export default function JwtIndividualLoginView() {
               }}
             />
           )} */}
-          {
+          {/* {
             <img
               src="/logo/sanad-logo.png"
               alt="SANAD Logo"
@@ -165,13 +201,13 @@ export default function JwtIndividualLoginView() {
               top=" 334.4px"
               left=" 828.66px"
             />
-          }
+          } */}
         </Stack>
         {/* <Typography variant="body2" color="inherit">
         <RouterLink to={paths.auth.jwt.forgotPassword}>{t('forgot_password')}</RouterLink>
       </Typography> */}
       </Stack>
-      <Stack
+      {/* <Stack
         alignItems="center"
         gap={2}
         sx={{
@@ -182,8 +218,8 @@ export default function JwtIndividualLoginView() {
           mt: 2,
         }}
       >
-        <SanadLoginButton />
-        {/* <Button
+        <SanadLoginButton /> */}
+      {/* <Button
               fullWidth
               variant="outlined"
               component={RouterLink}
@@ -191,7 +227,7 @@ export default function JwtIndividualLoginView() {
             >
               {t('register')}
             </Button> */}
-      </Stack>
+      {/* </Stack> */}
     </Box>
   );
 }

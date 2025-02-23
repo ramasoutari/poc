@@ -13,6 +13,8 @@ import { StyledActionButton } from "../../components/custom-styled-components";
 import Label from "../../components/label";
 import i18n from "../../locales/i18n";
 import { useEffect, useState } from "react";
+import axiosInstance from "../../utils/axios";
+import { HOST_API } from "../../config-global";
 
 const MyOrdersView = () => {
   const { user } = useAuthContext();
@@ -32,48 +34,9 @@ const MyOrdersView = () => {
   const { t } = useLocales();
   const direction = i18n.language === "ar" ? "ltr" : "rtl";
 
-  const dummyOrders = [
-    {
-      order_number: "ORD001",
-      national_number: "123456789",
-      full_name: "John Doe",
-      service_name: "Service A",
-      submission_date: moment().subtract(5, "days").toISOString(),
-      certificate_issue_date: moment().subtract(2, "days").toISOString(),
-      certificate_expiry_date: moment().add(1, "year").toISOString(),
-      order_status: "Pending",
-      applicationType: "",
-      isMigrated: false,
-    },
-    {
-      order_number: "ORD002",
-      national_number: "987654321",
-      full_name: "Jane Smith",
-      service_name: "Service B",
-      submission_date: moment().subtract(10, "days").toISOString(),
-      certificate_issue_date: moment().subtract(5, "days").toISOString(),
-      certificate_expiry_date: moment().add(2, "years").toISOString(),
-      order_status: "Approved",
-      applicationType: "",
-      isMigrated: false,
-    },
-    {
-      order_number: "ORD003",
-      national_number: "456123789",
-      full_name: "Alice Johnson",
-      service_name: "Service C",
-      submission_date: moment().subtract(20, "days").toISOString(),
-      certificate_issue_date: moment().subtract(10, "days").toISOString(),
-      certificate_expiry_date: moment().add(3, "years").toISOString(),
-      order_status: "Rejected",
-      applicationType: "",
-      isMigrated: false,
-    },
-  ];
-
   const columns = [
     {
-      id: "order_number",
+      id: "applicationNumber",
       label: t("order_number"),
       renderRow: (row, column) => (
         <>
@@ -96,7 +59,7 @@ const MyOrdersView = () => {
       ),
     },
     {
-      id: "submission_date",
+      id: "createdAt",
       label: t("submission_date"),
       renderRow: (row) => (
         <Label variant="ghost" sx={{}}>
@@ -105,11 +68,11 @@ const MyOrdersView = () => {
       ),
     },
     {
-      id: "order_status",
+      id: "step.descriptionAr", // Update the id to reflect the nested property
       label: t("order_status"),
-      renderRow: (row, column) => (
+      renderRow: (row) => (
         <Label variant="ghost" sx={{}}>
-          {row[column.id]}
+          {row.step?.descriptionAr || "N/A"}
         </Label>
       ),
     },
@@ -129,13 +92,35 @@ const MyOrdersView = () => {
 
   const onPageChange = (page) => {
     setCurrentPage(page);
-    // handleSearch(filters, page)
   };
 
   useEffect(() => {
-    setData({ items: dummyOrders || [] }); // Default to an empty array if dummyOrders is undefined
-    setLoading(false);
-  }, []);
+    const fetchData = async () => {
+      try {
+        const nationalNumber = user.entityNumber;
+        const response = await axiosInstance.get(
+          `${HOST_API}/applications/all/${nationalNumber}`,
+          {
+            headers: {
+              "x-session-id": localStorage.getItem("sessionId"),
+            },
+          }
+        );
+
+        const result = response.data.applications;
+
+        setData({
+          items: result || [],
+        });
+      } catch (error) {
+        setError("Failed to fetch data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [currentPage]); // Removed nationalNumber from the dependency array
 
   useEffect(() => {
     const validateFromDate = () => {
@@ -217,7 +202,6 @@ const MyOrdersView = () => {
             flexDirection: lgUp && mdUp ? "row" : "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: 1,
             pt: 1,
             mb: 2.5,
           }}
@@ -228,7 +212,7 @@ const MyOrdersView = () => {
               onChange={(event) => setAppNumber(event.target.value)}
               value={appNumber}
               sx={{
-                width: "250px",
+                width: "500px",
                 padding: "8px",
                 "& .MuiOutlinedInput-root": {
                   "& fieldset": {
@@ -375,51 +359,60 @@ const MyOrdersView = () => {
                     }
                   : false
               }
-              renderActions={(row) => (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 1,
-                  }}
-                >
-                  <>
-                    {/* "011" اسباب رفض الطلب */}
-                    {/* "004" معلومات اضافية */}
-                    {/* "009" + "016" طلب دفع */}
+              renderActions={(row) => {
+                const statusColors = {
+                  "004": "#FFA500",
+                  "017": "#FFA500",
+                  2: "#FFA500",
+                  "011": "#FF4242", // Rejected (Red)
+                  "012": "#FF4242",
+                  5: "#FF4242",
+                  3: "#FFA500", // Payment related (Orange)
+                  "016": "#3FAF47", // Approved (Green)
+                };
+
+                return (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 1,
+                    }}
+                  >
                     {[
                       "004",
-                      "009",
                       "011",
                       "016",
                       "017",
+                      "009",
                       "3",
                       "2",
                       "5",
-                    ].includes(row.statusCode) && (
-                      <StyledActionButton
-                        // onClick={() => ()}
-                        variant="outlined"
-                        color="secondary"
-                        size="small"
+                    ].includes(row.applicantType) && (
+                      <a
+                        style={{
+                          color: statusColors[row.applicantType],
+                          fontWeight: "bold",
+                        }}
                       >
-                        {["004", "017", "2"].includes(row.statusCode) &&
+                        {["004", "017", "2"].includes(row.applicantType) &&
                           t("details")}
-                        {["011", "012", "5"].includes(row.statusCode) &&
+                        {["011", "012", "5"].includes(row.applicantType) &&
                           t("rejection_details")}
-                        {["009", "016", "3"].includes(row.statusCode) &&
+                        {["3"].includes(row.applicantType) &&
                           t("payment_details")}
-                      </StyledActionButton>
+                        {["016"].includes(row.applicantType) &&
+                          t("download_certificate")}
+                        {["009"].includes(row.applicantType) && "----"}
+                      </a>
                     )}
-                  </>
-                </Box>
-              )}
+                  </Box>
+                );
+              }}
             />
           </Box>
-          <Button>
-hhi
-          </Button>
+          {/* <Button>hhi</Button> */}
         </Box>
       </Card>
     </Container>

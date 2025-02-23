@@ -1,10 +1,11 @@
-import PropTypes from 'prop-types';
-import { useEffect, useCallback, useState } from 'react';
+import PropTypes from "prop-types";
+import { useEffect, useCallback, useState } from "react";
 // routes
 //
-import { useAuthContext } from '../hooks';
-import { paths } from '../../routes/paths';
-import { useRouter } from '../../routes/hooks';
+import { useAuthContext } from "../hooks";
+import { paths } from "../../routes/paths";
+import { useRouter } from "../../routes/hooks";
+import { LoadingScreen } from "../../components/loading-screen";
 
 // ----------------------------------------------------------------------
 
@@ -18,6 +19,7 @@ export default function AuthGuard({ children }) {
   const router = useRouter();
 
   const { authenticated, method } = useAuthContext();
+  console.log("loginPaths[method]", method);
 
   const [checked, setChecked] = useState(false);
 
@@ -28,10 +30,13 @@ export default function AuthGuard({ children }) {
       }).toString();
 
       const loginPath = loginPaths[method];
+      console.log("loginPaths[method]", loginPaths[method]);
 
       const href = `${loginPath}?${searchParams}`;
+      console.log("href", href);
 
       router.replace(href);
+      console.log("href", href);
     } else {
       setChecked(true);
     }
@@ -44,7 +49,7 @@ export default function AuthGuard({ children }) {
   }, []);
 
   if (!checked) {
-    return null;
+    return <LoadingScreen />;
   }
 
   return <>{children}</>;

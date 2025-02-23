@@ -41,7 +41,7 @@ export default function App() {
         >
           <AccessibilityProvider
             defaultSettings={{
-              rootFontSize: 100,
+              rootFontSize: 120,
               colorBlind: false,
             }}
           >

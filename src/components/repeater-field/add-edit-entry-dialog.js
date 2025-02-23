@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 // @mui
-import { Box, Typography } from '@mui/material';
+import { Box, Typography } from "@mui/material";
 // hooks
 // components
-import DynamicForm, { getForm } from '../dynamic-form';
-import _ from 'lodash';
-import shortid from 'shortid';
-import { useTranslation } from 'react-i18next';
-import { useLocales } from '../../locales';
+import DynamicForm, { getForm } from "../dynamic-form";
+import _ from "lodash";
+import shortid from "shortid";
+import { useTranslation } from "react-i18next";
+import { useLocales } from "../../locales";
 
 export default function AddEditEntryDialog({
   fields,
@@ -44,21 +44,19 @@ export default function AddEditEntryDialog({
     };
 
     setLoading(true);
-    setIsSubmitted(true)
+    setIsSubmitted(true);
     if (!isEdit) {
       // Add Case
       if (onAddEditEntry) {
         return await onAddEditEntry(data, async (newData) => {
-          console.log('final data', newData || data);
           await onChange(createNewValue(newData || data));
-          if (handleFetchEntries && typeof handleFetchEntries === 'function') {
+          if (handleFetchEntries && typeof handleFetchEntries === "function") {
             await handleFetchEntries(1);
           }
           if (onClose) onClose();
         });
       } else if (onAddEntry) {
         return await onAddEditEntry(data, async (newData) => {
-          // console.log('final data', newData || data);
           await onChange(createNewValue(newData || data));
           if (onClose) onClose();
         });
