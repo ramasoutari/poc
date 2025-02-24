@@ -54,16 +54,20 @@ export function AuthProvider({ children }) {
       // if (accessToken && isValidToken(accessToken)) {
       if (accessToken) {
         setSession(accessToken);
+        console.log("accessToken222222", accessToken);
+        console.log("setSession", setSession);
 
         const response = await axiosInstance.get(`${HOST_API}/me`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
+            "x-session-id": localStorage.getItem("sessionId"),
           },
         });
 
-        let user = response.data.data;
-        setSession(user.token);
+        let user = response.data;
+        console.log("user22222223333333333322222", user);
 
+        setSession(user.token);
         delete user.token;
 
         dispatch({
@@ -84,6 +88,8 @@ export function AuthProvider({ children }) {
         });
       }
     } catch (error) {
+      console.log("hiiii");
+
       logout();
       console.error(error);
       dispatch({
@@ -159,6 +165,7 @@ export function AuthProvider({ children }) {
         throw new Error("Login failed: No token received.");
       }
       const user = response.data;
+      console.log("userrrrrr", user);
       localStorage.setItem("sessionId", user.sessionId);
       localStorage.setItem("accessToken", user.token);
 
@@ -295,6 +302,7 @@ export function AuthProvider({ children }) {
 
   const status = state.loading ? "loading" : checkAuthenticated;
   console.log(" status", status);
+  console.log(" access token", localStorage.getItem(STORAGE_KEY));
 
   const memoizedValue = useMemo(
     () => ({

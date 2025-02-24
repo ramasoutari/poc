@@ -16,6 +16,7 @@ import { LocalizationProvider, useLocales } from "./locales";
 import { GlobalStyles } from "@mui/material";
 import ThemeProvider from "./theme";
 import { MotionLazy } from "./components/animate/motion-lazy";
+import { AuthConsumer } from "./auth/context/auth-consumer";
 
 // ----------------------------------------------------------------------
 
@@ -92,9 +93,9 @@ export default function App() {
                           <GlobalDialog />
                           <GlobalPrompt />
                           <ProgressBar />
-                          {/* <AuthConsumer> */}
+                          <AuthConsumer>
                           <Router />
-                          {/* </AuthConsumer> */}
+                          </AuthConsumer>
                         </MotionLazy>
                       </GlobalDrawerProvider>
                     </GlobalPromptProvider>

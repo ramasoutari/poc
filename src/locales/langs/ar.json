@@ -367,9 +367,9 @@
   "inst_rep_info": "معلومات ضابط الارتباط",
   "previous": "السابق",
   "birth_place": "مكان الولادة",
-  "OfficerCivNum": "الرقم المدني لضابط الارتباط",
+  "officerCivNum": "الرقم المدني لضابط الارتباط",
   "officerName": "الاسم الكامل",
-  "OfficerAge": "العمر",
+  "officerAge": "العمر",
   "otp_label": "يرجى ادخال رمز التحقق الذي سيصلك من خلال رسائل الهاتف أو البريد الاكتروني*",
   "form_fill": "الرجاء تعبئة نموذج الطلب",
   "sorry": "نعتذر",
@@ -381,5 +381,6 @@
   "addittional_attachments": "مرفقات اضافية",
   "national_id": "الرقم الوطني",
   "new_password_confirm": "تأكيد كلمة السر الجديدة",
-  "noObjectionAttachment":"عدم الممانعة"
+  "noObjectionAttachment":"عدم الممانعة",
+  "extraInfo": "المعلومات الاضافية"
 }

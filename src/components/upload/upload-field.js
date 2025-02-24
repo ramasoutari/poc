@@ -63,7 +63,7 @@ export default function UploadField({
             color: "error.main",
           }),
         }}
-        value={fileUrl ? fileUrl : t["click_to_attach_file"]}
+        value={fileUrl ? fileUrl : t("click_to_attach_file")}
         disabled
         InputProps={{
           startAdornment: <>{loading && <CircularProgress size={24} />}</>,

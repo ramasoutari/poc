@@ -26,17 +26,8 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [stepOneForm, setStepOneForm] = useState(null);
-  const [entityData, setEntityData] = useState([
-    { label: "registrationNumber", value: "123456" },
-    { label: "entityNumber", value: "987654" },
-    { label: "type", value: "شركة" },
-    { label: "name", value: "شركة التقنية الحديثة" },
-    { label: "registrationDate", value: "2023-05-12" },
-    { label: "address", value: "عمان، الأردن" },
-    { label: "phone_number", value: "+962 79 123 4567" },
-    { label: "email", value: "info@company.com" },
-  ]);
-  const [isVerified, setIsVerified] = useState(true);
+  const [entityData, setEntityData] = useState(null);
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
     const form = getForm([
@@ -154,7 +145,7 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
 
     try {
       const companyInfoResponse = await axiosInstance.post(
-        `http://192.168.0.181:6001/prf/Entity/Data`,
+        `${HOST_API}/Entity/Data`,
         {
           registrationNumber: data.registrationNumber,
           entityNumber: data?.entityNumber?.length ? data.entityNumber : "",

@@ -6,6 +6,7 @@ import {
   alpha,
   CardHeader,
   Typography,
+  Stack,
 } from "@mui/material";
 // hooks
 import { useEffect, useState } from "react";
@@ -19,6 +20,8 @@ import DynamicForm, { getForm } from "../../../components/dynamic-form";
 import { HOST_API } from "../../../config-global";
 import i18n from "../../../locales/i18n";
 import axiosInstance from "../../../utils/axios";
+import { useGlobalPromptContext } from "../../../components/global-prompt";
+import { useNavigate } from "react-router-dom";
 
 export default function ServicesListView() {
   const { t } = useLocales();
@@ -28,11 +31,13 @@ export default function ServicesListView() {
   const { user } = useAuthContext();
   const mdUp = useResponsive("up", "md");
   const direction = i18n.language === "ar" ? "ltr" : "rtl";
+  const globalPrompt = useGlobalPromptContext();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const isUserUnder45 = user?.age < 45;
   const form = getForm([
     {
-      fieldVariable: "phone_number",
+      fieldVariable: "phoneNumber",
       label: t("phone_number"),
       placeholder: t("phone_number"),
       type: "phonefield",
@@ -99,6 +104,7 @@ export default function ServicesListView() {
       fieldVariable: "environmentalAttachment",
       label: t("environmentalAttachment"),
       placeholder: t("environmentalAttachment"),
+      multiple: true,
       type: "upload",
       typeValue: "array",
       disabled: false,
@@ -134,6 +140,7 @@ export default function ServicesListView() {
       label: t("soilTestAttachment"),
       placeholder: t("soilTestAttachment"),
       type: "upload",
+      multiple: true,
       typeValue: "array",
       disabled: false,
       value: [],
@@ -168,6 +175,7 @@ export default function ServicesListView() {
       label: t("noObjectionAttachment"),
       placeholder: t("noObjectionAttachment"),
       type: "upload",
+      multiple: true,
       typeValue: "array",
       disabled: false,
       value: [],
@@ -204,6 +212,7 @@ export default function ServicesListView() {
       type: "upload",
       typeValue: "array",
       disabled: false,
+      multiple: true,
       value: [],
       uploadStrategy: "tempId",
       destinationApi: `${HOST_API}/UploadAttachment`,
@@ -226,7 +235,7 @@ export default function ServicesListView() {
       ],
     },
     {
-      fieldVariable: "notes",
+      fieldVariable: "extraInfo",
       label: t("notes"),
       value: "",
       placeholder: t("notes"),
@@ -244,26 +253,74 @@ export default function ServicesListView() {
       ],
     },
   ]);
-    const defaultValues = {
-      phone_number: user?.phoneNumber || "",
-      email: user?.email || "",
-      ...form.defaultValues,
-    };
-
+  const defaultValues = {
+    applicantType:
+      user?.type === "individual"
+        ? "003"
+        : user?.type === "entity"
+        ? "004"
+        : "",
+    applicantName: user.name || "",
+    entityRegistrationDate:
+      user?.type === "entity" ? user.registrationDate : null,
+    nationalRegistrationNumber:
+      user?.type === "entity" ? user.entityNumber : user.nationalNumber || "",
+    birthDate: user?.type === "individual" ? user.birthdate : null,
+    gender: user?.type === "individual" ? user.gender : null,
+    phoneNumber: user?.phoneNumber || "",
+    email: user?.email || "",
+    ...form.defaultValues,
+  };
   const onSubmit = async (data) => {
     setLoading(true);
     setError(null);
 
     try {
+      let payload = {
+        phoneNumber: data.phoneNumber || "",
+        email: data.email || "",
+        applicantType:
+          user?.type === "individual"
+            ? "003"
+            : user?.type === "entity"
+            ? "004"
+            : "",
+        applicantName: user.name || "",
+        entityRegistrationDate:
+          user?.type === "entity" ? user.registrationDate : null,
+        nationalRegistrationNumber:
+          user?.type === "entity"
+            ? user.entityNumber
+            : user.nationalNumber || "",
+        birthDate: user?.type === "individual" ? user.birthdate : null,
+        gender: user?.type === "individual" ? user.gender : null,
+        extraInfo: data.extraInfo || "",
+      };
+
+      Object.entries(data).forEach(([key, value]) => {
+        if (Array.isArray(value) && key.includes("Attachment")) {
+          payload[key] = value.map((file) => {
+            console.log("File object:", file);
+            return file || null;
+          });
+        }
+      });
+
+      console.log("Final Payload:", payload);
+
       const response = await axiosInstance.post(
         `${HOST_API}/applications/submit`,
-        data,
+        payload,
         {
           headers: {
             "x-session-id": localStorage.getItem("sessionId"),
           },
         }
       );
+      if (response.status === 201) {
+        handlesucceess(); // Call the success handler
+        navigate("/dashboard"); // Redirect to dashboard
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
       setError("An error occurred while submitting the form.");
@@ -271,7 +328,21 @@ export default function ServicesListView() {
       setLoading(false);
     }
   };
-
+  const handlesucceess = () => {
+    globalPrompt.onOpen({
+      type: "success",
+      content: (
+        <Stack direction="column" spacing={1}>
+          <Typography component="h6" variant="h6" fontWeight="fontWeightBold">
+            {t("order_sent_successfully")}
+          </Typography>
+        </Stack>
+      ),
+      promptProps: {
+        icon: "success",
+      },
+    });
+  };
   // if (loading) return <LoadingScreen />;
 
   return (

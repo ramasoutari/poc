@@ -20,42 +20,8 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [isVerified, setIsVerified] = useState(true);
-  const [formattedData, setFormattedData] = useState([
-  {
-    label: "officerNationalNumber",
-    value: "1234567890",
-  },
-  {
-    label: "officerName",
-    value: "John Doe",
-  },
-  {
-    label: "OfficerAge",
-    value: "35",
-  },
-  {
-    label: "gender",
-    value: "Male",
-  },
-  {
-    label: "phoneNumber",
-    value: "+962791234567",
-  },
-  {
-    label: "officerPhoneNumber",
-    value: "+962798765432",
-  },
-  {
-    label: "email",
-    value: "john.doe@example.com",
-  },
-  {
-    label: "OfficerEmail",
-    value: "officer.doe@example.com",
-  },
-]
-);
+  const [isVerified, setIsVerified] = useState(false);
+  const [formattedData, setFormattedData] = useState(null);
 
   const globalDialog = useGlobalDialogContext();
 
@@ -124,12 +90,12 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
     },
     {
       disabled: isVerified,
-      label: "OfficerCivNum",
+      label: "officerCivNum",
       type: "input",
       inputType: "string",
       typeValue: "string",
-      fieldVariable: "OfficerCivNum",
-      placeholder: "OfficerCivNum",
+      fieldVariable: "officerCivNum",
+      placeholder: "officerCivNum",
       gridOptions: [
         {
           breakpoint: "xs",
@@ -216,21 +182,19 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
 
     try {
       // Make API request to fetch liaison officer data
-      const response = await axiosInstance.post(
-        `http://192.168.0.181:6001/api/prf/Officer/Data`,
-        {
-          nationalNumber: data?.inst_rep_national_id,
-          birthdate: data?.inst_rep_birth_date,
-          OfficerCivNum: data?.OfficerCivNum,
-        }
-      );
+      const response = await axiosInstance.post(`${HOST_API}/Officer/Data`, {
+        nationalNumber: data?.inst_rep_national_id,
+        birthdate: data?.inst_rep_birth_date,
+        officerCivNum: data?.officerCivNum,
+      });
       const officerData = response?.data?.data || {};
 
       const updatedRegData = {
         ...regData,
         national_id: data?.inst_rep_national_id,
         officerName: officerData?.fullName || "",
-        OfficerAge: officerData?.age || "",
+        officerAge: officerData?.age || "",
+        officerCivNum: data?.officerCivNum || "",
         gender: officerData?.gender || "",
       };
 
@@ -241,12 +205,16 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
         },
         { label: "officerName", value: updatedRegData.officerName || "" },
         {
-          label: "OfficerAge",
-          value: updatedRegData.OfficerAge || "",
+          label: "officerAge",
+          value: updatedRegData.officerAge || "",
         },
         {
           label: "gender",
           value: updatedRegData.gender || "",
+        },
+        {
+          label: "officerCivNum",
+          value: data.officerCivNum || "",
         },
       ];
       setFormattedData(formattedData);
@@ -256,6 +224,8 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
           formattedData.map((item) => [item.label, item.value])
         ),
       }));
+      console.log("regData", regData);
+
       setIsVerified(true);
     } catch (error) {
       console.error("Verification error:", error);
@@ -278,14 +248,14 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
       phoneNumber: regData?.inst_phone_number || "",
       officerPhoneNumber: regData?.inst_rep_phone_number || "",
       email: regData?.inst_email || "",
-      OfficerEmail: regData?.liaisonOfficerEmail || "",
+      officerEmail: regData?.liaisonOfficerEmail || "",
     };
 
     const formattedData = [
       { label: "phoneNumber", value: updatedRegData.phoneNumber },
       { label: "officerPhoneNumber", value: updatedRegData.officerPhoneNumber },
       { label: "email", value: updatedRegData.email },
-      { label: "OfficerEmail", value: updatedRegData.OfficerEmail },
+      { label: "OfficerEmail", value: updatedRegData.officerEmail },
     ];
     setRegData((prev) => ({
       ...prev,

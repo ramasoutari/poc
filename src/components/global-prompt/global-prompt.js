@@ -93,10 +93,10 @@ export default function GlobalPrompt() {
                   )}
                   {GlobalPrompt?.promptProps?.icon === "success" && (
                     <Iconify
-                      icon="mdi:check-circle"
-                      color="success.main"
-                      width={92}
-                      height={92}
+                      icon="mdi:check-circle-outline" // ✅ Use outlined version
+                      color="green"
+                      width={200}
+                      height={200}
                     />
                   )}
                   {GlobalPrompt?.promptProps?.icon === "error" && (

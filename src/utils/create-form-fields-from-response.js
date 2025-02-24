@@ -60,7 +60,7 @@ export default function createFormFieldsFromResponse(
 
             maxFileSize: "2048",
             allowedExtensions: ["png", "jpg", "bmp", "heif", "jpeg", "pdf"],
-            responseFileNameKey: "attachment.fileIds",
+            responseFileNameKey: "fileIds",
           };
 
       case "004":
@@ -101,7 +101,7 @@ export default function createFormFieldsFromResponse(
             maximimFiles: 5,
             maxFileSize: "2048",
             allowedExtensions: ["png", "jpg", "bmp", "heif", "jpeg", "pdf"],
-            responseFileNameKey: "attachment.fileIds",
+            responseFileNameKey: "fileIds",
           };
       case "005":
         return {

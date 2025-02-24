@@ -15,6 +15,7 @@ import i18n from "../../locales/i18n";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axios";
 import { HOST_API } from "../../config-global";
+import OrderDetailsDialog from "./dialogs/order-details-dialog";
 
 const MyOrdersView = () => {
   const { user } = useAuthContext();
@@ -33,6 +34,7 @@ const MyOrdersView = () => {
   const [data, setData] = useState({ items: [] });
   const { t } = useLocales();
   const direction = i18n.language === "ar" ? "ltr" : "rtl";
+  const globalDialog = useGlobalDialogContext();
 
   const columns = [
     {
@@ -44,6 +46,9 @@ const MyOrdersView = () => {
           [].includes(row?.applicationType) ? (
             <a
               role="button"
+              onClick={() => {
+                onDetailsClick(row, true);
+              }}
               style={{
                 cursor: "pointer",
                 textDecoration: "underline",
@@ -176,6 +181,21 @@ const MyOrdersView = () => {
       national_number: filterNationalNumber,
     });
   };
+   const onDetailsClick = async (row) => {
+     globalDialog.onOpen({
+       content: <OrderDetailsDialog applicationInfo={row} />,
+       dialogProps: {
+         maxWidth: "md",
+         sx: {
+           content: {
+             // minHeight: '75vh',
+             minWidth: "100hv",
+           },
+         },
+       },
+     });
+   };
+
 
   const lgUp = useResponsive("up", "lg");
   const smUp = useResponsive("up", "sm");
@@ -364,11 +384,11 @@ const MyOrdersView = () => {
                   "004": "#FFA500",
                   "017": "#FFA500",
                   2: "#FFA500",
-                  "011": "#FF4242", // Rejected (Red)
+                  "011": "#FF4242",
                   "012": "#FF4242",
                   5: "#FF4242",
-                  3: "#FFA500", // Payment related (Orange)
-                  "016": "#3FAF47", // Approved (Green)
+                  3: "#FFA500",
+                  "016": "#3FAF47",
                 };
 
                 return (
@@ -380,31 +400,23 @@ const MyOrdersView = () => {
                       gap: 1,
                     }}
                   >
-                    {[
-                      "004",
-                      "011",
-                      "016",
-                      "017",
-                      "009",
-                      "3",
-                      "2",
-                      "5",
-                    ].includes(row.applicantType) && (
+                    {["001", "002", "003", "004", "005", "006"].includes(
+                      row.statusCode
+                    ) && (
                       <a
                         style={{
-                          color: statusColors[row.applicantType],
+                          color: statusColors[row.statusCode],
                           fontWeight: "bold",
                         }}
                       >
-                        {["004", "017", "2"].includes(row.applicantType) &&
-                          t("details")}
-                        {["011", "012", "5"].includes(row.applicantType) &&
+                        {["003"].includes(row.statusCode) && t("details")}
+                        {["005"].includes(row.statusCode) &&
                           t("rejection_details")}
-                        {["3"].includes(row.applicantType) &&
-                          t("payment_details")}
-                        {["016"].includes(row.applicantType) &&
+                        {/* {["3"].includes(row.statusCode) && t("payment_details")} */}
+                        {["006"].includes(row.statusCode) &&
                           t("download_certificate")}
-                        {["009"].includes(row.applicantType) && "----"}
+                        {["001", "002", "004"].includes(row.statusCode) &&
+                          "----"}
                       </a>
                     )}
                   </Box>

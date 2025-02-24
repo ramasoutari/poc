@@ -239,7 +239,7 @@ export function RHFUploadField({
     } else if (minFileSize && fileSizeKiloBytes < Number(minFileSize)) {
       error = t?.translateValue("file_size_cant_be_less_than", {
         size: getSizeInMB(minFileSize),
-        unit: t["megabyte"],
+        unit: t("megabyte"),
       });
     } else {
       setCurrentFiles([file]);
@@ -316,7 +316,7 @@ export function RHFUploadField({
             },
           });
 
-          return response.data.data[responseFileNameKey];
+          return response.data[responseFileNameKey];
         }
 
         if (uploadStrategy === "tempId") {
@@ -345,7 +345,7 @@ export function RHFUploadField({
           );
 
           if (!eFileId) {
-            setEFileId(response?.data?.data?.eFileId);
+            setEFileId(response?.data);
           }
           const randomFileId = uuidv4().toString();
           return (
@@ -380,9 +380,9 @@ export function RHFUploadField({
           );
           console.log(
             "response.data.data[responseFileNameKey];",
-            response.data.data[responseFileNameKey]
+            response.data[responseFileNameKey]
           );
-          return response.data.data[responseFileNameKey];
+          return response.data[responseFileNameKey];
         }
       } catch (compressionError) {
         console.error("Error:", compressionError);
@@ -441,7 +441,7 @@ export function RHFUploadField({
               }
             );
 
-            return response.data.data[responseFileNameKey];
+            return response.data[responseFileNameKey];
           } catch (error) {
             console.log(error);
           }
@@ -475,13 +475,13 @@ export function RHFUploadField({
             );
 
             if (!eFileId) {
-              setEFileId(response?.data?.data?.eFileId);
+              setEFileId(response?.data);
             }
 
             const randomFileId = uuidv4().toString();
 
             return (
-              _.get(response.data.data, responseFileNameKey)?.toString() ||
+              _.get(response.data, responseFileNameKey)?.toString() ||
               randomFileId
             );
           } catch (error) {
@@ -513,9 +513,9 @@ export function RHFUploadField({
             );
             console.log(
               "response.data.data[responseFileNameKey]",
-              response.data.data[responseFileNameKey]
+              response.data[responseFileNameKey]
             );
-            return response.data.data[responseFileNameKey];
+            return response.data[responseFileNameKey];
           } catch (error) {
             console.log(error);
           }
@@ -597,16 +597,16 @@ export function RHFUploadField({
               : uploadedFilesIds
           );
           uploadedFilesIds.forEach((id, index) => {
-            // setValue(
-            //   name + id + "_filename_display",
-            //   String(files[index]?.path)
-            // );
-            // setValue(
-            //   name + id + "_filename",
-            //   String(files[index]?.path)?.replace((/\./g, "-"))
-            // );
-            // setValue(name + id + "_base64", files[index].base64);
-            // setValue(name + id + "_type", files[index].type);
+            setValue(
+              name + id + "_filename_display",
+              String(files[index]?.path)
+            );
+            setValue(
+              name + id + "_filename",
+              String(files[index]?.path)?.replace((/\./g, "-"))
+            );
+            setValue(name + id + "_base64", files[index].base64);
+            setValue(name + id + "_type", files[index].type);
             setValue(
               name + id + "_attachmentName",
               files[index].attachmentName
@@ -766,7 +766,7 @@ export function RHFUploadField({
                 onClick={handleOpenViewFileDialog}
                 size={!smUp ? "small" : "medium"}
               >
-                {t["show"]}
+                {t("show")}
               </Button>
             )}
             {!!viewAttachmentApiLink &&
@@ -794,7 +794,7 @@ export function RHFUploadField({
                 color="error"
                 disabled={other?.disabled}
               >
-                {t["remove"]}
+                {t("remove")}
               </Button>
             ) : null}
           </Box>
@@ -816,14 +816,14 @@ export function RHFUploadField({
                 size="small"
                 color="error"
               >
-                {t["remove"]}
+                {t("remove")}
               </Button>
               <Button
                 variant="contained"
                 color="primary"
                 onClick={() => handleOpenViewFileDialog(id)}
               >
-                {t["show"]}
+                {t("show")}
               </Button>
             </Stack>
           ))}
@@ -835,12 +835,12 @@ export function RHFUploadField({
             ("file_size_cant_be_larger_than",
             {
               size: getSizeInMB(maxFileSize)?.replace(".00", ""),
-              unit: t["megabyte"],
+              unit: t("megabyte"),
             })
           ]
         }
         <br />
-        {t["allowed_extensions"]}:{" "}
+        {t("allowed_extensions")}:{" "}
         {allowedExtensionsList
           .slice()
           // .map(ext => {
