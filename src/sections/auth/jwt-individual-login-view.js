@@ -167,7 +167,7 @@ export default function JwtIndividualLoginView() {
         >
           {/* {process.env.REACT_APP_ENVIRONMENT !== 'production' && */}
 
-          <DynamicForm
+          {/* <DynamicForm
             {...form}
             defaultValues={defaultValues}
             onSubmit={handleSubmit}
@@ -177,7 +177,7 @@ export default function JwtIndividualLoginView() {
               width: "100%",
               loading,
             }}
-          />
+          /> */}
           {/* } */}
           {/* {process.env.REACT_APP_ENVIRONMENT !== "production" && (
             <DynamicForm
@@ -192,7 +192,7 @@ export default function JwtIndividualLoginView() {
               }}
             />
           )} */}
-          {/* {
+          {
             <img
               src="/logo/sanad-logo.png"
               alt="SANAD Logo"
@@ -201,13 +201,10 @@ export default function JwtIndividualLoginView() {
               top=" 334.4px"
               left=" 828.66px"
             />
-          } */}
+          }
         </Stack>
-        {/* <Typography variant="body2" color="inherit">
-        <RouterLink to={paths.auth.jwt.forgotPassword}>{t('forgot_password')}</RouterLink>
-      </Typography> */}
       </Stack>
-      {/* <Stack
+      <Stack
         alignItems="center"
         gap={2}
         sx={{
@@ -218,16 +215,8 @@ export default function JwtIndividualLoginView() {
           mt: 2,
         }}
       >
-        <SanadLoginButton /> */}
-      {/* <Button
-              fullWidth
-              variant="outlined"
-              component={RouterLink}
-              to={paths.auth.jwt.register}
-            >
-              {t('register')}
-            </Button> */}
-      {/* </Stack> */}
+        <SanadLoginButton />
+      </Stack>
     </Box>
   );
 }
