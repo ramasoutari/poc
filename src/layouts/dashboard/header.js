@@ -50,7 +50,7 @@ export default function Header({ onOpenNav }) {
 
   const renderContent = (
     <>
-      <Stack flexGrow={1} direction="row" alignItems="center">
+      <Stack flexGrow={1} direction="row">
         {smUp && (
           <>
             <IconButton aria-label="account" color="primary">
@@ -65,10 +65,7 @@ export default function Header({ onOpenNav }) {
         {!lgUp && (
           <Box data-tour-id="nav-toggle">
             <IconButton onClick={onOpenNav}>
-              <SvgColor
-                id="nav-toggle-btn"
-                src="/assets/icons/navbar/ic_menu_item.svg"
-              />
+              <SvgColor id="nav-toggle-btn" src="/icons/ic_menu_item.svg" />
             </IconButton>
           </Box>
         )}

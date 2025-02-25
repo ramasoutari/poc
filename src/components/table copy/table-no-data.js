@@ -20,6 +20,8 @@ export default function TableNoData({ notFound, sx, text }) {
             title={text || t["no_data"]}
             sx={{
               py: 1,
+              borderBottom: "1px solid rgb(171, 154, 154)",
+
               ...sx,
             }}
           />

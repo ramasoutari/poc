@@ -26,6 +26,7 @@ export default function TableNoData({ notFound, sx, text }) {
                 sx={{
                   py: 1,
                   ...sx,
+                  borderBottom: "1px solid rgb(0, 0, 0)",
                 }}
               />
             )}

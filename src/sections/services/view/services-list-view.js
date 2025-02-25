@@ -32,7 +32,7 @@ export default function ServicesListView() {
   const mdUp = useResponsive("up", "md");
   const direction = i18n.language === "ar" ? "ltr" : "rtl";
   const globalPrompt = useGlobalPromptContext();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const isUserUnder45 = user?.age < 45;
   const form = getForm([
@@ -318,8 +318,8 @@ export default function ServicesListView() {
         }
       );
       if (response.status === 201) {
-        handlesucceess(); // Call the success handler
-        navigate("/dashboard"); // Redirect to dashboard
+        handlesucceess();
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error("Error submitting form:", error);

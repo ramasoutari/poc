@@ -118,7 +118,6 @@ export default function LoginView() {
         {!!error && !loginData && (
           <Alert severity="error">{t("entity_login_fail")}</Alert>
         )}
-        {!!error && <Alert severity="error">{error}</Alert>}
         <Stack spacing={2.5}>
           {timer > 0 && (
             <Box

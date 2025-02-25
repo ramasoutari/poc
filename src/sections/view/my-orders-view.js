@@ -1,4 +1,11 @@
-import { Container, Card, Button, TextField, Box } from "@mui/material";
+import {
+  Container,
+  Card,
+  Button,
+  TextField,
+  Box,
+  Typography,
+} from "@mui/material";
 import moment from "moment";
 import { useNavigate } from "react-router";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -16,6 +23,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axios";
 import { HOST_API } from "../../config-global";
 import OrderDetailsDialog from "./dialogs/order-details-dialog";
+import EmptyContent from "../../components/empty-content";
 
 const MyOrdersView = () => {
   const { user } = useAuthContext();
@@ -181,21 +189,64 @@ const MyOrdersView = () => {
       national_number: filterNationalNumber,
     });
   };
-   const onDetailsClick = async (row) => {
-     globalDialog.onOpen({
-       content: <OrderDetailsDialog applicationInfo={row} />,
-       dialogProps: {
-         maxWidth: "md",
-         sx: {
-           content: {
-             // minHeight: '75vh',
-             minWidth: "100hv",
-           },
-         },
-       },
-     });
-   };
+  const onDetailsClick = async (row) => {
+    console.log("row", row);
+    globalDialog.onOpen({
+      title: t("application_ditails"),
+      content: <OrderDetailsDialog applicationNumber={row.applicationNumber} />,
+      dialogProps: {
+        maxWidth: "md",
+        sx: {
+          content: {
+            // minHeight: '75vh',
+            minWidth: "100hv",
+          },
+        },
+      },
+    });
+  };
+  const onRejectionReasonClick = (row) => {
+    globalDialog.onOpen({
+      content: (
+        <Box p={2}>
+          <Typography variant="h6" mb={2} sx={{ textAlign: "center" }}>
+            {t("rejection_details")}
+          </Typography>
+          {/* <Typography variant="body1">{row.rejectionReason}</Typography> */}
+          <Typography variant="body1" sx={{ textAlign: "center" }} mb={2}>
+            لا يوجد معلومات كافية
+          </Typography>
+        </Box>
+      ),
+      dialogProps: {
+        maxWidth: "sm",
+      },
+    });
+  };
 
+  const onExtraInfoClick = (row) => {
+    globalDialog.onOpen({
+      content: (
+        <Box p={2}>
+          <Typography variant="h6" mb={2}>
+            {t("extra_info")}
+          </Typography>
+          <TextField
+            fullWidth
+            multiline
+            label={t("extra_info")}
+            value={row.extraInfo || ""}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+        </Box>
+      ),
+      dialogProps: {
+        maxWidth: "sm",
+      },
+    });
+  };
 
   const lgUp = useResponsive("up", "lg");
   const smUp = useResponsive("up", "sm");
@@ -363,22 +414,8 @@ const MyOrdersView = () => {
             <Table
               columns={columns}
               loading={loading}
-              rows={data?.items || []} // Provide an empty array if data?.items is undefined
-              pagination={
-                data?.items
-                  ? {
-                      onChangePage: (page) => {
-                        onPageChange(page + 1);
-                      },
-                      onChangeRowsPerPage: (e) => {
-                        onChangeRowsPerPage(e.target.value);
-                      },
-                      rowsPerPage,
-                      page: currentPage - 1,
-                      total: data?.totalRecords,
-                    }
-                  : false
-              }
+              emptyText={<EmptyContent hideImg title={t("no_data")} />}
+              rows={data?.items || []}
               renderActions={(row) => {
                 const statusColors = {
                   "004": "#FFA500",
@@ -409,9 +446,32 @@ const MyOrdersView = () => {
                           fontWeight: "bold",
                         }}
                       >
-                        {["003"].includes(row.statusCode) && t("details")}
-                        {["005"].includes(row.statusCode) &&
-                          t("rejection_details")}
+                        {["003"].includes(row.statusCode) && (
+                          <a
+                            onClick={() => onExtraInfoClick(row)}
+                            style={{
+                              cursor: "pointer",
+                              textDecoration: "underline",
+                              color: statusColors[row.statusCode],
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {t("details")}
+                          </a>
+                        )}
+                        {["005"].includes(row.statusCode) && (
+                          <a
+                            onClick={() => onRejectionReasonClick(row)}
+                            style={{
+                              cursor: "pointer",
+                              textDecoration: "underline",
+                              color: statusColors[row.statusCode],
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {t("rejection_details")}
+                          </a>
+                        )}{" "}
                         {/* {["3"].includes(row.statusCode) && t("payment_details")} */}
                         {["006"].includes(row.statusCode) &&
                           t("download_certificate")}
@@ -424,7 +484,6 @@ const MyOrdersView = () => {
               }}
             />
           </Box>
-          {/* <Button>hhi</Button> */}
         </Box>
       </Card>
     </Container>

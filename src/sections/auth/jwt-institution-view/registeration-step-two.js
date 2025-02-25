@@ -255,7 +255,7 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
       { label: "phoneNumber", value: updatedRegData.phoneNumber },
       { label: "officerPhoneNumber", value: updatedRegData.officerPhoneNumber },
       { label: "email", value: updatedRegData.email },
-      { label: "OfficerEmail", value: updatedRegData.officerEmail },
+      { label: "officerEmail", value: updatedRegData.officerEmail },
     ];
     setRegData((prev) => ({
       ...prev,

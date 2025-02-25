@@ -1,136 +1,136 @@
 import PropTypes from "prop-types";
-// @mui
 import { Box, Button, Stack, Typography } from "@mui/material";
-// hooks
 import { useEffect, useState } from "react";
 import { useGlobalDialogContext } from "../../../components/global-dialog";
 import { useLocales } from "../../../locales";
 import axiosInstance from "../../../utils/axios";
 import { HOST_API } from "../../../config-global";
-import { LoadingScreen } from "../../../components/loading-screen";
-import { useAuthContext } from "../../../auth/hooks";
 import Iconify from "../../../components/iconify";
-import Grid2 from "@mui/material/Unstable_Grid2";
+import i18n from "../../../locales/i18n";
+import { LoadingScreen } from "../../../components/loading-screen";
 
-// ----------------------------------------------------------------------
-
-export default function OrderDetailsDialog({ applicationInfo }) {
-  const [applicationDetails, setApplicationDetails] = useState({});
+export default function OrderDetailsDialog({ applicationNumber }) {
+  const [applicationDetails, setApplicationDetails] = useState(null);
   const [applicationLoading, setApplicationLoading] = useState(true);
   const globalDialog = useGlobalDialogContext();
   const { t } = useLocales();
 
+  const direction = i18n.language === "ar" ? "ltr" : "rtl";
+
   const handleFetchAppDetails = () => {
     axiosInstance
-      .get(`${HOST_API}/applications/one/${applicationInfo?.applicationNumber}`)
+      .get(`${HOST_API}/applications/one/${applicationNumber}`, {
+        headers: {
+          "x-session-id": localStorage.getItem("sessionId"),
+        },
+      })
       .then((response) => {
         setApplicationDetails(response.data.application);
-        setApplicationLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching application details:", error);
+      })
+      .finally(() => {
         setApplicationLoading(false);
       });
   };
 
   useEffect(() => {
-    handleFetchAppDetails();
-  }, [applicationInfo]);
+    if (applicationNumber) {
+      handleFetchAppDetails();
+    }
+  }, [applicationNumber]);
+
+  if (applicationLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (!applicationDetails) {
+    return <Typography>{t("no_data_available")}</Typography>;
+  }
+
+  const { soilAttachments = [], environmantalAttachments = [] } =
+    applicationDetails;
+  console.log("applicationDetails", applicationDetails);
+  const hasAnyAttachments =
+    soilAttachments.length > 0 || environmantalAttachments.length > 0;
+
+  console.log("hasAnyAttachments", hasAnyAttachments);
+  console.log("soilAttachments", soilAttachments);
 
   return (
-    <Box>
-      {applicationLoading && <LoadingScreen />}
-      {!applicationLoading && (
-        <Grid2 p={1} container spacing={2}>
-          <Grid2 xs={12}>
-            <Typography fontWeight={"bold"}>
-              {t("extraInfo")}: {applicationDetails.extraInfo}
+    <Box sx={{ direction, p:2 }}>
+      <Stack display="flex" direction="column">
+        {hasAnyAttachments && (
+          <Typography fontWeight="bold">{t("attachments")}:</Typography>
+        )}
+
+        {soilAttachments.length > 0 && (
+          <Box display="flex" flexDirection="column" alignItems="flex-start">
+            <Typography fontWeight="500" p={1}>
+              {t("soilTestAttachment")}:
             </Typography>
-          </Grid2>
-
-          <Box>
-            <Stack display={"flex"} direction={"column"}>
-              {/* Display environmental attachments */}
-              {applicationDetails.environmantalAttachments?.length > 0 && (
-                <>
-                  <Typography fontWeight={"bold"}>
-                    {t("environmentalAttachments")}
-                  </Typography>
-                  {applicationDetails.environmantalAttachments.map((attach) => (
-                    <Box key={attach.id} display={"flex"} mb={1}>
-                      <Button
-                        onClick={() => {
-                          window.open(
-                            `${HOST_API}/GetAttachment/${attach.id}`,
-                            "_blank"
-                          );
-                        }}
-                        size="small"
-                        style={{
-                          backgroundColor: "#e6e6e6",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography px={0.5}>{attach.fileName}</Typography>
-                        <Iconify icon={"mdi:eye"} width={15} />
-                      </Button>
-                    </Box>
-                  ))}
-                </>
-              )}
-
-              {/* Display soil attachments */}
-              {applicationDetails.soilAttachments?.length > 0 && (
-                <>
-                  <Typography fontWeight={"bold"}>
-                    {t("soilAttachments")}
-                  </Typography>
-                  {applicationDetails.soilAttachments.map((attach) => (
-                    <Box key={attach.id} display={"flex"} mb={1}>
-                      <Button
-                        onClick={() => {
-                          window.open(
-                            `${HOST_API}/GetAttachment/${attach.id}`,
-                            "_blank"
-                          );
-                        }}
-                        size="small"
-                        style={{
-                          backgroundColor: "#e6e6e6",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Typography px={0.5}>{attach.fileName}</Typography>
-                        <Iconify icon={"mdi:eye"} width={15} />
-                      </Button>
-                    </Box>
-                  ))}
-                </>
-              )}
-            </Stack>
+            <Box display="flex" alignItems="center">
+              {soilAttachments.map((attachId, index) => (
+                <Box key={index} display="flex" flexDirection="column" mr={1}>
+                  <Button
+                    onClick={() =>
+                      window.open(
+                        `${HOST_API}/GetAttachment/${attachId.id}`,
+                        "_blank"
+                      )
+                    }
+                    size="small"
+                    sx={{
+                      backgroundColor: "#e6e6e6",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography px={0.5}>{attachId.fileName}</Typography>
+                    <Iconify icon={"mdi:eye"} width={15} />
+                  </Button>
+                </Box>
+              ))}
+            </Box>
           </Box>
-        </Grid2>
-      )}
-      <Button
-        onClick={() => globalDialog.onClose()}
-        variant="contained"
-        color="secondary"
-        width="auto"
-        sx={{ mt: 4 }}
-      >
-        {t("close")}
-      </Button>
+        )}
+
+        {environmantalAttachments.length > 0 && (
+          <Box display="flex" flexDirection="column" alignItems="flex-start">
+            <Typography fontWeight="500" p={1}>
+              {t("environmentalAttachment")}:
+            </Typography>
+            <Box display="flex" alignItems="center">
+              {environmantalAttachments.map((attachId, index) => (
+                <Box key={index} display="flex" flexDirection="column" mr={1}>
+                  <Button
+                    onClick={() =>
+                      window.open(
+                        `${HOST_API}/GetAttachment/${attachId.id}`,
+                        "_blank"
+                      )
+                    }
+                    size="small"
+                    sx={{
+                      backgroundColor: "#e6e6e6",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography px={0.5}>{attachId.fileName}</Typography>
+                    <Iconify icon={"mdi:eye"} width={15} />
+                  </Button>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+      </Stack>
     </Box>
   );
 }
 
 OrderDetailsDialog.propTypes = {
-  applicationInfo: PropTypes.shape({
-    guid: PropTypes.string.isRequired,
-    applicationNumber: PropTypes.string,
-    applicantType: PropTypes.string,
-    // Add other relevant props as needed
-  }).isRequired,
+  applicationNumber: PropTypes.string.isRequired,
 };

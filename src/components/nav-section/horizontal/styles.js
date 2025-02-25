@@ -16,7 +16,7 @@ export const StyledItem = styled(ListItemButton, {
   };
 
   return {
-    width: "147.06px",
+    width: "100.06px",
     height: "39.48px",
     marginRight: config.itemGap,
     borderRadius: "8px",

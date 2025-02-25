@@ -207,12 +207,6 @@ export default function AccountPopover() {
             <Switch checked={accessibility.colorBlind} />
           </StyledMenuItem>
 
-          <StyledMenuItem
-            onClick={() => handleClickItem(paths.dashboard.settings)}
-          >
-            <SvgColor src="/assets/icons/designer/settings.svg" />
-            {t("settings")}
-          </StyledMenuItem>
           {user?.type !== "user" && !user?.clinic && (
             <StyledMenuItem onClick={handleOpenPassResetDialog}>
               <SvgColor src="/assets/icons/designer/password_reset.svg" />

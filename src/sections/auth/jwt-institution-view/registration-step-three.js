@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, Button, Stack } from "@mui/material";
+import { Alert, AlertTitle, Box, Button, Stack, Typography } from "@mui/material";
 import React, { useMemo, useState } from "react";
 
 import { useGlobalDialogContext } from "../../../components/global-dialog";
@@ -6,12 +6,13 @@ import DynamicForm, { getForm } from "../../../components/dynamic-form";
 import axiosInstance from "../../../utils/axios";
 import { useLocales } from "../../../locales";
 import { HOST_API } from "../../../config-global";
+import { useGlobalPromptContext } from "../../../components/global-prompt";
 
 export default function RegisterationStepThree({ setRegData, regData }) {
   console.log("regData", regData);
   const { t } = useLocales();
   const globalDialog = useGlobalDialogContext();
-
+  const globalPrompt = useGlobalPromptContext();
   const [error, setError] = useState("");
   const [loadingRegister, setLoadingRegister] = useState(false);
   const [loadingOTP, setLoadingOTP] = useState(false);
@@ -87,7 +88,7 @@ export default function RegisterationStepThree({ setRegData, regData }) {
       value: otp,
       onChange: (e) => {
         setOtp(e.target.value);
-        setOtpEntered(e.target.value.length > 0); // Set otpEntered based on input value
+        setOtpEntered(e.target.value.length > 0);
       },
       gridOptions: [
         { breakpoint: "xs", size: 12 },
@@ -132,27 +133,69 @@ export default function RegisterationStepThree({ setRegData, regData }) {
       setLoadingRegister(false);
     }
   };
+const handlesucceess = () => {
+  globalPrompt.onOpen({
+    type: "success",
+    content: (
+      <Stack direction="column" spacing={1}>
+        <Typography component="h6" variant="h6" fontWeight="fontWeightBold">
+          {t("order_sent_successfully")}
+        </Typography>
+      </Stack>
+    ),
+    promptProps: {
+      icon: "success",
+    },
+  });
+};
+ const handleWarning = (message) => {
+   globalPrompt.onOpen({
+     type: "warning",
+     content: (
+       <Stack direction="column" spacing={1}>
+         <Typography component="h6" variant="h6" fontWeight="fontWeightBold">
+           t({message});
+         </Typography>
+       </Stack>
+     ),
+     promptProps: {
+       icon: "error",
+     },
+   });
+ };
 
-  const verifyOTP = async (data) => {
-    setLoadingOTP(true);
-    setError("");
+ const verifyOTP = async (data) => {
+   setLoadingOTP(true);
+   setError("");
 
-    try {
-      const response = await axiosInstance.post(`${HOST_API}/Entity/Register`, {
-        ...regData,
-        otp: data.otp,
-      });
+   try {
+     const response = await axiosInstance.post(`${HOST_API}/Entity/Register`, {
+       ...regData,
+       otp: data.otp,
+     });
 
-      if (response.status === 200 || response.status === 201) {
-        setIsVerified(true);
-        setRegData({ ...regData, otp });
-      }
-    } catch (error) {
-      setError("Invalid OTP. Please try again.");
-    } finally {
-      setLoadingOTP(false);
-    }
-  };
+     if (response.status === 200 || response.status === 201) {
+       setIsVerified(true);
+       setRegData({ ...regData, otp: data.otp });
+       handlesucceess();
+     }
+   } catch (error) {
+     if (error.response) {
+       if (error.response.statusCode === 404) {
+         handleWarning("otp_in_use");
+       } else if (error.response.statusCode === 400) {
+         handleWarning("entity_already_registed");
+       } else {
+         setError("Invalid OTP. Please try again.");
+       }
+     } else {
+       setError("Invalid OTP. Please try again.");
+     }
+   } finally {
+     setLoadingOTP(false);
+   }
+ };
+
 
   if (error?.message)
     return (

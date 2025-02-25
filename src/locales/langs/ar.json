@@ -381,6 +381,12 @@
   "addittional_attachments": "مرفقات اضافية",
   "national_id": "الرقم الوطني",
   "new_password_confirm": "تأكيد كلمة السر الجديدة",
-  "noObjectionAttachment":"عدم الممانعة",
-  "extraInfo": "المعلومات الاضافية"
+  "noObjectionAttachment": "عدم الممانعة",
+  "extraInfo": "المعلومات الاضافية",
+  "otp_in_use": "رمز التحقق خاطئ",
+  "entity_already_registed": "المنشأة مسجلة من قبل",
+  "entity_login_fail": "معلومات المنشأة خاطئة",
+  "rejection_reason": "سبب الرفض",
+  "extra_info": "معلومات اضافية",
+  "application_ditails": "تفاصيل الطلب"
 }

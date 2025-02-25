@@ -48,7 +48,7 @@ export default function EmptyContent({
         <Typography
           variant="h6"
           component="span"
-          sx={{ mt: 1, color: "text.disabled", textAlign: "center" }}
+          sx={{ mt: 1, color: "#E5A023", textAlign: "center" }}
         >
           {title}
         </Typography>

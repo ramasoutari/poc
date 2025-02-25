@@ -165,8 +165,6 @@ export default function JwtIndividualLoginView() {
           justifyContent="space-between"
           alignItems="center"
         >
-          {/* {process.env.REACT_APP_ENVIRONMENT !== 'production' && */}
-
           {/* <DynamicForm
             {...form}
             defaultValues={defaultValues}
@@ -179,8 +177,7 @@ export default function JwtIndividualLoginView() {
             }}
           /> */}
           {/* } */}
-          {/* {process.env.REACT_APP_ENVIRONMENT !== "production" && (
-            <DynamicForm
+            {/* <DynamicForm
               {...form}
               defaultValues={defaultValues}
               onSubmit={handleSubmit}
@@ -191,7 +188,7 @@ export default function JwtIndividualLoginView() {
                 loading,
               }}
             />
-          )} */}
+          )} */} 
           {
             <img
               src="/logo/sanad-logo.png"
