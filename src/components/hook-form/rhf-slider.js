@@ -18,7 +18,7 @@ export default function RHFSlider({ name, helperText, ...other }) {
           <Slider {...field} valueLabelDisplay="auto" {...other} />
 
           {(!!error || helperText) && (
-            <FormHelperText error={!!error}>{error ? error?.message : helperText}</FormHelperText>
+            <FormHelperText error={!!error} sx={{textAlign: 'right'}}>{error ? error?.message : helperText}</FormHelperText>
           )}
         </>
       )}

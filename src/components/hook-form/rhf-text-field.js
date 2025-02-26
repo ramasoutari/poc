@@ -151,7 +151,7 @@ export default function RHFTextField({
       >
         {" "}
         {((error && error.message) || helperText) && (
-          <FormHelperText error={!!error}>
+          <FormHelperText error={!!error} sx={{textAlign: 'right'}}>
             {error.message || helperText}
           </FormHelperText>
         )}

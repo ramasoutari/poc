@@ -50,7 +50,7 @@ export default function RHFDatePicker({ name, error, helperText, type, sx, ...ot
             {...other}
           />
           {(!!error || helperText) && (
-            <FormHelperText error={!!error}>{error ? error?.message : helperText}</FormHelperText>
+            <FormHelperText error={!!error} sx={{textAlign: 'right'}}>{error ? error?.message : helperText}</FormHelperText>
           )}
         </>
       )}

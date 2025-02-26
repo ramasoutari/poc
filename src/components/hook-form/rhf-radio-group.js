@@ -202,7 +202,7 @@ export default function RHFRadioGroup({
           </RadioGroup>
 
           {(!!error || helperText) && (
-            <FormHelperText error={!!error} sx={{ mx: 0 }}>
+            <FormHelperText error={!!error} sx={{textAlign: 'right'}} sx={{ mx: 0 }}>
               {error ? error?.message : helperText}
             </FormHelperText>
           )}

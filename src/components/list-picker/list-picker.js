@@ -81,7 +81,7 @@ export default function ListPicker({
           </ListItem>
         );
       })}
-      {(!!error || helperText) && <FormHelperText error={!!error}>{helperText}</FormHelperText>}
+      {(!!error || helperText) && <FormHelperText error={!!error} sx={{textAlign: 'right'}}>{helperText}</FormHelperText>}
     </List>
   );
 }

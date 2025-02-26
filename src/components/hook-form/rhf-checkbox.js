@@ -22,7 +22,7 @@ export function RHFCheckbox({ name, helperText, ...other }) {
           <FormControlLabel control={<Checkbox {...field} checked={field.value} />} {...other} />
 
           {(!!error || helperText) && (
-            <FormHelperText error={!!error}>{error ? error?.message : helperText}</FormHelperText>
+            <FormHelperText error={!!error} sx={{textAlign: 'right'}}>{error ? error?.message : helperText}</FormHelperText>
           )}
         </div>
       )}
@@ -92,7 +92,7 @@ export function RHFMultiCheckbox({ row, name, label, options, spacing, helperTex
           </FormGroup>
 
           {(!!error || helperText) && (
-            <FormHelperText error={!!error} sx={{ mx: 0 }}>
+            <FormHelperText error={!!error} sx={{textAlign: 'right'}} sx={{ mx: 0 }}>
               {error ? error?.message : helperText}
             </FormHelperText>
           )}

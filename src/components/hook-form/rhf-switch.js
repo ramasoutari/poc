@@ -19,7 +19,7 @@ export default function RHFSwitch({ name, helperText, ...other }) {
           <FormControlLabel control={<Switch {...field} checked={field.value} />} {...other} />
 
           {(!!error || helperText) && (
-            <FormHelperText error={!!error}>{error ? error?.message : helperText}</FormHelperText>
+            <FormHelperText error={!!error} sx={{textAlign: 'right'}}>{error ? error?.message : helperText}</FormHelperText>
           )}
         </div>
       )}
