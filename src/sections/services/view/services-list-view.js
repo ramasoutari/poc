@@ -208,8 +208,8 @@ export default function ServicesListView() {
     },
     {
       fieldVariable: "extraAttachment",
-      label: t("addittional_attachments"),
-      placeholder: t("addittional_attachments"),
+      label: t("additional_attachments"),
+      placeholder: t("additional_attachments"),
       type: "upload",
       typeValue: "array",
       disabled: false,
@@ -224,6 +224,13 @@ export default function ServicesListView() {
       maxFileSize: "2048",
       allowedExtensions: ["png", "jpg", "bmp", "heif", "jpeg", "pdf"],
       responseFileNameKey: "fileIds",
+      validations: [
+        {
+          type: "min",
+          value: 1,
+          message: t("required"),
+        },
+      ],
       gridOptions: [
         {
           breakpoint: "xs",
