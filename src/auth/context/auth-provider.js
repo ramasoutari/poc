@@ -63,8 +63,8 @@ export function AuthProvider({ children }) {
         });
 
         let user = response.data;
-        setSession(user.token);
-        delete user.token;
+        setSession(user?.token);
+        delete user?.token;
 
         dispatch({
           type: "INITIAL",
@@ -162,10 +162,10 @@ export function AuthProvider({ children }) {
       }
       const user = response.data;
       console.log("userrrrrr", user);
-      localStorage.setItem("sessionId", user.sessionId);
-      localStorage.setItem("accessToken", user.token);
+      localStorage.setItem("sessionId", user?.sessionId);
+      localStorage.setItem("accessToken", user?.token);
 
-      setSession(user.token);
+      setSession(user?.token);
       let myUser = { ...user };
 
       onSuccess?.();

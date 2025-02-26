@@ -162,15 +162,11 @@ export default function ForgotPassDialog({ isCPD = false }) {
   const handleCheckNatNo = (data) => {
     setLoading(true);
     const payload = {
-      national_number: data?.national_id,
-      officer_otp: "",
-      password: "",
-      confirmPassword: "",
-      otp: "",
+      nationalNumber: data?.nationalNumber,
     };
 
     axiosInstance
-      .post(`${HOST_API}/ForgetPasswordEntity`, payload)
+      .patch(`${HOST_API}/forget-password`, payload)
       .then((response) => {
         setFormData(data);
         setShowEmailOTP(true);
@@ -188,7 +184,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
     setLoading(true);
 
     const payload = {
-      national_number: formData?.national_id,
+      nationalNumber: formData?.national_id,
       officer_otp: "",
       password: "",
       confirmPassword: "",
@@ -196,7 +192,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
     };
 
     axiosInstance
-      .post(`${HOST_API}/ForgetPasswordEntity`, payload)
+      .patch(`${HOST_API}/forget-password`, payload)
       .then((response) => {
         if (response.status === 201) {
           const errorClone = JSON.parse(response?.data?.error);
@@ -224,7 +220,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
     setLoading(true);
 
     const payload = {
-      national_number: formData?.national_id,
+      nationalNumber: formData?.national_id,
       officer_otp: "",
       password: data.newPassword,
       confirmPassword: data.newPasswordConfirm,
@@ -232,7 +228,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
     };
 
     axiosInstance
-      .post(`${HOST_API}/ForgetPasswordEntity`, payload)
+      .patch(`${HOST_API}/forget-password`, payload)
       .then((response) => {
         setFormData((prevFormData) => ({
           ...prevFormData,
@@ -253,7 +249,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
     setLoading(true);
 
     const payload = {
-      national_number: formData?.national_id,
+      nationalNumber: formData?.national_id,
       confirmPassword: formData.newPasswordConfirm,
 
       officer_otp: data?.officerOtp,
@@ -262,7 +258,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
     };
 
     axiosInstance
-      .post(`${HOST_API}/ForgetPasswordEntity`, payload)
+      .patch(`${HOST_API}/forget-password`, payload)
       .then((response) => {
         if (response.status === 201) {
           const errorClone = JSON.parse(response?.data?.error);
@@ -472,7 +468,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
                     onClick={resendOTP}
                     loading={loading}
                   >
-                    {("resend")}
+                    {"resend"}
                   </Button>
                 )}
               </>

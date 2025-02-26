@@ -131,7 +131,7 @@ export default function ChangeDataPanel() {
               inputProps={{ readOnly: true }}
             />
           </Stack>
-          {user.officerEmail && user.officerPhone && (
+          {user?.officerEmail && user?.officerPhone && (
             <>
               <Stack direction="column">
                 <InputLabel label={t("inst_rep_email")} />

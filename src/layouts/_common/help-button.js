@@ -34,7 +34,7 @@ function HelpButton({ id }) {
     } else if (
       user?.type === "entity" &&
       !pathname.includes("my-clinic") &&
-      !user.clinic
+      !user?.clinic
     ) {
       if (pathname.includes("cpd-activities")) {
         const type = "-Entity";
