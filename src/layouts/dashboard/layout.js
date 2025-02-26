@@ -11,6 +11,7 @@ import NavVertical from "./nav-vertical";
 import { useSettingsContext } from "../../components/settings/context";
 import { useResponsive } from "../../hooks/use-responsive";
 import { useBoolean } from "../../hooks/use-boolean";
+import NavHorizontal from "./nav-horizontal";
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ export default function DashboardLayout({ children }) {
 
   const renderNavMini = <NavMini />;
 
-  // const renderHorizontal = <NavHorizontal />;
+  const renderHorizontal = <NavHorizontal />;
 
   const renderNavVertical = (
     <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />
@@ -39,8 +40,8 @@ export default function DashboardLayout({ children }) {
     return (
       <>
         <Header onOpenNav={nav.onTrue} />
-        {/* {lgUp && !settings.hideNav && renderHorizontal} */}
-        {!lgUp && !settings.hideNav && renderNavVertical}
+        {lgUp && renderHorizontal}
+        {/* {!lgUp && !settings.hideNav && renderNavVertical} */}
 
         <Main>{children}</Main>
         {/* <Footer /> */}
@@ -79,8 +80,7 @@ export default function DashboardLayout({ children }) {
           flexDirection: { xs: "column", md: "row" },
         }}
       >
-        {renderNavVertical}
-
+        <renderHorizontal />
         <Main>{children}</Main>
       </Box>
       {/* <Footer /> */}

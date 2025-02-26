@@ -43,7 +43,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
   const form = getForm([
     {
       label: "entityNumber",
-      fieldVariable: "national_id",
+      fieldVariable: "nationalNumber",
       type: "input",
       inputType: "numeric-text",
       typeValue: "string",
@@ -80,8 +80,8 @@ export default function ForgotPassDialog({ isCPD = false }) {
   const VERIFY_OTP_FORM_FIELDS_BY_EMAIL = [
     {
       type: "otp",
-      fieldVariable: "emailOtp",
-      label: "otp_to_entityEmail",
+      fieldVariable: "otp",
+      label: "otp",
       // tip: "otp",
       gridOptions: [
         {
@@ -133,38 +133,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
         },
       ],
     },
-
-    {
-      label: "new_password_confirm",
-      fieldVariable: "newPasswordConfirm",
-      placeholder: "new_password_confirm",
-      type: "input",
-      inputType: "password",
-      typeValue: "string",
-      value: "",
-      gridOptions: [
-        {
-          breakpoint: "xs",
-          size: 12,
-        },
-        {
-          breakpoint: "md",
-          size: 12,
-        },
-      ],
-      validations: [
-        {
-          type: "required",
-          message: t("required"),
-        },
-
-        {
-          type: "matchField",
-          field: "newPassword",
-          message: t("passwords_must_match"),
-        },
-      ],
-    },
   ];
 
   const VERIFY_OTP_FORM_FIELDS = [
@@ -199,7 +167,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
       password: "",
       confirmPassword: "",
       otp: "",
-      isCPD: isCPD,
     };
 
     axiosInstance
@@ -226,7 +193,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
       password: "",
       confirmPassword: "",
       otp: data?.emailOtp,
-      isCPD: isCPD,
     };
 
     axiosInstance
@@ -263,7 +229,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
       password: data.newPassword,
       confirmPassword: data.newPasswordConfirm,
       otp: formData?.emailOtp,
-      isCPD: isCPD,
     };
 
     axiosInstance
@@ -294,7 +259,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
       officer_otp: data?.officerOtp,
       password: formData.newPassword,
       otp: formData.emailOtp,
-      isCPD: isCPD,
     };
 
     axiosInstance

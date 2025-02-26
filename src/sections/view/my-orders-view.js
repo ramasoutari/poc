@@ -214,7 +214,7 @@ const MyOrdersView = () => {
           </Typography>
           {/* <Typography variant="body1">{row.rejectionReason}</Typography> */}
           <Typography variant="body1" sx={{ textAlign: "center" }} mb={2}>
-            لا يوجد معلومات كافية
+            {row.rejectionReason}
           </Typography>
         </Box>
       ),

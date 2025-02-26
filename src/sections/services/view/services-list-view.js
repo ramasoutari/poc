@@ -47,7 +47,7 @@ export default function ServicesListView() {
       validations: [
         {
           type: "required",
-          message: "required",
+          message: t("required"),
         },
       ],
       gridOptions: [
@@ -83,15 +83,13 @@ export default function ServicesListView() {
       validations: [
         {
           type: "required",
-          dependent_field: "",
-          value: "",
-          message: "required",
+          message: t("required"),
         },
         {
           type: "email",
           dependent_field: "",
           value: "",
-          message: "invalid_email",
+          message: t("invalid_email"),
         },
       ],
       gridOptions: [
@@ -121,7 +119,7 @@ export default function ServicesListView() {
       validations: [
         {
           type: "required",
-          message: "required",
+          message: t("required"),
         },
       ],
       gridOptions: [
@@ -156,7 +154,7 @@ export default function ServicesListView() {
       validations: [
         {
           type: "required",
-          message: "required",
+          message: t("required"),
         },
       ],
       gridOptions: [
@@ -191,7 +189,7 @@ export default function ServicesListView() {
       validations: [
         {
           type: "required",
-          message: "required",
+          message: t("required"),
         },
       ],
       gridOptions: [

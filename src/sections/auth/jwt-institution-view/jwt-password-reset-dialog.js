@@ -97,52 +97,18 @@ export default function ResetPasswordDialog({ type }) {
         },
       ],
     },
-
-    {
-      label: "new_password_confirm",
-      fieldVariable: "newPasswordConfirm",
-      placeholder: "new_password_confirm",
-      type: "input",
-      inputType: "password",
-      typeValue: "string",
-      value: "",
-      gridOptions: [
-        {
-          breakpoint: "xs",
-          size: 12,
-        },
-        {
-          breakpoint: "md",
-          size: 12,
-        },
-      ],
-      validations: [
-        {
-          type: "required",
-          message: t("required"),
-        },
-
-        {
-          type: "matchField",
-          field: "newPassword",
-          message: t("passwords_must_match"),
-        },
-      ],
-    },
   ]);
 
   const handleResetPassword = (data) => {
     setError(null);
     setLoading(true);
     const payload = {
-      oldPassword: data?.oldPassword,
+      OldPassword: data?.OldPassword,
       password: data?.newPassword,
-      confirmPassword: data.newPasswordConfirm,
-      isCPD: user?.type === "cpd_entity",
     };
 
     axiosInstance
-      .post(`${HOST_API}/ResetPasswordEntity`, payload)
+      .patch(`${HOST_API}/reset-password`, payload)
       .then((response) => {
         setShowPasswords(false);
         setSuccess(true);

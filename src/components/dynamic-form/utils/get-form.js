@@ -1,40 +1,40 @@
-import * as Yup from 'yup';
-import isEmailValidator from 'validator/lib/isEmail';
-import { calculateDateRules } from './calculate-date-rules';
-import { checkRule } from './check-rule';
-import { validatePhoneNumber } from './validate-phone-number';
-import { translateApi, translations } from '../../../translation/server-side';
+import * as Yup from "yup";
+import isEmailValidator from "validator/lib/isEmail";
+import { calculateDateRules } from "./calculate-date-rules";
+import { checkRule } from "./check-rule";
+import { validatePhoneNumber } from "./validate-phone-number";
+import { translateApi, translations } from "../../../translation/server-side";
 
 const getFieldTypeValue = (field) => {
-  if (field?.type === 'upload' && field?.typeValue === 'array') {
+  if (field?.type === "upload" && field?.typeValue === "array") {
     return field.typeValue;
   }
 
   switch (field.type) {
-    case 'input':
-      return field.inputType === 'number' ? 'number' : 'string';
+    case "input":
+      return field.inputType === "number" ? "number" : "string";
 
-    case 'select':
-      return field.multiple ? 'array' : 'string';
+    case "select":
+      return field.multiple ? "array" : "string";
 
-    case 'multi-checkbox':
-      return 'array';
+    case "multi-checkbox":
+      return "array";
     // return field.multiple ? "array" : "string";
 
-    case 'repeater':
-      return 'array';
+    case "repeater":
+      return "array";
 
-    case 'object-editor':
-      return 'object';
+    case "object-editor":
+      return "object";
 
-    case 'checkbox':
-      return 'boolean';
+    case "checkbox":
+      return "boolean";
 
-    case 'date':
-      return 'date';
+    case "date":
+      return "date";
 
     default:
-      return 'string';
+      return "string";
   }
 };
 
@@ -47,16 +47,15 @@ const generateValidations = (field) => {
       : translateApi(translations, rule.message);
   };
 
-  if (getFieldTypeValue(field) === 'date' || field.typeValue === 'date') {
-    schema = schema.nullable().typeError(translateApi('please_enter_valid_date'));
+  if (getFieldTypeValue(field) === "date" || field.typeValue === "date") {
+    schema = schema
+      .nullable()
+      .typeError(translateApi("please_enter_valid_date"));
   }
   // was at line 38
   if (!field.validations) return null;
 
   for (const rule of field.validations) {
-    // Check if the field has visibility rules,
-    // if so, apply the validations only when the field is visible
-    // otherwise, apply the validations without checking visibility rules
     if (field.visibilityRules?.length) {
       let newSchema = generateValidations({
         ...field,
@@ -67,12 +66,12 @@ const generateValidations = (field) => {
         (values, schema) => {
           let isFieldHidden = false;
           field.visibilityRules.forEach((visibilityRule, index) => {
-            const operand = visibilityRule?.operand || 'AND';
-            if (operand === 'AND') {
+            const operand = visibilityRule?.operand || "AND";
+            if (operand === "AND") {
               if (!checkRule(visibilityRule, values[index])) {
                 isFieldHidden = true;
               }
-            } else if (operand === 'OR') {
+            } else if (operand === "OR") {
               if (checkRule(visibilityRule, values[index])) {
                 isFieldHidden = false;
               }
@@ -83,13 +82,13 @@ const generateValidations = (field) => {
       );
     } else {
       switch (rule.type) {
-        case 'required':
+        case "required":
           schema = schema.required(translateMessage(rule));
           break;
-        case 'email':
+        case "email":
           schema = schema
             .email(translateMessage(rule))
-            .test('is-valid-email', translateMessage(rule), (value) => {
+            .test("is-valid-email", translateMessage(rule), (value) => {
               if (value?.length === 0) {
                 return true;
               }
@@ -98,21 +97,25 @@ const generateValidations = (field) => {
                 : new Yup.ValidationError(translateMessage(rule));
             });
           break;
-        case 'phone':
-          schema = schema.test('is-valid-phone', translateMessage(rule), (value) => {
-            if (value?.length === 0) {
-              return true;
+        case "phone":
+          schema = schema.test(
+            "is-valid-phone",
+            translateMessage(rule),
+            (value) => {
+              if (value?.length === 0) {
+                return true;
+              }
+              return validatePhoneNumber(value.replace(" ", ""));
             }
-            return validatePhoneNumber(value.replace(' ', ''));
-          });
+          );
           break;
-        case 'min':
+        case "min":
           if (rule?.message && rule?.message[1]?.test) {
             rule.message[1].test();
           }
           // if type is date
-          if (field.type === 'date') {
-            if (rule.value?.startsWith('field=')) {
+          if (field.type === "date") {
+            if (rule.value?.startsWith("field=")) {
               // The variable of the field is extracted from field=fieldVariable.
               // We need to set this value as the minimum date.
             } else {
@@ -122,9 +125,9 @@ const generateValidations = (field) => {
             schema = schema.min(rule.value, translateMessage(rule));
           }
           break;
-        case 'max':
-          if (field.type === 'date') {
-            if (rule.value?.startsWith('field=')) {
+        case "max":
+          if (field.type === "date") {
+            if (rule.value?.startsWith("field=")) {
             } else {
               // schema = schema.max(calculateDateRules(rule.value, 'max'), translateMessage(rule));
             }
@@ -132,47 +135,51 @@ const generateValidations = (field) => {
             schema = schema.max(rule.value, translateMessage(rule));
           }
           break;
-        case 'minLength':
+        case "minLength":
           schema = schema.matches(new RegExp(`.{${rule.value},}`), {
             excludeEmptyString: true,
             message: translateMessage(rule),
           });
           break;
-        case 'maxLength':
+        case "maxLength":
           schema = schema.max(rule.value, translateMessage(rule));
           break;
-        case 'matchField':
+        case "matchField":
           schema = schema.oneOf([Yup.ref(rule.field)], translateMessage(rule));
           break;
-        case 'pattern':
+        case "pattern":
           schema = schema.matches(new RegExp(rule.value), {
             excludeEmptyString: true,
             message: translateMessage(rule),
           });
           break;
 
-        case 'when':
+        case "when":
           schema = schema.when(rule.field, {
             is: (value) => {
               if (rule.operator) {
                 return checkRule(rule, value);
               } else {
-                return Array.isArray(rule.value) ? rule.value.includes(value) : rule.value;
+                return Array.isArray(rule.value)
+                  ? rule.value.includes(value)
+                  : rule.value;
               }
             },
             then: (schema) => {
-              if (['repeater', 'multi-checkbox'].includes(field.type)) {
+              if (["repeater", "multi-checkbox"].includes(field.type)) {
                 return schema.min(1, translateMessage(rule));
               }
               return schema.required(translateMessage(rule));
             },
           });
           break;
-        case 'whenNot':
+        case "whenNot":
           schema = schema.when(rule.field, {
             is: (value) =>
               // in array or equal string
-              Array.isArray(rule.value) ? !rule.value.includes(value) : rule.value !== value,
+              Array.isArray(rule.value)
+                ? !rule.value.includes(value)
+                : rule.value !== value,
             then: (schema) => schema.required(translateMessage(rule)),
           });
           break;
@@ -191,45 +198,45 @@ export const getForm = (formFields) => {
   let validationsFields = {};
 
   for (const field of formFields) {
-    if (field.type !== 'form-section') {
+    if (field.type !== "form-section") {
       switch (field.type) {
-        case 'input':
-          if (field.inputType === 'number') {
+        case "input":
+          if (field.inputType === "number") {
             defaultValues[field.fieldVariable] = field.value || 0;
           } else {
-            defaultValues[field.fieldVariable] = field.value || '';
+            defaultValues[field.fieldVariable] = field.value || "";
           }
           break;
-        case 'phonefield':
-          defaultValues[field.fieldVariable] = field.value || '';
+        case "phonefield":
+          defaultValues[field.fieldVariable] = field.value || "";
           break;
-        case 'date':
+        case "date":
           defaultValues[field.fieldVariable] = field.value || undefined;
           break;
-        case 'select':
+        case "select":
           if (field.multiple) {
             defaultValues[field.fieldVariable] = field.value || [];
           } else {
-            defaultValues[field.fieldVariable] = field.value || '';
+            defaultValues[field.fieldVariable] = field.value || "";
           }
           break;
-        case 'multi-checkbox':
+        case "multi-checkbox":
           defaultValues[field.fieldVariable] = field.value || [];
           break;
-        case 'repeater':
+        case "repeater":
           defaultValues[field.fieldVariable] = field.value || [];
           break;
-        case 'checkbox':
+        case "checkbox":
           defaultValues[field.fieldVariable] = field.value || false;
           break;
-        case 'object-editor':
+        case "object-editor":
           defaultValues[field.fieldVariable] = field.value || {};
           break;
-        case 'radio-group':
+        case "radio-group":
           defaultValues[field.fieldVariable] = field.value || null;
           break;
         default:
-          defaultValues[field.fieldVariable] = field.value || '';
+          defaultValues[field.fieldVariable] = field.value || "";
           break;
       }
     }
@@ -243,20 +250,21 @@ export const getForm = (formFields) => {
 
   const isFieldRequired = (field) => {
     return field.validations?.some(
-      (validation) => validation.type === 'required' || validation.type === 'min'
+      (validation) =>
+        validation.type === "required" || validation.type === "min"
     );
   };
 
   return {
     validationSchema: Yup.object({
       ...validationsFields,
-      captcha: Yup.string().when('generatedCaptcha', {
+      captcha: Yup.string().when("generatedCaptcha", {
         is: (value) => !!value,
         // then must equal enteredCaptcha
         then: (schema) =>
           Yup.string()
-            .required('required')
-            .oneOf([Yup.ref('generatedCaptcha')], 'invalidCaptcha'),
+            .required("required")
+            .oneOf([Yup.ref("generatedCaptcha")], "invalidCaptcha"),
       }),
     }),
     defaultValues: defaultValues,
