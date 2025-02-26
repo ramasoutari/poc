@@ -47,7 +47,7 @@ export default function GlobalPrompt() {
               }}
             >
               <SvgColor
-                src="/assets/icons/designer/close.svg"
+                src="/icons/close.svg"
                 color="text.secondary"
                 width={24}
               />

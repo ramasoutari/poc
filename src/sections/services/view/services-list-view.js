@@ -261,13 +261,13 @@ export default function ServicesListView() {
         : user?.type === "entity"
         ? "004"
         : "",
-    applicantName: user.name || "",
+    applicantName: user?.name || "",
     entityRegistrationDate:
-      user?.type === "entity" ? user.registrationDate : null,
+      user?.type === "entity" ? user?.registrationDate : null,
     nationalRegistrationNumber:
-      user?.type === "entity" ? user.entityNumber : user.nationalNumber || "",
-    birthDate: user?.type === "individual" ? user.birthdate : null,
-    gender: user?.type === "individual" ? user.gender : null,
+      user?.type === "entity" ? user?.entityNumber : user?.nationalNumber || "",
+    birthDate: user?.type === "individual" ? user?.birthdate : null,
+    gender: user?.type === "individual" ? user?.gender : null,
     phoneNumber: user?.phoneNumber || "",
     email: user?.email || "",
     ...form.defaultValues,
@@ -286,15 +286,15 @@ export default function ServicesListView() {
             : user?.type === "entity"
             ? "004"
             : "",
-        applicantName: user.name || "",
+        applicantName: user?.name || "",
         entityRegistrationDate:
-          user?.type === "entity" ? user.registrationDate : null,
+          user?.type === "entity" ? user?.registrationDate : null,
         nationalRegistrationNumber:
           user?.type === "entity"
-            ? user.entityNumber
-            : user.nationalNumber || "",
-        birthDate: user?.type === "individual" ? user.birthdate : null,
-        gender: user?.type === "individual" ? user.gender : null,
+            ? user?.entityNumber
+            : user?.nationalNumber || "",
+        birthDate: user?.type === "individual" ? user?.birthdate : null,
+        gender: user?.type === "individual" ? user?.gender : null,
         extraInfo: data.extraInfo || "",
       };
 
@@ -348,7 +348,7 @@ export default function ServicesListView() {
 
   return (
     <Container maxWidth={settings.themeStretch ? false : "xl"}>
-      {isUserUnder45 ? (
+      {user.type === "user" && isUserUnder45 ? (
         <Warning />
       ) : (
         <Card>

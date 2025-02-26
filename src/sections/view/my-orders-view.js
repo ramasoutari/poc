@@ -111,7 +111,7 @@ const MyOrdersView = () => {
     const fetchData = async () => {
       try {
         const nationalNumber =
-          user.type === "user" ? user.nationalNumber : user.entityNumber;
+          user.type === "user" ? user?.nationalNumber : user?.entityNumber;
 
         const response = await axiosInstance.get(
           `${HOST_API}/applications/all/${nationalNumber}`,
@@ -229,19 +229,31 @@ const MyOrdersView = () => {
   const onExtraInfoClick = (row) => {
     globalDialog.onOpen({
       content: (
-        <Box p={2}>
+        <Box p={2} sx={{ direction }}>
           <Typography variant="h6" mb={2}>
             {t("extra_info")}
           </Typography>
           <TextField
             fullWidth
             multiline
-            label={t("extra_info")}
-            value={row.extraInfo || ""}
+            label={row?.extraRequestedInfo?.label || ""}
+            value={row?.extraRequestedInfo?.field || ""}
             InputProps={{
               readOnly: true,
             }}
           />
+          <Button
+            type="submit"
+            variant="contained"
+            color="secondary"
+            // onClick={() =>}
+            fullWidth
+            sx={{
+              mt: 4,
+            }}
+          >
+            {t("submit")}
+          </Button>
         </Box>
       ),
       dialogProps: {
