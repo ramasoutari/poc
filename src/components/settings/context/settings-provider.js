@@ -32,7 +32,7 @@ export function SettingsProvider({ children, defaultSettings }) {
   // Direction by lang
   const onChangeDirectionByLang = useCallback(
     (lang) => {
-      update('themeDirection', lang === 'ar' ? 'ltr' : 'rtl');
+      update('themeDirection', lang === 'ar' ? 'rtl' : 'ltr');
     },
     [update]
   );

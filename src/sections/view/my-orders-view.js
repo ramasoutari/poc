@@ -41,7 +41,7 @@ const MyOrdersView = () => {
   const [error, setError] = useState(null);
   const [data, setData] = useState({ items: [] });
   const { t } = useLocales();
-  const direction = i18n.language === "ar" ? "ltr" : "rtl";
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
   const globalDialog = useGlobalDialogContext();
 
   const columns = [

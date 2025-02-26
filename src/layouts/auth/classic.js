@@ -42,6 +42,57 @@ export default function AuthClassicLayout({ children }) {
         position: "relative",
       }}
     >
+      {/* Right Side - Login Form */}
+      <Box
+        sx={{
+          flex: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "782.1265258789062",
+          height: "1024",
+          backgroundColor: "common.white",
+          borderTopLeftRadius: "37px",
+          borderBottomLeftRadius: "37px",
+          position: "relative",
+          zIndex: 55,
+          ml: "-40px",
+          boxShadow: "-4px 0 10px rgba(0,0,0,0.1)",
+        }}
+      >
+        <Container maxWidth="lg">
+          {/* Form Container */}
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Box
+              sx={{
+                width: {
+                  xs: "90%",
+                  lg: 600,
+                },
+              }}
+            >
+              <Box
+                sx={{
+                  backgroundColor: "common.white",
+                  // border: (t) => `solid 1px ${t.palette.divider}`,
+                  // borderRadius: 1.5,
+                }}
+              >
+                {" "}
+                {renderHead} {renderContent}
+              </Box>
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+      
       {/* Left Side - Image Section */}
       <Box
         sx={{
@@ -94,56 +145,6 @@ export default function AuthClassicLayout({ children }) {
             نظام الموافقة على تركيب المضخات والتزود بالوقود في محطة محروقات
           </Typography>
         </Box>
-      </Box>
-      {/* Right Side - Login Form */}
-      <Box
-        sx={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "782.1265258789062",
-          height: "1024",
-          backgroundColor: "common.white",
-          borderTopRightRadius: "37px",
-          borderBottomRightRadius: "37px",
-          position: "relative",
-          zIndex: 55,
-          mr: "-40px",
-          boxShadow: "-4px 0 10px rgba(0,0,0,0.1)",
-        }}
-      >
-        <Container maxWidth="lg">
-          {/* Form Container */}
-          <Box
-            sx={{
-              flex: 1,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Box
-              sx={{
-                width: {
-                  xs: "90%",
-                  lg: 600,
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  backgroundColor: "common.white",
-                  // border: (t) => `solid 1px ${t.palette.divider}`,
-                  // borderRadius: 1.5,
-                }}
-              >
-                {" "}
-                {renderHead} {renderContent}
-              </Box>
-            </Box>
-          </Box>
-        </Container>
       </Box>
     </Box>
   );

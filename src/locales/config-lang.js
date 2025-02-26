@@ -12,7 +12,7 @@ export const allLangs = [
   {
     label: "العربية",
     value: "ar",
-    direction: "ltr",
+    direction: "rtl",
     systemValue: merge(arSACore),
     adapterLocale: arSAAdapter,
     icon: "/assets/icons/navbar/ic_lang.svg",
@@ -20,7 +20,7 @@ export const allLangs = [
   {
     label: "English",
     value: "en",
-    direction: "rtl",
+    direction: "ltr",
     systemValue: merge(enUSCore),
     adapterLocale: enUSAdapter,
     icon: "/assets/icons/navbar/ic_lang.svg",

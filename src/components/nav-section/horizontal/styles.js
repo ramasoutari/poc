@@ -16,7 +16,7 @@ export const StyledItem = styled(ListItemButton, {
   };
 
   return {
-    width: "100.06px",
+    // width: "100.06px",
     height: "39.48px",
     marginRight: config.itemGap,
     borderRadius: "8px",
@@ -25,7 +25,6 @@ export const StyledItem = styled(ListItemButton, {
     borderColor: theme.palette.text.secondary,
     borderWidth: "1px",
     borderStyle: !subItem && "solid",
-
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

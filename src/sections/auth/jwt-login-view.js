@@ -45,7 +45,7 @@ export default function JwtLoginView() {
   const { t } = useLocales();
   const loginTabs = useTabs(["persons", "establishments"]);
   const loginTabsList = ["persons", "establishments"];
-  const direction = i18n.language === "ar" ? "ltr" : "rtl";
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
 
   return (
     <>

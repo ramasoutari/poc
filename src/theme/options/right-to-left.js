@@ -10,17 +10,18 @@ import { CacheProvider } from '@emotion/react';
 
 export default function RTL({ children, themeDirection }) {
   useEffect(() => {
+    console.log('themeDirection', themeDirection);
     document.dir = themeDirection;
   }, [themeDirection]);
 
   const cacheRtl = createCache({
-    key: 'ltr',
+    key: 'muirtl',
     prepend: true,
     // https://github.com/styled-components/stylis-plugin-rtl/issues/35
     stylisPlugins: [rtlPlugin],
   });
 
-  if (themeDirection === 'ltr') {
+  if (themeDirection === 'rtl') {
     return <CacheProvider value={cacheRtl}>{children}</CacheProvider>;
   }
 

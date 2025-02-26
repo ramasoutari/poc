@@ -30,7 +30,7 @@ export default function ServicesListView() {
   const [error, setError] = useState(null);
   const { user } = useAuthContext();
   const mdUp = useResponsive("up", "md");
-  const direction = i18n.language === "ar" ? "ltr" : "rtl";
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
   const globalPrompt = useGlobalPromptContext();
   const navigate = useNavigate();
 
