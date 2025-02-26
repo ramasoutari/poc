@@ -165,7 +165,7 @@ export default function ResetPasswordDialog({ type }) {
                 globalDialog.onClose();
               }}
             >
-              {t["close"]}
+              {t("close")}
             </Button>
           }
         />
@@ -191,7 +191,7 @@ export default function ResetPasswordDialog({ type }) {
               globalDialog.onClose();
             }}
           >
-            {t["close"]}
+            {t("close")}
           </Button>
         </Stack>
       )}
