@@ -17,6 +17,7 @@ import { GlobalStyles } from "@mui/material";
 import ThemeProvider from "./theme";
 import { MotionLazy } from "./components/animate/motion-lazy";
 import { AuthConsumer } from "./auth/context/auth-consumer";
+import "./index.css";
 
 // ----------------------------------------------------------------------
 
@@ -94,7 +95,7 @@ export default function App() {
                           <GlobalPrompt />
                           <ProgressBar />
                           <AuthConsumer>
-                          <Router />
+                            <Router />
                           </AuthConsumer>
                         </MotionLazy>
                       </GlobalDrawerProvider>
