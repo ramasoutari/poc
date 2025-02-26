@@ -31,14 +31,6 @@ const authJwt = {
   ),
   children: [
     {
-      path: 'sanad-login',
-      element: (
-        <AuthClassicLayout>
-          <SanadLoginPage />
-        </AuthClassicLayout>
-      ),
-    },
-    {
       path: 'login',
       element: (
         <AuthClassicLayout>
