@@ -195,7 +195,7 @@ const MyOrdersView = () => {
     console.log("row", row);
     globalDialog.onOpen({
       title: t("application_ditails"),
-      content: <OrderDetailsDialog applicationNumber={row.applicationNumber} />,
+      content: <OrderDetailsDialog appId={row.id} />,
       dialogProps: {
         maxWidth: "md",
         sx: {
@@ -325,7 +325,7 @@ const MyOrdersView = () => {
               slotProps={{
                 textField: {
                   placeholder: t("from"),
-                  helperText: !isValidFromDate ? t("invalid_dates") : null,
+                  // helperText: !isValidFromDate ? t("invalid_dates") : null,
                   sx: {
                     width: "250px",
                     padding: "8px",
@@ -358,7 +358,7 @@ const MyOrdersView = () => {
               slotProps={{
                 textField: {
                   placeholder: t("to"),
-                  helperText: !isValidToDate ? t("invalid_dates") : null,
+                  // helperText: !isValidToDate ? t("invalid_dates") : null,
                   sx: {
                     width: "250px",
                     padding: "8px",

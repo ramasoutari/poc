@@ -4,6 +4,7 @@ import { paths } from "./routes/paths";
 
 // API
 export const HOST_API = process.env.REACT_APP_SERVER_URL;
+export const FILES_API = process.env.REACT_APP_SERVER_FILES_URL;
 export const HOST_API_CPD = process.env.REACT_APP_SERVER_URL_CPD;
 export const HOST_API_CPD_TEMPORARY = process.env.REACT_APP_SERVER_URL_CPD_TEMPORARY;
 export const HOST_API_TOKEN = process.env.REACT_APP_HOST_API_TOKEN;

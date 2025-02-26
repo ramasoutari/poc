@@ -60,6 +60,7 @@ export default function TableHeadCustom({
             padding="checkbox"
             sx={{
               backgroundColor: headBg,
+              textAlign: 'right',
             }}
           >
             <Checkbox
@@ -83,6 +84,7 @@ export default function TableHeadCustom({
               minWidth: headCell.minWidth,
               color:"black",
               backgroundColor: headBg,
+              textAlign: 'right',
               ...(headCell.sticky && {
                 // left property
                 // first sticky column should be 0

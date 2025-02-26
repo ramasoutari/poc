@@ -105,6 +105,7 @@ export default function TableRow({
                 align={column.align}
                 width={column.width}
                 sx={{
+                  textAlign: 'right',
                   py: 3,
                   ...column.sx,
                   // if column is sticky,

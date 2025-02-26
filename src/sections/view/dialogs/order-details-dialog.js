@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { useGlobalDialogContext } from "../../../components/global-dialog";
 import { useLocales } from "../../../locales";
 import axiosInstance from "../../../utils/axios";
-import { HOST_API } from "../../../config-global";
+import { HOST_API, FILES_API } from "../../../config-global";
 import Iconify from "../../../components/iconify";
 import i18n from "../../../locales/i18n";
 import { LoadingScreen } from "../../../components/loading-screen";
 
-export default function OrderDetailsDialog({ applicationNumber }) {
+export default function OrderDetailsDialog({ appId }) {
   const [applicationDetails, setApplicationDetails] = useState(null);
   const [applicationLoading, setApplicationLoading] = useState(true);
   const globalDialog = useGlobalDialogContext();
@@ -19,7 +19,7 @@ export default function OrderDetailsDialog({ applicationNumber }) {
 
   const handleFetchAppDetails = () => {
     axiosInstance
-      .get(`${HOST_API}/applications/one/${applicationNumber}`, {
+      .get(`${HOST_API}/applications/one/${appId}`, {
         headers: {
           "x-session-id": localStorage.getItem("sessionId"),
         },
@@ -36,10 +36,10 @@ export default function OrderDetailsDialog({ applicationNumber }) {
   };
 
   useEffect(() => {
-    if (applicationNumber) {
+    if (appId) {
       handleFetchAppDetails();
     }
-  }, [applicationNumber]);
+  }, [appId]);
 
   if (applicationLoading) {
     return <LoadingScreen />;
@@ -53,13 +53,13 @@ export default function OrderDetailsDialog({ applicationNumber }) {
     soilAttachments = [],
     environmantalAttachments = [],
     noObjectionAttachment = [],
-    additional_attachments = [],
+    extraAttachment = [],
   } = applicationDetails;
   const hasAnyAttachments =
     soilAttachments.length > 0 ||
     environmantalAttachments.length > 0 ||
     noObjectionAttachment.length > 0 ||
-    additional_attachments.length > 0;
+    extraAttachment.length > 0;
   return (
     <Box sx={{ direction, p: 2 }}>
       <Stack display="flex" direction="column">
@@ -73,11 +73,11 @@ export default function OrderDetailsDialog({ applicationNumber }) {
               {t("soilTestAttachment")}:
             </Typography>
             <Box display="flex" alignItems="center">
-              {soilAttachments.map((attachId, index) => (
+              {soilAttachments.map((attach, index) => (
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(`${HOST_API}/files/${attachId.id}`, "_blank")
+                      window.open(`${FILES_API}/${attach.fileName}`, "_blank")
                     }
                     size="small"
                     sx={{
@@ -86,7 +86,7 @@ export default function OrderDetailsDialog({ applicationNumber }) {
                       alignItems: "center",
                     }}
                   >
-                    <Typography px={0.5}>{attachId.fileName}</Typography>
+                    <Typography px={0.5}>{attach.fileName}</Typography>
                     <Iconify icon={"mdi:eye"} width={15} />
                   </Button>
                 </Box>
@@ -101,11 +101,14 @@ export default function OrderDetailsDialog({ applicationNumber }) {
               {t("environmentalAttachment")}:
             </Typography>
             <Box display="flex" alignItems="center">
-              {environmantalAttachments.map((attachId, index) => (
+              {environmantalAttachments.map((attach, index) => (
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(`${HOST_API}/files/${attachId.id}`, "_blank")
+                      window.open(
+                        `${FILES_API}/${attach.fileName}`,
+                        "_blank"
+                      )
                     }
                     size="small"
                     sx={{
@@ -114,7 +117,7 @@ export default function OrderDetailsDialog({ applicationNumber }) {
                       alignItems: "center",
                     }}
                   >
-                    <Typography px={0.5}>{attachId.fileName}</Typography>
+                    <Typography px={0.5}>{attach.fileName}</Typography>
                     <Iconify icon={"mdi:eye"} width={15} />
                   </Button>
                 </Box>
@@ -128,11 +131,14 @@ export default function OrderDetailsDialog({ applicationNumber }) {
               {t("noObjectionAttachment")}:
             </Typography>
             <Box display="flex" alignItems="center">
-              {noObjectionAttachment.map((attachId, index) => (
+              {noObjectionAttachment.map((attach, index) => (
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(`${HOST_API}/files/${attachId.id}`, "_blank")
+                      window.open(
+                        `${FILES_API}/${attach.fileName}`,
+                        "_blank"
+                      )
                     }
                     size="small"
                     sx={{
@@ -141,7 +147,7 @@ export default function OrderDetailsDialog({ applicationNumber }) {
                       alignItems: "center",
                     }}
                   >
-                    <Typography px={0.5}>{attachId.fileName}</Typography>
+                    <Typography px={0.5}>{attach.fileName}</Typography>
                     <Iconify icon={"mdi:eye"} width={15} />
                   </Button>
                 </Box>
@@ -149,17 +155,20 @@ export default function OrderDetailsDialog({ applicationNumber }) {
             </Box>
           </Box>
         )}
-        {additional_attachments.length > 0 && (
+        {extraAttachment.length > 0 && (
           <Box display="flex" flexDirection="column" alignItems="flex-start">
             <Typography fontWeight="500" p={1}>
               {t("additional_attachments")}:
             </Typography>
             <Box display="flex" alignItems="center">
-              {additional_attachments.map((attachId, index) => (
+              {extraAttachment.map((attach, index) => (
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(`${HOST_API}/files/${attachId.id}`, "_blank")
+                      window.open(
+                        `${FILES_API}/${attach.fileName}`,
+                        "_blank"
+                      )
                     }
                     size="small"
                     sx={{
@@ -168,7 +177,7 @@ export default function OrderDetailsDialog({ applicationNumber }) {
                       alignItems: "center",
                     }}
                   >
-                    <Typography px={0.5}>{attachId.fileName}</Typography>
+                    <Typography px={0.5}>{attach.fileName}</Typography>
                     <Iconify icon={"mdi:eye"} width={15} />
                   </Button>
                 </Box>
@@ -182,5 +191,5 @@ export default function OrderDetailsDialog({ applicationNumber }) {
 }
 
 OrderDetailsDialog.propTypes = {
-  applicationNumber: PropTypes.string.isRequired,
+  appId: PropTypes.string.isRequired,
 };
