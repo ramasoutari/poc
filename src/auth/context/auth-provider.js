@@ -51,11 +51,9 @@ export function AuthProvider({ children }) {
     try {
       const accessToken = localStorage.getItem(STORAGE_KEY);
 
-      // if (accessToken && isValidToken(accessToken)) {
       if (accessToken) {
         setSession(accessToken);
-        console.log("accessToken222222", accessToken);
-        console.log("setSession", setSession);
+       
 
         const response = await axiosInstance.get(`${HOST_API}/me`, {
           headers: {
@@ -65,8 +63,6 @@ export function AuthProvider({ children }) {
         });
 
         let user = response.data;
-        console.log("user22222223333333333322222", user);
-
         setSession(user.token);
         delete user.token;
 

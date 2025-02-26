@@ -110,7 +110,9 @@ const MyOrdersView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const nationalNumber = user.entityNumber;
+        const nationalNumber =
+          user.type === "user" ? user.nationalNumber : user.entityNumber;
+
         const response = await axiosInstance.get(
           `${HOST_API}/applications/all/${nationalNumber}`,
           {

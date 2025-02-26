@@ -119,7 +119,7 @@ export default function AccountPopover() {
         {/* <TextMaxLine sx={{ filter: 'blur(5px)' }} variant="body2" fontWeight="fontWeightBold" line={2}> */}
 
         <TextMaxLine variant="body2" fontWeight="fontWeightBold" line={2}>
-          {user?.name}
+          {user.type === "user" ? user?.fullName : user.name}
         </TextMaxLine>
 
         {/* {user?.desc && (
