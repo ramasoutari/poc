@@ -30,7 +30,7 @@ export default function DashboardLayout({ children }) {
 
   const renderNavMini = <NavMini />;
 
-  const renderHorizontal = <NavHorizontal />;
+  // const renderHorizontal = <NavHorizontal />;
 
   const renderNavVertical = (
     <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />
@@ -40,7 +40,7 @@ export default function DashboardLayout({ children }) {
     return (
       <>
         <Header onOpenNav={nav.onTrue} />
-        {lgUp && renderHorizontal}
+        {/* {lgUp && renderHorizontal} */}
         {/* {!lgUp && !settings.hideNav && renderNavVertical} */}
 
         <Main>{children}</Main>
@@ -80,7 +80,7 @@ export default function DashboardLayout({ children }) {
           flexDirection: { xs: "column", md: "row" },
         }}
       >
-        <renderHorizontal />
+        {/* <renderHorizontal /> */}
         <Main>{children}</Main>
       </Box>
       {/* <Footer /> */}

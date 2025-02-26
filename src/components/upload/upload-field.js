@@ -71,10 +71,7 @@ export default function UploadField({
             <IconButton
             // {...getRootProps()}
             >
-              <SvgColor
-                src="/assets/icons/designer/attach.svg"
-                color="primary.main"
-              />
+              <SvgColor src="/icons/attach.svg" color="primary.main" />
             </IconButton>
           ),
         }}

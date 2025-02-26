@@ -120,7 +120,7 @@ const MyOrdersView = () => {
           }
         );
 
-        const result = response.data.applications;
+        const result = response.data.data;
 
         setData({
           items: result || [],
@@ -133,7 +133,7 @@ const MyOrdersView = () => {
     };
 
     fetchData();
-  }, [currentPage]); // Removed nationalNumber from the dependency array
+  }, [currentPage]);
 
   useEffect(() => {
     const validateFromDate = () => {

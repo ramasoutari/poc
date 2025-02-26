@@ -18,7 +18,7 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
         ref={ref}
         component="div"
         sx={{
-          width: "260.28570556640625",
+          width: "500.28570556640625",
           height: "93.83690643310547",
           top: "36.93px",
           left: "918.79px",
@@ -29,8 +29,8 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }, ref) => {
           src="/logo/logo2.png"
           alt="psd Logo"
           style={{
-            width: "auto",
-            height: "60px",
+            width: "200px",
+            height: "80px",
           }}
         />
       </Box>

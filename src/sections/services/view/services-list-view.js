@@ -118,7 +118,8 @@ export default function ServicesListView() {
       responseFileNameKey: "fileIds",
       validations: [
         {
-          type: "required",
+          type: "min",
+          value: 1,
           message: t("required"),
         },
       ],
@@ -153,7 +154,8 @@ export default function ServicesListView() {
       responseFileNameKey: "fileIds",
       validations: [
         {
-          type: "required",
+          type: "min",
+          value: 1,
           message: t("required"),
         },
       ],
@@ -188,7 +190,8 @@ export default function ServicesListView() {
       responseFileNameKey: "fileIds",
       validations: [
         {
-          type: "required",
+          type: "min",
+          value: 1,
           message: t("required"),
         },
       ],

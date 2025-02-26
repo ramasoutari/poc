@@ -22,7 +22,7 @@ export default function AuthClassicLayout({ children }) {
       >
         <Logo
           sx={{
-            width: "160px",
+            width: "500px",
           }}
         />
       </Box>
@@ -136,7 +136,6 @@ export default function AuthClassicLayout({ children }) {
                   backgroundColor: "common.white",
                   // border: (t) => `solid 1px ${t.palette.divider}`,
                   // borderRadius: 1.5,
-               
                 }}
               >
                 {" "}

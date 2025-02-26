@@ -3,8 +3,7 @@ import isEmailValidator from "validator/lib/isEmail";
 import { calculateDateRules } from "./calculate-date-rules";
 import { checkRule } from "./check-rule";
 import { validatePhoneNumber } from "./validate-phone-number";
-import { translateApi, translations } from "../../../translation/server-side";
-
+import { useLocales } from "../../../locales";
 const getFieldTypeValue = (field) => {
   if (field?.type === "upload" && field?.typeValue === "array") {
     return field.typeValue;
@@ -42,17 +41,9 @@ const generateValidations = (field) => {
   let schema = Yup[field.typeValue || getFieldTypeValue(field)]();
 
   const translateMessage = (rule) => {
-    return Array.isArray(rule.message)
-      ? translateApi(translations, rule.message?.[0], rule.message?.[1])
-      : translateApi(translations, rule.message);
+    return Array.isArray(rule.message) ? rule.message : rule.message;
   };
 
-  if (getFieldTypeValue(field) === "date" || field.typeValue === "date") {
-    schema = schema
-      .nullable()
-      .typeError(translateApi("please_enter_valid_date"));
-  }
-  // was at line 38
   if (!field.validations) return null;
 
   for (const rule of field.validations) {
@@ -188,7 +179,6 @@ const generateValidations = (field) => {
       }
     }
   }
-
   return schema;
 };
 

@@ -102,7 +102,6 @@ export default function HeaderSimple({ onOpenNav }) {
             </Button>
           </Stack>
         )}
-
       </Stack>
       {lgUp && (
         <Stack

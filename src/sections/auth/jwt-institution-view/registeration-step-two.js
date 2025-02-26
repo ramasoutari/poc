@@ -95,7 +95,7 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
       inputType: "string",
       typeValue: "string",
       fieldVariable: "officerCivNum",
-      placeholder: "officerCivNum",
+      placeholder: "officerCivNumNote",
       gridOptions: [
         {
           breakpoint: "xs",
@@ -300,26 +300,16 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
           onSubmit={handleVerify}
           defaultValues={regData || {}}
           loading={loading}
-          extraButtons={
-            <>
-              {!isVerified && (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  sx={{ width: "300px" }}
-                  onClick={() => setStep(0)}
-                >
-                  {t("previous")}
-                </Button>
-              )}
-            </>
-          }
           submitButtonProps={{
             label: isVerified ? t("verified_successfully") : t("verify"),
             alignment: "center",
             loading,
             width: "100%",
-            disabled: isVerified,
+            // disabled: isVerified,
+            style: isVerified
+              ? { backgroundColor: "green", color: "white" }
+              : {},
+            className: isVerified ? "bg-green-500 text-white" : "",
           }}
         />
 
@@ -333,18 +323,6 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
               onSubmit={handleSubmit}
               defaultValues={regData}
               loading={loading}
-              extraButtons={
-                <>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    sx={{ width: "300px" }}
-                    onClick={() => {}}
-                  >
-                    {t("previous")}
-                  </Button>
-                </>
-              }
               submitButtonProps={{
                 label: t("next"),
                 alignment: "center",

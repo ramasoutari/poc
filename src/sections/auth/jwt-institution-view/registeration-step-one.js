@@ -23,7 +23,7 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
 
   const globalDialog = useGlobalDialogContext();
   // const { registerInstitute } = useAuthContext();
-  const [error, setError] = useState("");
+  const [error, setError] = useState();
   const [loading, setLoading] = useState(false);
   const [stepOneForm, setStepOneForm] = useState(null);
   const [entityData, setEntityData] = useState(null);
@@ -177,12 +177,9 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
       setRegData((prev) => ({ ...prev, ...formattedRegData }));
       setEntityData(newRegData);
       setIsVerified(true);
+      setError();
     } catch (error) {
-      console.error("Verification error:", error);
-      setError(
-        error?.response?.data?.message ||
-          "An error occurred during verification."
-      );
+      setError(t("wrong_entity_info"));
     } finally {
       setLoading(false);
     }
@@ -194,57 +191,60 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
   };
 
   if (!stepOneForm) return <LoadingScreen />;
-  if (error?.message)
-    return (
-      <Stack direction="column" justifyContent="center" alignItems="center">
-        <Stack direction="column" gap={1}>
-          <Alert
-            severity="error"
-            sx={{
-              mb: 1,
-            }}
-          >
-            <AlertTitle>{error.message}</AlertTitle>
-          </Alert>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              gap: 2,
-            }}
-          >
-            <Button
-              sx={{
-                mt: 3,
-                align: "center",
-              }}
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setError([]);
-              }}
-            >
-              {t("back")}
-            </Button>
-            <Button
-              sx={{
-                minWidth: "300px",
-                mt: 3,
-                align: "center",
-              }}
-              variant="contained"
-              color="primary"
-              onClick={globalDialog.onClose}
-            >
-              {t("close")}
-            </Button>
-          </Box>
-        </Stack>
-      </Stack>
-    );
+  // if (error)
+  //   return (
+  //     <Stack direction="column" justifyContent="center" alignItems="center">
+  //       <Stack direction="column" gap={1}>
+  //         <Box
+  //           sx={{
+  //             display: "flex",
+  //             justifyContent: "center",
+  //             gap: 2,
+  //           }}
+  //         >
+  //           <Button
+  //             sx={{
+  //               mt: 3,
+  //               align: "center",
+  //             }}
+  //             variant="contained"
+  //             color="primary"
+  //             onClick={() => {
+  //               setError([]);
+  //             }}
+  //           >
+  //             {t("back")}
+  //           </Button>
+  //           <Button
+  //             sx={{
+  //               minWidth: "300px",
+  //               mt: 3,
+  //               align: "center",
+  //             }}
+  //             variant="contained"
+  //             color="primary"
+  //             onClick={globalDialog.onClose}
+  //           >
+  //             {t("close")}
+  //           </Button>
+  //         </Box>
+  //       </Stack>
+  //     </Stack>
+  //   );
 
   return (
     <>
+      {error && (
+        <Alert
+          severity="error"
+          sx={{
+            mb: 1,
+          }}
+        >
+          <AlertTitle>{error}</AlertTitle>
+        </Alert>
+      )}
+
       <DynamicForm
         {...stepOneForm}
         loading={loading}
@@ -256,6 +256,9 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
           width: "100%",
           loading,
           disabled: isVerified,
+          style: isVerified
+            ? { backgroundColor: "#3FAF47", color: "white" }
+            : {},
         }}
       />
       <Box py={3}>

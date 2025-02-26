@@ -367,6 +367,7 @@
   "inst_rep_info": "معلومات ضابط الارتباط",
   "previous": "السابق",
   "birth_place": "مكان الولادة",
+  "officerCivNumNote": "يجب ان يكون بصيغة 000/000",
   "officerCivNum": "الرقم المدني لضابط الارتباط",
   "officerName": "الاسم الكامل",
   "officerAge": "العمر",
@@ -388,5 +389,7 @@
   "entity_login_fail": "معلومات المنشأة خاطئة",
   "rejection_reason": "سبب الرفض",
   "extra_info": "معلومات اضافية",
-  "application_ditails": "تفاصيل الطلب"
+  "application_ditails": "تفاصيل الطلب",
+  "wrong_entity_info": "المعلومات المدخلة غير صحيحة",
+  "entity_already_registred_or_rejected": "المنشأه مسجله او تم رفضها مسبقا"
 }

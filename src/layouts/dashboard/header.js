@@ -34,8 +34,6 @@ export default function Header({ onOpenNav }) {
 
   const { user, initialize } = useAuthContext();
 
-  const isNavVertical = settings.themeLayout === "vertical";
-
   const isNavHorizontal = settings.themeLayout === "horizontal";
 
   const isNavMini = settings.themeLayout === "mini";
@@ -126,11 +124,10 @@ export default function Header({ onOpenNav }) {
           alignItems="center"
           justifyContent="center"
         >
+
           <NavSectionHorizontal
             data={navData}
-            config={{
-              currentRole: user?.role || "admin",
-            }}
+  
           />
         </Stack>
       )}

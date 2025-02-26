@@ -49,17 +49,19 @@ export default function OrderDetailsDialog({ applicationNumber }) {
     return <Typography>{t("no_data_available")}</Typography>;
   }
 
-  const { soilAttachments = [], environmantalAttachments = [] } =
-    applicationDetails;
-  console.log("applicationDetails", applicationDetails);
+  const {
+    soilAttachments = [],
+    environmantalAttachments = [],
+    noObjectionAttachment = [],
+    additional_attachments = [],
+  } = applicationDetails;
   const hasAnyAttachments =
-    soilAttachments.length > 0 || environmantalAttachments.length > 0;
-
-  console.log("hasAnyAttachments", hasAnyAttachments);
-  console.log("soilAttachments", soilAttachments);
-
+    soilAttachments.length > 0 ||
+    environmantalAttachments.length > 0 ||
+    noObjectionAttachment.length > 0 ||
+    additional_attachments.length > 0;
   return (
-    <Box sx={{ direction, p:2 }}>
+    <Box sx={{ direction, p: 2 }}>
       <Stack display="flex" direction="column">
         {hasAnyAttachments && (
           <Typography fontWeight="bold">{t("attachments")}:</Typography>
@@ -103,6 +105,66 @@ export default function OrderDetailsDialog({ applicationNumber }) {
             </Typography>
             <Box display="flex" alignItems="center">
               {environmantalAttachments.map((attachId, index) => (
+                <Box key={index} display="flex" flexDirection="column" mr={1}>
+                  <Button
+                    onClick={() =>
+                      window.open(
+                        `${HOST_API}/GetAttachment/${attachId.id}`,
+                        "_blank"
+                      )
+                    }
+                    size="small"
+                    sx={{
+                      backgroundColor: "#e6e6e6",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography px={0.5}>{attachId.fileName}</Typography>
+                    <Iconify icon={"mdi:eye"} width={15} />
+                  </Button>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+        {noObjectionAttachment.length > 0 && (
+          <Box display="flex" flexDirection="column" alignItems="flex-start">
+            <Typography fontWeight="500" p={1}>
+              {t("noObjectionAttachment")}:
+            </Typography>
+            <Box display="flex" alignItems="center">
+              {noObjectionAttachment.map((attachId, index) => (
+                <Box key={index} display="flex" flexDirection="column" mr={1}>
+                  <Button
+                    onClick={() =>
+                      window.open(
+                        `${HOST_API}/GetAttachment/${attachId.id}`,
+                        "_blank"
+                      )
+                    }
+                    size="small"
+                    sx={{
+                      backgroundColor: "#e6e6e6",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography px={0.5}>{attachId.fileName}</Typography>
+                    <Iconify icon={"mdi:eye"} width={15} />
+                  </Button>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+        {additional_attachments.length > 0 && (
+          <Box display="flex" flexDirection="column" alignItems="flex-start">
+            <Typography fontWeight="500" p={1}>
+              {t("additional_attachments")}:
+            </Typography>
+            <Box display="flex" alignItems="center">
+              {additional_attachments.map((attachId, index) => (
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>

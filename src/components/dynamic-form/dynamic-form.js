@@ -237,6 +237,7 @@ const DynamicForm = forwardRef(
     ]);
     useEffect(() => {
       // console all errors
+      console.table(Object.entries(formMethods.watch()));
       console.table(
         Object.entries(formMethods.formState.errors).map(([key, value]) => ({
           field: key,

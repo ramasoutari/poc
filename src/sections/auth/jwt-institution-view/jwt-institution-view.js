@@ -94,11 +94,10 @@ export default function JwtInstitutionView() {
           >
             {t("forgot_password")}
           </a>
+
           <a
             role="button"
-            onClick={() => router.push(`/help/entityReg`)}
             style={{
-              cursor: "pointer",
               textDecoration: "underline",
               color: "#1D3E6E",
             }}
