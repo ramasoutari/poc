@@ -17,7 +17,6 @@ import { useLocales } from "../../../locales";
 import i18n from "../../../locales/i18n";
 
 export default function ForgotPassDialog({ isCPD = false }) {
-  const [timer, setTimer] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState([]);
@@ -34,11 +33,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
   const direction = i18n.language === "ar" ? "ltr" : "rtl";
   const OTP_RESEND_INTERVAL_SECONDS = 300;
 
-  const startTimer = () => {
-    if (!timer) {
-      setTimer(OTP_RESEND_INTERVAL_SECONDS);
-    }
-  };
 
   const form = getForm([
     {
@@ -171,7 +165,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
         setFormData(data);
         setShowEmailOTP(true);
         setShowNatNo(false);
-        startTimer();
         setLoading(false);
       })
       .catch((error) => {
@@ -204,7 +197,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
           }));
           setShowEmailOTP(false);
           setShowPasswords(true);
-          setTimer();
           setError(null);
         }
 
@@ -236,7 +228,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
         }));
         setShowPasswords(false);
         setShowOTP(true);
-        startTimer();
         setLoading(false);
       })
       .catch((error) => {
@@ -271,7 +262,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
           setShowOTP(false);
           setLoading(false);
           setSuccess(true);
-          setTimer();
+   
         }
         setLoading(false);
       })
@@ -285,25 +276,17 @@ export default function ForgotPassDialog({ isCPD = false }) {
     setResendOTPCounter((prev) => prev + 1);
     handleCheckNatNo(formData);
     setError();
-    setTimer();
-    startTimer();
-
+  
     // setWrongOtp(false)
   };
   const resendOTP = () => {
     setResendOTPCounter((prev) => prev + 1);
     handleResetPassword(formData);
     setError();
-    setTimer();
+
   };
 
-  useEffect(() => {
-    if (timer > 0) {
-      setTimeout(() => {
-        setTimer((currTimer) => currTimer - 1);
-      }, 1000);
-    }
-  }, [timer]);
+
 
   return (
     <Box
@@ -339,7 +322,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
               label: t("send"),
               alignment: "center",
               width: "100%",
-              disabled: timer > 0,
               loading: loading,
             }}
             extraButtons={
@@ -379,8 +361,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
             submitButtonProps={{
               alignment: "center",
               width: "300px",
-              disabled: timer === 0,
-              hidden: showOTP && timer === 0,
               loading: loading,
             }}
             extraButtons={
@@ -396,7 +376,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
                 >
                   {t("back")}
                 </Button>
-                {showEmailOTP && timer === 0 && (
+                {showEmailOTP  && (
                   <Button
                     sx={{
                       backgroundColor: "primary.main",
@@ -438,8 +418,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
             submitButtonProps={{
               alignment: "center",
               width: "300px",
-              disabled: timer === 0,
-              hidden: showOTP && timer === 0,
+          
               loading: loading,
             }}
             extraButtons={
@@ -451,12 +430,11 @@ export default function ForgotPassDialog({ isCPD = false }) {
                     setShowNatNo(true);
                     setShowPasswords(false);
                     setError(null);
-                    setTimer();
                   }}
                 >
                   {t("back")}
                 </Button>
-                {showOTP && timer === 0 && (
+                {showOTP && (
                   <Button
                     sx={{
                       backgroundColor: "primary.main",
@@ -498,8 +476,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
             submitButtonProps={{
               alignment: "center",
               width: "300px",
-              disabled: timer === 0,
-              hidden: showOTP && timer === 0,
+            
               loading: loading,
             }}
             extraButtons={
@@ -514,7 +491,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
                 >
                   {t("back")}
                 </Button>
-                {showOTP && timer === 0 && (
+                {showOTP && (
                   <Button
                     sx={{
                       backgroundColor: "primary.main",
@@ -558,21 +535,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
             {t("close")}
           </Button>
         </Stack>
-      )}
-
-      {timer > 0 && (
-        <Box sx={{ textAlign: "center", paddingTop: 2 }}>
-          <Typography component="p" textAlign="center" marginBottom={2}>
-            {timer <= 60
-              ? t?.translateValue("you_can_have_new_otp_in_seconds", {
-                  seconds: timer,
-                })
-              : t?.translateValue("you_can_have_new_otp_in_minutes_seconds", {
-                  minutes: Math.floor(timer / 60).toString(),
-                  seconds: (timer % 60).toString().padStart(2, "0"),
-                })}
-          </Typography>
-        </Box>
       )}
     </Box>
   );

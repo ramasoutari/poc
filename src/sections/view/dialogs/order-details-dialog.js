@@ -77,10 +77,7 @@ export default function OrderDetailsDialog({ applicationNumber }) {
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(
-                        `${HOST_API}/GetAttachment/${attachId.id}`,
-                        "_blank"
-                      )
+                      window.open(`${HOST_API}/files/${attachId.id}`, "_blank")
                     }
                     size="small"
                     sx={{
@@ -108,10 +105,7 @@ export default function OrderDetailsDialog({ applicationNumber }) {
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(
-                        `${HOST_API}/GetAttachment/${attachId.id}`,
-                        "_blank"
-                      )
+                      window.open(`${HOST_API}/files/${attachId.id}`, "_blank")
                     }
                     size="small"
                     sx={{
@@ -138,10 +132,7 @@ export default function OrderDetailsDialog({ applicationNumber }) {
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(
-                        `${HOST_API}/GetAttachment/${attachId.id}`,
-                        "_blank"
-                      )
+                      window.open(`${HOST_API}/files/${attachId.id}`, "_blank")
                     }
                     size="small"
                     sx={{
@@ -168,10 +159,7 @@ export default function OrderDetailsDialog({ applicationNumber }) {
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(
-                        `${HOST_API}/GetAttachment/${attachId.id}`,
-                        "_blank"
-                      )
+                      window.open(`${HOST_API}/files/${attachId.id}`, "_blank")
                     }
                     size="small"
                     sx={{
