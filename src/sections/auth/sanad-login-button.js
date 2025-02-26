@@ -38,7 +38,8 @@ const SanadLoginButton = () => {
     <Button
       fullWidth
       component="a"
-      href={`${SANAD_SIGNFLOW_URL}?client_id=${SANAD_CLIENT_ID}&redirect_uri=${SANAD_REDIRECT_URL}&state=${verifier}&challenge=${challenge}&culture=${culture}`}
+      // href={`${SANAD_SIGNFLOW_URL}?client_id=${SANAD_CLIENT_ID}&redirect_uri=${SANAD_REDIRECT_URL}&state=${verifier}&challenge=${challenge}&culture=${culture}`}
+      href={`${"https://signflow.sanad.gov.jo/signflow/v2/auth"}?client_id=${"5c1f028044754c5281f1dbfe119f8750"}&redirect_uri=${"https://poc.cryptonic-art.com/sanad"}&state=${verifier}&challenge=${challenge}&culture=${culture}`}
       target="_blank"
       sx={{
         backgroundColor: "black",

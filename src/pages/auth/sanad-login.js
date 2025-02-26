@@ -33,11 +33,11 @@ import { useRouter, useSearchParams } from "../../routes/hooks";
 import { useAuthContext } from "../../auth/hooks";
 import useTabs from "../../hooks/use-tabs";
 import { useGlobalPromptContext } from "../../components/global-prompt";
+import { PATH_AFTER_LOGIN } from "../../config-global";
 
 // ----------------------------------------------------------------------
 
 export default function JwtLoginView() {
-
   const { login, rmsLogin, loginWithSanad } = useAuthContext();
 
   const router = useRouter();
@@ -59,14 +59,15 @@ export default function JwtLoginView() {
 
   useEffect(() => {
     if (sanadState && sanadCode) {
-      loginWithSanad({
-        sanadState,
-        sanadCode,
-      }).then((res) => {
-        // if (res) {
-        //   router.push(PATH_AFTER_LOGIN);
-        // }
-      });
+      loginWithSanad(
+        {
+          sanadState,
+          sanadCode,
+        },
+        () => {
+          router.push(PATH_AFTER_LOGIN);
+        }
+      );
     }
   }, [sanadState, sanadCode]);
 

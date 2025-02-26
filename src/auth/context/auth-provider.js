@@ -185,17 +185,17 @@ export function AuthProvider({ children }) {
   }, []);
 
   const loginWithSanad = useCallback(async (data, onSuccess) => {
+    console.log('sadasd')
     try {
       const response = await axiosInstance.post(`${HOST_API}/loginWithSanad`, {
         code: data.sanadCode,
         verifier: data.sanadState,
       });
 
-      const user = response?.data?.data;
+      const user = response?.data?.user;
       const { token, ...userWithoutToken } = user;
       let myUser = {
         ...userWithoutToken,
-        nationalityType_code: "001",
       };
 
       setSession(token);
