@@ -15,7 +15,7 @@ export default function OrderDetailsDialog({ applicationNumber }) {
   const globalDialog = useGlobalDialogContext();
   const { t } = useLocales();
 
-  const direction = i18n.language === "ar" ? "ltr" : "rtl";
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
 
   const handleFetchAppDetails = () => {
     axiosInstance

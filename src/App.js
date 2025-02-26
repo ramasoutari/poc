@@ -33,7 +33,7 @@ export default function App() {
         <SettingsProvider
           defaultSettings={{
             themeMode: "light", // 'light' | 'dark'
-            themeDirection: "ltr", //  'rtl' | 'ltr'
+            themeDirection: "rtl", //  'rtl' | 'ltr'
             themeContrast: "default", // 'default' | 'bold'
             themeLayout: "horizontal", // 'vertical' | 'horizontal' | 'mini'
             themeColorPresets: "orange", // 'default' | 'patron' | 'jiacc' | 'moh' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'

@@ -31,7 +31,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
   const { t } = useLocales();
   const { user } = useAuthContext();
   const globalDialog = useGlobalDialogContext();
-  const direction = i18n.language === "ar" ? "ltr" : "rtl";
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
   const OTP_RESEND_INTERVAL_SECONDS = 300;
 
   const startTimer = () => {

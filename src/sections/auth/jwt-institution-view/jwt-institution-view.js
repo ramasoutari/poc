@@ -21,7 +21,7 @@ export default function JwtInstitutionView() {
   const [loading, setLoading] = useState(false);
   const globalDialog = useGlobalDialogContext();
   const { t, currentLang } = useLocales();
-  const direction = i18n.language === "ar" ? "ltr" : "rtl";
+  const direction = i18n.language === "ar" ? "rtl" : "ltr";
 
   const handleOpenRegisterDialog = () => {
     globalDialog.onOpen({
@@ -50,9 +50,6 @@ export default function JwtInstitutionView() {
       },
     });
   };
-  useEffect(() => {
-    document.documentElement.setAttribute("dir", currentLang.direction);
-  }, [currentLang]);
 
   return (
     <Box>
