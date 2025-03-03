@@ -159,7 +159,15 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
           value: data.registrationNumber,
         },
         { label: "entityNumber", value: data.entityNumber },
-        { label: "type", value: data?.type },
+        {
+          label: "type",
+          value:
+            data?.type === "002"
+              ? "شركات"
+              : data?.type === "001"
+              ? "مؤسسة فردية"
+              : "N/A",
+        },
         {
           label: "name",
           value: companyInfoResponse?.data?.data?.entityName || "N/A",
@@ -191,46 +199,6 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
   };
 
   if (!stepOneForm) return <LoadingScreen />;
-  // if (error)
-  //   return (
-  //     <Stack direction="column" justifyContent="center" alignItems="center">
-  //       <Stack direction="column" gap={1}>
-  //         <Box
-  //           sx={{
-  //             display: "flex",
-  //             justifyContent: "center",
-  //             gap: 2,
-  //           }}
-  //         >
-  //           <Button
-  //             sx={{
-  //               mt: 3,
-  //               align: "center",
-  //             }}
-  //             variant="contained"
-  //             color="primary"
-  //             onClick={() => {
-  //               setError([]);
-  //             }}
-  //           >
-  //             {t("back")}
-  //           </Button>
-  //           <Button
-  //             sx={{
-  //               minWidth: "300px",
-  //               mt: 3,
-  //               align: "center",
-  //             }}
-  //             variant="contained"
-  //             color="primary"
-  //             onClick={globalDialog.onClose}
-  //           >
-  //             {t("close")}
-  //           </Button>
-  //         </Box>
-  //       </Stack>
-  //     </Stack>
-  //   );
 
   return (
     <>
@@ -256,11 +224,10 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
           width: "100%",
           loading,
           disabled: isVerified,
-          style: isVerified
-            ? { backgroundColor: "#3FAF47", color: "white" }
-            : {},
+          backgroundColor: isVerified ? "#3FAF47" : undefined,
         }}
       />
+
       <Box py={3}>
         {entityData && (
           <>

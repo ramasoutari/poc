@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
 // @mui
 import {
@@ -10,12 +10,18 @@ import {
   Stack,
   FormHelperText,
   Button,
-} from '@mui/material';
+} from "@mui/material";
 // components
-import Label from '../label';
-import { t } from 'i18next';
-import { defaultCountries, parseCountry, usePhoneInput } from 'react-international-phone';
-import { useLocales } from '../../locales';
+import Label from "../label";
+import { t } from "i18next";
+import {
+  defaultCountries,
+  parseCountry,
+  usePhoneInput,
+  FlagImage,
+  FlagEmoji,
+} from "react-international-phone";
+import { useLocales } from "../../locales";
 
 export default function PhoneField({
   value,
@@ -31,16 +37,21 @@ export default function PhoneField({
   const [isVerified, setIsVerified] = useState(false);
   const didMount = useRef(false);
   const { t } = useLocales();
-  const { phone, handlePhoneValueChange, inputRef, country, setCountry } = usePhoneInput({
-    defaultCountry: defaultCountry,
-    value,
-    countries: defaultCountries || [],
-    forceDialCode: true,
-    onChange: (data) => {
-      // Dont change first time
-      if (didMount.current) onChange(data?.phone || '');
-    },
-  });
+  const { phone, handlePhoneValueChange, inputRef, country, setCountry } =
+    usePhoneInput({
+      defaultCountry: defaultCountry,
+      value,
+      countries: defaultCountries || [],
+      forceDialCode: true,
+      onChange: (data) => {
+        // Dont change first time
+        if (didMount.current) onChange(data?.phone || "");
+      },
+    });
+
+  useEffect(() => {
+    console.log("Selected country ISO code:", country);
+  }, [country]);
 
   useEffect(() => {
     if (!didMount.current) {
@@ -61,7 +72,7 @@ export default function PhoneField({
         inputProps={{
           // maxLength: 14,
           style: {
-            direction: 'ltr',
+            direction: "ltr",
             // filter: 'blur(5px)',
           },
         }}
@@ -73,31 +84,31 @@ export default function PhoneField({
                   disabled={restProps.disabled}
                   MenuProps={{
                     style: {
-                      height: '300px',
-                      top: '10px',
-                      left: '42px',
+                      height: "300px",
+                      top: "10px",
+                      left: "42px",
                     },
                     transformOrigin: {
-                      vertical: 'top',
-                      horizontal: 'right',
+                      vertical: "top",
+                      horizontal: "right",
                     },
                   }}
                   sx={{
-                    width: '45px',
+                    width: "45px",
 
                     // Remove default outline (display only on focus)
                     fieldset: {
-                      display: 'none',
+                      display: "none",
                     },
                     '&.Mui-focused:has(div[aria-expanded="false"])': {
                       fieldset: {
-                        display: 'block',
+                        display: "block",
                       },
                     },
                     // Update default spacing
-                    '.MuiSelect-select': {
-                      padding: '1px',
-                      paddingRight: '24px !important',
+                    ".MuiSelect-select": {
+                      padding: "1px",
+                      paddingRight: "24px !important",
                     },
                     svg: {
                       right: 0,
@@ -108,29 +119,46 @@ export default function PhoneField({
                   renderValue={(value) => (
                     <>
                       {/* Dial code */}
-                      {/* <FlagEmoji
+                      <FlagEmoji
                         iso2={value}
-                        style={{ width: '3rem', height: '.7rem', display: 'flex' }}
-                      /> */}
+                        style={{
+                          width: "3rem",
+                          height: ".7rem",
+                          display: "flex",
+                        }}
+                      />
 
-                      <Typography color="gray" variant="body2" dir="ltr" textAlign="center">
-                        {defaultCountries.filter((c) => c[1] === value)?.[0]?.[1]?.toUpperCase()}
+                      <Typography
+                        color="gray"
+                        variant="body2"
+                        dir="ltr"
+                        textAlign="center"
+                      >
+                        {defaultCountries
+                          .filter((c) => c[1] === value)?.[0]?.[1]
+                          ?.toUpperCase()}
                       </Typography>
                     </>
                   )}
                 >
                   {defaultCountries
                     ?.filter((c) => {
-                      return c[0].toLowerCase() !== 'israel';
+                      return c[0].toLowerCase() !== "israel";
                     })
                     ?.map((c) => {
                       const country = parseCountry(c);
                       return (
                         <MenuItem key={country.iso2} value={country.iso2}>
-                          <Stack direction="row" alignItems="center" spacing={1}>
-                            {/* <FlagEmoji width={'20rem'} iso2={country.iso2} /> */}
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={1}
+                          >
+                            <FlagEmoji width={"20rem"} iso2={country.iso2} />
                             <Typography>{country.name}</Typography>
-                            <Typography color="gray">+{country.dialCode}</Typography>
+                            <Typography color="gray">
+                              +{country.dialCode}
+                            </Typography>
                           </Stack>
                         </MenuItem>
                       );
@@ -141,10 +169,14 @@ export default function PhoneField({
           }),
           endAdornment: verifiable && (
             <InputAdornment position="end">
-              {isVerified && <Label color="success">{t['verified']}</Label>}
+              {isVerified && <Label color="success">{t["verified"]}</Label>}
               {!isVerified && (
-                <Button variant="outlined" size="small" onClick={() => setIsVerified(true)}>
-                  {t['verify']}
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => setIsVerified(true)}
+                >
+                  {t["verify"]}
                 </Button>
               )}
             </InputAdornment>
@@ -153,7 +185,7 @@ export default function PhoneField({
         sx={{
           ...sx,
           ...(error && {
-            '& .MuiOutlinedInput-notchedOutline': {
+            "& .MuiOutlinedInput-notchedOutline": {
               borderColor: (theme) => `${theme.palette.error.main} !important`,
             },
           }),

@@ -210,7 +210,12 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
         },
         {
           label: "gender",
-          value: updatedRegData.gender || "",
+          value:
+            updatedRegData.gender === "Female"
+              ? "انثى"
+              : updatedRegData.gender === "Male"
+              ? "ذكر"
+              : "",
         },
         {
           label: "officerCivNum",
@@ -294,7 +299,6 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
           {" "}
           <Typography variant="h6">{t("inst_rep_info")}</Typography>
         </Box>
-
         <DynamicForm
           {...institutionFields}
           onSubmit={handleVerify}
@@ -305,14 +309,9 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
             alignment: "center",
             loading,
             width: "100%",
-            // disabled: isVerified,
-            style: isVerified
-              ? { backgroundColor: "green", color: "white" }
-              : {},
-            className: isVerified ? "bg-green-500 text-white" : "",
+            disabled: isVerified,
           }}
         />
-
         {isVerified && (
           <>
             <Box sx={{ py: 3 }}>

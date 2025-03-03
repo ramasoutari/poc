@@ -1,31 +1,41 @@
-import { Box } from '@mui/material';
-import axios from 'axios';
-import React, { useEffect, useMemo, useState } from 'react';
-import { HOST_API } from '../../config-global';
-import { useSearchParams } from '../../routes/hooks';
+import { Box } from "@mui/material";
+import axios from "axios";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
+import { HOST_API } from "../../config-global";
+import { useSearchParams } from "../../routes/hooks";
+import DocViewer, { DocViewerRenderers, PDFRenderer } from "react-doc-viewer";
 
 function Certificate() {
   const [certFileId, setCertFileId] = useState(null);
   const [loading, setLoading] = useState(false);
   const query = useSearchParams();
-  const certID = useMemo(() => {
-    return query.get('certID');
+  const appId = useMemo(() => {
+    return query.get("appId");
   }, [query]);
   const type = useMemo(() => {
-    return query.get('type') ? query.get('type') : null;
+    return query.get("type") ? query.get("type") : null;
   }, [query]);
 
   return (
     <div>
-      {!certID && <Box>Certificate Not Found</Box>}
+      {!appId && <Box>Certificate Not Found</Box>}
 
-      {certID && (
+      {appId && (
         <Box pt={2}>
-          <iframe
-            src={
-              type ? `${HOST_API}/attachment-cpd/${certID}` : `${HOST_API}/GetAttachment/${certID}`
-            }
+          <embed
+            src={`${HOST_API}/certificate/${appId}?view=true`}
+            type="application/pdf"
+            width="100%"
+            height="600px"
           />
+
+          {/* <iframe
+            style={{
+              width: "900px",
+              height: "600px",
+            }}
+            src={`${HOST_API}/certificate/${appId}?view=true`}
+          /> */}
         </Box>
       )}
     </div>

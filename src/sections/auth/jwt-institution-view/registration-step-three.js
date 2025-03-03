@@ -81,7 +81,7 @@ export default function RegisterationStepThree({ setRegData, regData }) {
           message: t("passwords_must_match"),
         },
       ],
-    },
+  },
   ]);
 
   const otpForm = getForm([
@@ -141,6 +141,7 @@ export default function RegisterationStepThree({ setRegData, regData }) {
     }
   };
   const handlesucceess = () => {
+    globalDialog.onClose();
     globalPrompt.onOpen({
       type: "success",
       content: (
@@ -161,12 +162,12 @@ export default function RegisterationStepThree({ setRegData, regData }) {
       content: (
         <Stack direction="column" spacing={1}>
           <Typography component="h6" variant="h6" fontWeight="fontWeightBold">
-            t({message});
+            {message}
           </Typography>
         </Stack>
       ),
       promptProps: {
-        icon: "error",
+        icon: "warning",
       },
     });
   };
@@ -185,17 +186,21 @@ export default function RegisterationStepThree({ setRegData, regData }) {
         setIsVerified(true);
         setRegData({ ...regData, otp: data.otp });
         handlesucceess();
-        globalDialog.close();
+        globalDialog.onClose();
       }
     } catch (error) {
       if (error.response) {
-        if (error.response.statusCode === 404) {
-          handleWarning(t("otp_in_use"));
-        } else if (error.response.statusCode === 400) {
-          handleWarning(t("entity_already_registred_or_rejected"));
-        } 
+        if (error.response.status === 400) {
+          handleWarning(error.response.data.message || "Bad Request");
+        } else if (error.response.status === 404) {
+          handleWarning(error.response.data.message || "Not Found");
+        } else {
+          handleWarning(t("An_unexpected_error_occurred."));
+        }
+      } else if (error.request) {
+        handleWarning("No response from the server. Please try again.");
       } else {
-        setError("Invalid OTP. Please try again.");
+        handleWarning( error.message);
       }
     } finally {
       setLoadingOTP(false);
@@ -222,7 +227,7 @@ export default function RegisterationStepThree({ setRegData, regData }) {
               sx={{ minWidth: "300px", mt: 3, align: "center" }}
               variant="contained"
               color="primary"
-              onClick={globalDialog.onClose}
+              onClick={globalDialog.onClose()}
             >
               {t("close")}
             </Button>

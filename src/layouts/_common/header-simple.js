@@ -153,14 +153,14 @@ export default function HeaderSimple({ onOpenNav }) {
           duration: theme.transitions.duration.shorter,
         }),
         ...(lgUp && {
-          width: `calc(100% - ${NAV.W_VERTICAL + 1}px)`,
+          // width: `calc(100% - ${NAV.W_VERTICAL + 1}px)`,
           height: HEADER.H_DESKTOP,
           ...(offsetTop && {
             height: HEADER.H_DESKTOP_OFFSET,
           }),
-          ...((isNavVertical || isNavMini) && {
-            borderBottom: `1px solid ${theme.palette.divider}`,
-          }),
+          // ...((isNavVertical || isNavMini) && {
+          //   borderBottom: `1px solid ${theme.palette.divider}`,
+          // }),
           ...(isNavHorizontal && {
             width: 1,
             bgcolor: "common.white",

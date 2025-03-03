@@ -101,7 +101,7 @@ export function RHFUpload({ name, multiple, helperText, ...other }) {
             error={!!error}
             helperText={
               (!!error || helperText) && (
-                <FormHelperText error={!!error} sx={{textAlign: 'right'}} sx={{ px: 2 }}>
+                <FormHelperText error={!!error} sx={{ textAlign: "left" }}>
                   {error ? error?.message : helperText}
                 </FormHelperText>
               )
@@ -115,7 +115,10 @@ export function RHFUpload({ name, multiple, helperText, ...other }) {
             error={!!error}
             helperText={
               (!!error || helperText) && (
-                <FormHelperText error={!!error} sx={{textAlign: 'right'}} sx={{ px: 2 }}>
+                <FormHelperText
+                  error={!!error}
+                  sx={{ textAlign: "right" }}
+                >
                   {error ? error?.message : helperText}
                 </FormHelperText>
               )
@@ -829,7 +832,7 @@ export function RHFUploadField({
           ))}
         </Stack>
       )}
-      <FormHelperText sx={{ px: 2 }}>
+      <FormHelperText sx={{ px: 2, textAlign: "right" }}>
         {
           t[
             ("file_size_cant_be_larger_than",

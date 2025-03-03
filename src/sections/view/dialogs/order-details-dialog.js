@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useGlobalDialogContext } from "../../../components/global-dialog";
 import { useLocales } from "../../../locales";
 import axiosInstance from "../../../utils/axios";
 import { HOST_API, FILES_API } from "../../../config-global";
@@ -12,7 +11,6 @@ import { LoadingScreen } from "../../../components/loading-screen";
 export default function OrderDetailsDialog({ appId }) {
   const [applicationDetails, setApplicationDetails] = useState(null);
   const [applicationLoading, setApplicationLoading] = useState(true);
-  const globalDialog = useGlobalDialogContext();
   const { t } = useLocales();
 
   const direction = i18n.language === "ar" ? "rtl" : "ltr";
@@ -62,6 +60,12 @@ export default function OrderDetailsDialog({ appId }) {
     extraAttachment.length > 0;
   return (
     <Box sx={{ direction, p: 2 }}>
+      <Stack display="flex" direction="row">
+        <Typography fontWeight="bold">{t("notes")}:</Typography>
+        <Typography>
+          {applicationDetails.extraInfo}
+        </Typography>
+      </Stack>
       <Stack display="flex" direction="column">
         {hasAnyAttachments && (
           <Typography fontWeight="bold">{t("attachments")}:</Typography>
@@ -105,10 +109,7 @@ export default function OrderDetailsDialog({ appId }) {
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(
-                        `${FILES_API}/${attach.fileName}`,
-                        "_blank"
-                      )
+                      window.open(`${FILES_API}/${attach.fileName}`, "_blank")
                     }
                     size="small"
                     sx={{
@@ -135,10 +136,7 @@ export default function OrderDetailsDialog({ appId }) {
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(
-                        `${FILES_API}/${attach.fileName}`,
-                        "_blank"
-                      )
+                      window.open(`${FILES_API}/${attach.fileName}`, "_blank")
                     }
                     size="small"
                     sx={{
@@ -165,10 +163,7 @@ export default function OrderDetailsDialog({ appId }) {
                 <Box key={index} display="flex" flexDirection="column" mr={1}>
                   <Button
                     onClick={() =>
-                      window.open(
-                        `${FILES_API}/${attach.fileName}`,
-                        "_blank"
-                      )
+                      window.open(`${FILES_API}/${attach.fileName}`, "_blank")
                     }
                     size="small"
                     sx={{

@@ -51,7 +51,7 @@ axiosInstance.interceptors.response.use(
   //   return Promise.reject(customError);
   // }
   (error) => {
-    const customError = new Error(error.response.data.error);
+    const customError = new Error(error.response.data.message);
     return Promise.reject(customError);
   }
 );

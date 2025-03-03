@@ -22,19 +22,30 @@ import i18n from "../../../locales/i18n";
 import axiosInstance from "../../../utils/axios";
 import { useGlobalPromptContext } from "../../../components/global-prompt";
 import { useNavigate } from "react-router-dom";
+import ManagerValidationDialog from "../../view/dialogs/manager-validation-dialog";
 
 export default function ServicesListView() {
   const { t } = useLocales();
   const settings = useSettingsContext();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [managerData, setManagerData] = useState(null);
+  const [isManagerValidated, setIsManagerValidated] = useState(false);
+
   const { user } = useAuthContext();
   const mdUp = useResponsive("up", "md");
   const direction = i18n.language === "ar" ? "rtl" : "ltr";
   const globalPrompt = useGlobalPromptContext();
   const navigate = useNavigate();
+  const handleManagerVerification = (data) => {
+    setManagerData(data);
+    setIsManagerValidated(true);
+  };
+
 
   const isUserUnder45 = user?.age < 45;
+  const isMnagerUnder45 = managerData?.age < 45;
+
   const form = getForm([
     {
       fieldVariable: "phoneNumber",
@@ -308,13 +319,10 @@ export default function ServicesListView() {
       Object.entries(data).forEach(([key, value]) => {
         if (Array.isArray(value) && key.includes("Attachment")) {
           payload[key] = value.map((file) => {
-            console.log("File object:", file);
             return file || null;
           });
         }
       });
-
-      console.log("Final Payload:", payload);
 
       const response = await axiosInstance.post(
         `${HOST_API}/applications/submit`,
@@ -354,53 +362,64 @@ export default function ServicesListView() {
   // if (loading) return <LoadingScreen />;
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : "xl"}>
-      {user.type === "user" && isUserUnder45 ? (
-        <Warning />
-      ) : (
-        <Card>
-          <CardHeader
-            title={t("الرجاء تعبئة نموذج الطلب")}
-            sx={{ textAlign: "center", p: 2 }}
-          />
-
-          <Box
-            sx={{
-              pt: 2,
-              mt: 2,
-              px: 1,
-              direction,
-              maxHeight: mdUp ? "calc(100vh - 280px)" : "calc(100vh - 224px)",
-              overflowY: "auto",
-              overflowX: "hidden",
-              "&::-webkit-scrollbar": {
-                display: "block",
-                width: "10px",
-                height: "10px",
-                backgroundColor: "transparent",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                borderRadius: "8px",
-                backgroundColor: (t) => alpha(t.palette.primary.main, 0.8),
-              },
-              "&::-webkit-scrollbar-thumb:hover": {
-                backgroundColor: "primary.light",
-              },
-            }}
-          >
-            <DynamicForm
-              {...form}
-              defaultValues={defaultValues}
-              validationMode="onChange"
-              onSubmit={onSubmit}
-              submitButtonProps={{
-                alignment: "center",
-                width: "100%",
-              }}
+    <>
+      <Container maxWidth={settings.themeStretch ? false : "xl"}>
+        {isMnagerUnder45 || isUserUnder45 ? (
+          <Warning />
+        ) : user?.type === "entity" && !isManagerValidated ? (
+          <Card>
+            <CardHeader
+              title={t("manager_validation")}
+              sx={{ textAlign: "center", p: 2 }}
             />
-          </Box>
-        </Card>
-      )}
-    </Container>
+            <ManagerValidationDialog
+              onManagerVerified={handleManagerVerification}
+            />
+          </Card>
+        ) : (
+          <Card>
+            <CardHeader
+              title={t("الرجاء تعبئة نموذج الطلب")}
+              sx={{ textAlign: "center", p: 2 }}
+            />
+            <Box
+              sx={{
+                pt: 2,
+                mt: 2,
+                px: 1,
+                direction,
+                maxHeight: mdUp ? "calc(100vh - 280px)" : "calc(100vh - 224px)",
+                overflowY: "auto",
+                overflowX: "hidden",
+                "&::-webkit-scrollbar": {
+                  display: "block",
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: "transparent",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  borderRadius: "8px",
+                  backgroundColor: (t) => alpha(t.palette.primary.main, 0.8),
+                },
+                "&::-webkit-scrollbar-thumb:hover": {
+                  backgroundColor: "primary.light",
+                },
+              }}
+            >
+              <DynamicForm
+                {...form}
+                defaultValues={defaultValues}
+                validationMode="onChange"
+                onSubmit={onSubmit}
+                submitButtonProps={{
+                  alignment: "center",
+                  width: "100%",
+                }}
+              />
+            </Box>
+          </Card>
+        )}
+      </Container>
+    </>
   );
 }

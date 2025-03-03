@@ -3,16 +3,16 @@ import { Controller, useFormContext } from "react-hook-form";
 import { MuiOtpInput } from "mui-one-time-password-input";
 // @mui
 import FormHelperText from "@mui/material/FormHelperText";
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
 import { useResponsive } from "../../hooks/use-responsive";
 
 // ----------------------------------------------------------------------
 
 export default function RHFOTPField({ name, otpLength, ...other }) {
   const { control } = useFormContext();
-  const smUp = useResponsive('up', 'sm');
-  const mdUp = useResponsive("up", "md")
-  const lgUp = useResponsive("up", "lg")
+  const smUp = useResponsive("up", "sm");
+  const mdUp = useResponsive("up", "md");
+  const lgUp = useResponsive("up", "lg");
   return (
     <Controller
       name={name}
@@ -26,16 +26,14 @@ export default function RHFOTPField({ name, otpLength, ...other }) {
             gap={0.3}
             length={otpLength || 4}
             validateChar={(val) => !isNaN(val)}
-
             TextFieldsProps={{
               error: !!error,
               placeholder: "-",
               style: {
-                width: '5rem'
+                width: "5rem",
               },
             }}
             {...other}
-
           />
 
           {error && (
@@ -43,7 +41,6 @@ export default function RHFOTPField({ name, otpLength, ...other }) {
               {error.message}
             </FormHelperText>
           )}
-
         </Box>
       )}
     />

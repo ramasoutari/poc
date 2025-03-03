@@ -391,5 +391,10 @@
   "extra_info": "معلومات اضافية",
   "application_ditails": "تفاصيل الطلب",
   "wrong_entity_info": "المعلومات المدخلة غير صحيحة",
-  "entity_already_registred_or_rejected": "المنشأه مسجله او تم رفضها مسبقا"
+  "entity_already_registred_or_rejected": "المنشأه مسجله او تم رفضها مسبقا",
+  "An_unexpected_error_occurred": "حدث خطأ اثناء التقديم",
+  "password_changed_successfully": "تم تغيير كلمة السر بنجاح ",
+  "manager_validation": "معلومات مدير المحطة",
+  "fullName": "الاسم الكامل",
+  "age":"العمر"
 }

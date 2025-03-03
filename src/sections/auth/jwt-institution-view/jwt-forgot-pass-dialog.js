@@ -15,24 +15,19 @@ import DynamicForm, { getForm } from "../../../components/dynamic-form";
 import axiosInstance from "../../../utils/axios";
 import { useLocales } from "../../../locales";
 import i18n from "../../../locales/i18n";
+import { useGlobalPromptContext } from "../../../components/global-prompt";
 
 export default function ForgotPassDialog({ isCPD = false }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState([]);
   const [showNatNo, setShowNatNo] = useState(true);
-  const [showEmailOTP, setShowEmailOTP] = useState(false);
-  const [showPasswords, setShowPasswords] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [resendOTPCounter, setResendOTPCounter] = useState(0);
 
   const { t } = useLocales();
-  const { user } = useAuthContext();
   const globalDialog = useGlobalDialogContext();
   const direction = i18n.language === "ar" ? "rtl" : "ltr";
-  const OTP_RESEND_INTERVAL_SECONDS = 300;
-
+  const globalPrompt = useGlobalPromptContext();
 
   const form = getForm([
     {
@@ -71,12 +66,11 @@ export default function ForgotPassDialog({ isCPD = false }) {
     ...formData,
   };
 
-  const VERIFY_OTP_FORM_FIELDS_BY_EMAIL = [
+  const otpForm = getForm([
     {
-      type: "otp",
+      type: "input",
       fieldVariable: "otp",
       label: "otp",
-      // tip: "otp",
       gridOptions: [
         {
           breakpoint: "xs",
@@ -90,8 +84,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
         },
       ],
     },
-  ];
-  const RESET_PASS_FIELDS = [
     {
       label: "new_password",
       fieldVariable: "newPassword",
@@ -127,31 +119,7 @@ export default function ForgotPassDialog({ isCPD = false }) {
         },
       ],
     },
-  ];
-
-  const VERIFY_OTP_FORM_FIELDS = [
-    {
-      type: "otp",
-      fieldVariable: "officerOtp",
-      label: "otp_to_LiaisonOfficerNumber",
-      // tip: "otp",
-      gridOptions: [
-        {
-          breakpoint: "xs",
-          size: 12,
-        },
-      ],
-      validations: [
-        {
-          type: "required",
-          message: t("required"),
-        },
-      ],
-    },
-  ];
-  const emailOtpForm = getForm(VERIFY_OTP_FORM_FIELDS_BY_EMAIL);
-  const passwordsForm = getForm(RESET_PASS_FIELDS);
-  const otpForm = getForm(VERIFY_OTP_FORM_FIELDS);
+  ]);
 
   const handleCheckNatNo = (data) => {
     setLoading(true);
@@ -163,43 +131,8 @@ export default function ForgotPassDialog({ isCPD = false }) {
       .patch(`${HOST_API}/forget-password`, payload)
       .then((response) => {
         setFormData(data);
-        setShowEmailOTP(true);
+        setShowOTP(true);
         setShowNatNo(false);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
-  };
-
-  const verifyEmailOTP = (data) => {
-    setLoading(true);
-
-    const payload = {
-      nationalNumber: formData?.national_id,
-      officer_otp: "",
-      password: "",
-      confirmPassword: "",
-      otp: data?.emailOtp,
-    };
-
-    axiosInstance
-      .patch(`${HOST_API}/forget-password`, payload)
-      .then((response) => {
-        if (response.status === 201) {
-          const errorClone = JSON.parse(response?.data?.error);
-          setError(errorClone);
-        } else if (response.status === 200) {
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            ...data,
-          }));
-          setShowEmailOTP(false);
-          setShowPasswords(true);
-          setError(null);
-        }
-
         setLoading(false);
       })
       .catch((error) => {
@@ -212,11 +145,9 @@ export default function ForgotPassDialog({ isCPD = false }) {
     setLoading(true);
 
     const payload = {
-      nationalNumber: formData?.national_id,
-      officer_otp: "",
-      password: data.newPassword,
-      confirmPassword: data.newPasswordConfirm,
-      otp: formData?.emailOtp,
+      nationalNumber: formData?.nationalNumber,
+      newPassword: data.newPassword,
+      otp: data?.otp,
     };
 
     axiosInstance
@@ -224,11 +155,28 @@ export default function ForgotPassDialog({ isCPD = false }) {
       .then((response) => {
         setFormData((prevFormData) => ({
           ...prevFormData,
-          ...data,
+          ...payload,
         }));
-        setShowPasswords(false);
         setShowOTP(true);
         setLoading(false);
+        globalDialog.onClose();
+        globalPrompt.onOpen({
+          type: "success",
+          content: (
+            <Stack direction="column" spacing={1}>
+              <Typography
+                component="h6"
+                variant="h6"
+                fontWeight="fontWeightBold"
+              >
+                {t("password_changed_successfully")}
+              </Typography>
+            </Stack>
+          ),
+          promptProps: {
+            icon: "success",
+          },
+        });
       })
       .catch((error) => {
         setError(error);
@@ -236,57 +184,13 @@ export default function ForgotPassDialog({ isCPD = false }) {
       });
   };
 
-  const verifyOTP = (data) => {
-    setLoading(true);
+  // const resendOTP = () => {
+  //   setResendOTPCounter((prev) => prev + 1);
+  //   handleCheckNatNo(formData);
+  //   setError();
 
-    const payload = {
-      nationalNumber: formData?.national_id,
-      confirmPassword: formData.newPasswordConfirm,
-
-      officer_otp: data?.officerOtp,
-      password: formData.newPassword,
-      otp: formData.emailOtp,
-    };
-
-    axiosInstance
-      .patch(`${HOST_API}/forget-password`, payload)
-      .then((response) => {
-        if (response.status === 201) {
-          const errorClone = JSON.parse(response?.data?.error);
-          setError(errorClone);
-        } else if (response.status === 200) {
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            ...data,
-          }));
-          setShowOTP(false);
-          setLoading(false);
-          setSuccess(true);
-   
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
-  };
-
-  const resendEmailOTP = () => {
-    setResendOTPCounter((prev) => prev + 1);
-    handleCheckNatNo(formData);
-    setError();
-  
-    // setWrongOtp(false)
-  };
-  const resendOTP = () => {
-    setResendOTPCounter((prev) => prev + 1);
-    handleResetPassword(formData);
-    setError();
-
-  };
-
-
+  //   // setWrongOtp(false)
+  // };
 
   return (
     <Box
@@ -339,121 +243,6 @@ export default function ForgotPassDialog({ isCPD = false }) {
         </>
       )}
 
-      {showEmailOTP && (
-        <>
-          {error && error.status === 403 && (
-            <Typography
-              component="label"
-              htmlFor="additionalValue"
-              variant="body2"
-              fontWeight="fontWeightBold"
-              align="center"
-              style={{ display: "block", color: "red", paddingBottom: 3 }}
-            >
-              {error?.error}
-            </Typography>
-          )}
-
-          <DynamicForm
-            {...emailOtpForm}
-            validationMode="onChange"
-            onSubmit={verifyEmailOTP}
-            submitButtonProps={{
-              alignment: "center",
-              width: "300px",
-              loading: loading,
-            }}
-            extraButtons={
-              <>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    setShowEmailOTP(false);
-                    setError(null);
-                    setShowNatNo(true);
-                  }}
-                >
-                  {t("back")}
-                </Button>
-                {showEmailOTP  && (
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "common.white",
-                      alignment: "center",
-                      width: "300px",
-                    }}
-                    variant="contained"
-                    onClick={resendEmailOTP}
-                    loading={loading}
-                  >
-                    {t("resend")}
-                  </Button>
-                )}
-              </>
-            }
-          />
-        </>
-      )}
-      {showPasswords && (
-        <>
-          {error && error.status === 403 && (
-            <Typography
-              component="label"
-              htmlFor="additionalValue"
-              variant="body2"
-              fontWeight="fontWeightBold"
-              align="center"
-              style={{ display: "block", color: "red", paddingBottom: 3 }}
-            >
-              {error?.error}
-            </Typography>
-          )}
-
-          <DynamicForm
-            {...passwordsForm}
-            validationMode="onChange"
-            onSubmit={handleResetPassword}
-            submitButtonProps={{
-              alignment: "center",
-              width: "300px",
-          
-              loading: loading,
-            }}
-            extraButtons={
-              <>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => {
-                    setShowNatNo(true);
-                    setShowPasswords(false);
-                    setError(null);
-                  }}
-                >
-                  {t("back")}
-                </Button>
-                {showOTP && (
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "common.white",
-                      alignment: "center",
-                      width: "300px",
-                    }}
-                    variant="contained"
-                    onClick={resendOTP}
-                    loading={loading}
-                  >
-                    {"resend"}
-                  </Button>
-                )}
-              </>
-            }
-          />
-        </>
-      )}
       {showOTP && (
         <>
           {error && error.status === 403 && (
@@ -472,11 +261,11 @@ export default function ForgotPassDialog({ isCPD = false }) {
           <DynamicForm
             {...otpForm}
             validationMode="onChange"
-            onSubmit={verifyOTP}
+            onSubmit={handleResetPassword}
+            // defaultValues={defaultValues}
             submitButtonProps={{
               alignment: "center",
               width: "300px",
-            
               loading: loading,
             }}
             extraButtons={
@@ -485,56 +274,31 @@ export default function ForgotPassDialog({ isCPD = false }) {
                   variant="contained"
                   color="primary"
                   onClick={() => {
+                    setShowNatNo(true);
                     setShowOTP(false);
+                    setFormData();
                     setError(null);
                   }}
                 >
                   {t("back")}
                 </Button>
-                {showOTP && (
-                  <Button
-                    sx={{
-                      backgroundColor: "primary.main",
-                      color: "common.white",
-                      alignment: "center",
-                      width: "300px",
-                    }}
-                    variant="contained"
-                    onClick={resendOTP}
-                    loading={loading}
-                  >
-                    {t("resend")}
-                  </Button>
-                )}
               </>
             }
           />
-        </>
-      )}
-      {success && (
-        <Stack
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          gap={2}
-        >
-          <Box width={"100%"}>
-            {" "}
-            <Alert severity="success">
-              <AlertTitle>{t("password_changed_successfully")}</AlertTitle>
-            </Alert>
-          </Box>
 
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              globalDialog.onClose();
-            }}
-          >
-            {t("close")}
-          </Button>
-        </Stack>
+          {error && error.status === 403 && (
+            <Typography
+              component="label"
+              htmlFor="additionalValue"
+              variant="body2"
+              fontWeight="fontWeightBold"
+              align="center"
+              style={{ display: "block", color: "red", paddingBottom: 3 }}
+            >
+              {error?.error}
+            </Typography>
+          )}
+        </>
       )}
     </Box>
   );
