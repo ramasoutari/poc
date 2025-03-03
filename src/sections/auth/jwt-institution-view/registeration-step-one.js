@@ -161,12 +161,7 @@ export default function RegisterationStepOne({ setStep, setRegData, regData }) {
         { label: "entityNumber", value: data.entityNumber },
         {
           label: "type",
-          value:
-            data?.type === "002"
-              ? "شركات"
-              : data?.type === "001"
-              ? "مؤسسة فردية"
-              : "N/A",
+          value: data?.type,
         },
         {
           label: "name",

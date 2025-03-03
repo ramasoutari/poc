@@ -142,6 +142,12 @@ const MyOrdersView = () => {
       multiline: true,
       disabled: false,
       rows: 4,
+      validations: [
+        {
+          type: "required",
+          message: t("required"),
+        },
+      ],
       gridOptions: [
         {
           breakpoint: "xs",
