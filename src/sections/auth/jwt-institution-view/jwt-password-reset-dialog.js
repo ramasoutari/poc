@@ -103,12 +103,16 @@ export default function ResetPasswordDialog({ type }) {
     setError(null);
     setLoading(true);
     const payload = {
-      OldPassword: data?.OldPassword,
-      password: data?.newPassword,
+      oldPassword: data?.oldPassword,
+      newPassword: data?.newPassword,
     };
 
     axiosInstance
-      .patch(`${HOST_API}/reset-password`, payload)
+      .patch(`${HOST_API}/reset-password`, payload, {
+        headers: {
+          "x-session-id": localStorage.getItem("sessionId"),
+        },
+      })
       .then((response) => {
         setShowPasswords(false);
         setSuccess(true);
@@ -180,7 +184,7 @@ export default function ResetPasswordDialog({ type }) {
           <Box width={"100%"}>
             {" "}
             <Alert severity="success">
-              <AlertTitle>{t["password_changed_successfully"]}</AlertTitle>
+              <AlertTitle>{t("password_changed_successfully")}</AlertTitle>
             </Alert>
           </Box>
 

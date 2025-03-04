@@ -181,7 +181,6 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
     setLoading(true);
 
     try {
-      // Make API request to fetch liaison officer data
       const response = await axiosInstance.post(`${HOST_API}/Officer/Data`, {
         nationalNumber: data?.inst_rep_national_id,
         birthdate: data?.inst_rep_birth_date,
@@ -233,7 +232,7 @@ export default function RegisterationStepTwo({ regData, setRegData, setStep }) {
 
       setIsVerified(true);
     } catch (error) {
-      console.error("Verification error:", error);
+      console.log("error", error);
       setError(
         error?.response?.data?.message ||
           "An error occurred during verification."

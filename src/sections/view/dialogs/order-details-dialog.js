@@ -60,13 +60,16 @@ export default function OrderDetailsDialog({ appId }) {
     extraAttachment.length > 0;
   return (
     <Box sx={{ direction, p: 2 }}>
-      <Stack display="flex" direction="row">
+      <Stack display="flex" direction="row" spacing={2.5} sx={{ pl: 2 }}>
         <Typography fontWeight="bold">{t("notes")}:</Typography>
-        <Typography>
-          {applicationDetails.extraInfo}
-        </Typography>
+        <Typography>{applicationDetails.extraInfo}</Typography>
+        <Typography fontWeight="bold">{t("phone_number")}:</Typography>
+        <Typography>{applicationDetails.phoneNumber}</Typography>
+        <Typography fontWeight="bold">{t("email")}:</Typography>
+        <Typography>{applicationDetails.email}</Typography>
       </Stack>
-      <Stack display="flex" direction="column">
+
+      <Stack display="flex" direction="column" sx={{ pt: 2 }}>
         {hasAnyAttachments && (
           <Typography fontWeight="bold">{t("attachments")}:</Typography>
         )}
