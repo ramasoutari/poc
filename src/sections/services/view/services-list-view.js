@@ -42,7 +42,6 @@ export default function ServicesListView() {
     setIsManagerValidated(true);
   };
 
-
   // const isUserUnder45 = user?.age < 45;
   const isMnagerUnder45 = managerData?.age < 45;
 
@@ -274,18 +273,14 @@ export default function ServicesListView() {
   ]);
   const defaultValues = {
     applicantType:
-      user?.type === "individual"
-        ? "003"
-        : user?.type === "entity"
-        ? "004"
-        : "",
+      user?.type === "user" ? "003" : user?.type === "entity" ? "004" : "",
     applicantName: user?.name || "",
     entityRegistrationDate:
       user?.type === "entity" ? user?.registrationDate : null,
     nationalRegistrationNumber:
       user?.type === "entity" ? user?.entityNumber : user?.nationalNumber || "",
-    birthDate: user?.type === "individual" ? user?.birthdate : null,
-    gender: user?.type === "individual" ? user?.gender : null,
+    birthDate: user?.type === "user" ? user?.birthdate : null,
+    gender: user?.type === "user" ? user?.gender : null,
     phoneNumber: user?.phoneNumber || "",
     email: user?.email || "",
     ...form.defaultValues,
@@ -299,20 +294,16 @@ export default function ServicesListView() {
         phoneNumber: data.phoneNumber || "",
         email: data.email || "",
         applicantType:
-          user?.type === "individual"
-            ? "003"
-            : user?.type === "entity"
-            ? "004"
-            : "",
-        applicantName: user?.name || "",
+          user?.type === "user" ? "003" : user?.type === "entity" ? "004" : "",
+        applicantName: user?.type === "entity" ? user?.name : user?.fullName,
         entityRegistrationDate:
           user?.type === "entity" ? user?.registrationDate : null,
         nationalRegistrationNumber:
           user?.type === "entity"
             ? user?.entityNumber
             : user?.nationalNumber || "",
-        birthDate: user?.type === "individual" ? user?.birthdate : null,
-        gender: user?.type === "individual" ? user?.gender : null,
+        birthDate: user?.type === "user" ? user?.birthdate : null,
+        gender: user?.type === "user" ? user?.gender : null,
         extraInfo: data.extraInfo || "",
       };
 
