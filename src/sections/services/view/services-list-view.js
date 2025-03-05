@@ -43,7 +43,7 @@ export default function ServicesListView() {
   };
 
 
-  const isUserUnder45 = user?.age < 45;
+  // const isUserUnder45 = user?.age < 45;
   const isMnagerUnder45 = managerData?.age < 45;
 
   const form = getForm([
@@ -364,9 +364,9 @@ export default function ServicesListView() {
   return (
     <>
       <Container maxWidth={settings.themeStretch ? false : "xl"}>
-        {isMnagerUnder45 || isUserUnder45 ? (
+        {isMnagerUnder45 ? (
           <Warning />
-        ) : user?.type === "entity" && !isManagerValidated ? (
+        ) : !isManagerValidated ? (
           <Card>
             <CardHeader
               title={t("manager_validation")}
