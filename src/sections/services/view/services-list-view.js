@@ -123,8 +123,8 @@ export default function ServicesListView() {
       destinationExtraArgs: {
         Location: "118",
       },
-      maxFileSize: "2048",
-      allowedExtensions: ["png", "jpg", "bmp", "heif", "jpeg", "pdf"],
+      maxFileSize: "12000",
+      allowedExtensions: ["png", "jpg", "bmp", "jpeg", "pdf"],
       responseFileNameKey: "fileIds",
       validations: [
         {
@@ -159,8 +159,8 @@ export default function ServicesListView() {
       destinationExtraArgs: {
         Location: "118",
       },
-      maxFileSize: "2048",
-      allowedExtensions: ["png", "jpg", "bmp", "heif", "jpeg", "pdf"],
+      maxFileSize: "12000",
+      allowedExtensions: ["png", "jpg", "bmp", "jpeg", "pdf"],
       responseFileNameKey: "fileIds",
       validations: [
         {
@@ -195,8 +195,8 @@ export default function ServicesListView() {
       destinationExtraArgs: {
         Location: "118",
       },
-      maxFileSize: "2048",
-      allowedExtensions: ["png", "jpg", "bmp", "heif", "jpeg", "pdf"],
+      maxFileSize: "12000",
+      allowedExtensions: ["png", "jpg", "bmp", "jpeg", "pdf"],
       responseFileNameKey: "fileIds",
       validations: [
         {
@@ -231,8 +231,8 @@ export default function ServicesListView() {
       destinationExtraArgs: {
         Location: "118",
       },
-      maxFileSize: "2048",
-      allowedExtensions: ["png", "jpg", "bmp", "heif", "jpeg", "pdf"],
+      maxFileSize: "12000",
+      allowedExtensions: ["png", "jpg", "bmp", "jpeg", "pdf"],
       responseFileNameKey: "fileIds",
       validations: [
         {

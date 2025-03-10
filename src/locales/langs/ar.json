@@ -396,5 +396,6 @@
   "password_changed_successfully": "تم تغيير كلمة السر بنجاح ",
   "manager_validation": "معلومات مدير المحطة",
   "fullName": "الاسم الكامل",
-  "age":"العمر"
+  "age": "العمر",
+  "file_size_cant_be_less_than": "حجم الملف لا يمكن ان يكون أقل من {{size}} {{unit}}"
 }

@@ -115,10 +115,7 @@ export function RHFUpload({ name, multiple, helperText, ...other }) {
             error={!!error}
             helperText={
               (!!error || helperText) && (
-                <FormHelperText
-                  error={!!error}
-                  sx={{ textAlign: "right" }}
-                >
+                <FormHelperText error={!!error} sx={{ textAlign: "right" }}>
                   {error ? error?.message : helperText}
                 </FormHelperText>
               )
@@ -210,6 +207,7 @@ export function RHFUploadField({
 
   // Function to upload a file
   const uploadFile = async (file) => {
+    console.log("hiiiiii");
     setCurrentFiles([]);
 
     // File extensions and initial error variable
@@ -230,7 +228,7 @@ export function RHFUploadField({
       allowedExtensionsList?.length > 0 &&
       !allowedExtensionsList?.includes(fileExt[fileExt.length - 1])
     ) {
-      error = t?.translateValue("extension_not_allowed", {
+      error = t("extension_not_allowed", {
         allowed_extensions: allowedExtensionsList
           .slice()
           // .map(ext => {
@@ -240,7 +238,7 @@ export function RHFUploadField({
         extension: fileExt,
       });
     } else if (minFileSize && fileSizeKiloBytes < Number(minFileSize)) {
-      error = t?.translateValue("file_size_cant_be_less_than", {
+      error = t("file_size_cant_be_less_than", {
         size: getSizeInMB(minFileSize),
         unit: t("megabyte"),
       });
@@ -277,6 +275,7 @@ export function RHFUploadField({
           type: file.type,
           lastModified: file.lastModified,
         });
+        console.log("oringinal size", updatedFile);
 
         let compressedFile;
         try {
@@ -289,7 +288,7 @@ export function RHFUploadField({
         // Check the compressed file size
         const compressedFileSizeKiloBytes = compressedFile.size / 1024;
         if (compressedFileSizeKiloBytes > Number(maxFileSize)) {
-          error = t?.translateValue("file_size_cant_be_larger_than", {
+          error = t("file_size_cant_be_larger_than", {
             size: getSizeInMB(maxFileSize),
             unit: t["megabyte"],
           });
@@ -548,26 +547,37 @@ export function RHFUploadField({
           max: maximimFiles,
         }),
       });
+      console.log("hiiiiiiiiiii");
       return;
     } else {
       clearErrors(name);
     }
+    console.log("hiiiiiiiiiii");
 
     try {
       let uploadedFilesIds = [];
 
       setLoading(true);
-
+      console.log("111");
       for (let i = 0; i < files.length; i++) {
+        console.log("2222");
         const file = files[i];
         reader.readAsDataURL(file);
+        console.log("3333");
+
         reader.onloadend = function () {
+          console.log("44444");
+
           const base64Data = reader.result.split(",")[1];
           file.base64 = base64Data;
         };
+        console.log("5555");
+
         const uploadedFileId = await uploadFile(file);
 
         if (uploadedFileId) {
+          console.log("66666");
+
           uploadedFilesIds.push(uploadedFileId);
           file.id = uploadedFilesIds[0];
           const updatedFiles = !multiple ? [file] : [...currentFiles, file];
