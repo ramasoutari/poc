@@ -60,24 +60,18 @@ axiosInstance.interceptors.request.use(
     const { url } = config;
 
     if (
-      url.includes("EntityUploadAttachment") ||
-      url.includes("getEntityData") ||
-      url.includes("getCitizenInfo") ||
-      url.includes("citizenInfo") ||
-      url.includes("upsertCPDEntity") ||
-      url.includes("getCPDEntityData") ||
-      url.includes("upsertAttendanceExternal") ||
-      url.includes("GetServicesList") ||
-      url.includes("submitCPDHCPAdditionalInfo") ||
-      url.includes("UpdatePersonApplication") ||
-      url.includes("GetHelpScreen") ||
-      url.includes("getPersonCertificates")
+      url.includes("Login") ||
+      url.includes("forget-password") ||
+      url.includes("loginWithSanad") ||
+      url.includes("Entity/Data") ||
+      url.includes("Officer/Data") ||
+      url.includes("Register")
     ) {
       try {
         const response = await axiosInstance.post(
           `${HOST_API}/GenerateGuestToken`
         );
-        const guestToken = response?.data?.data;
+        const guestToken = response?.data;
         config.headers["x-guest-token"] = guestToken;
       } catch (error) {
         console.log(error);
