@@ -36,7 +36,7 @@ axiosInstance.interceptors.request.use(
     config.headers["Authorization"] = `Bearer ${localStorage.getItem(
       "accessToken"
     )}`;
-    config.headers["X-Session_id"] = localStorage.getItem("sessionId");
+    // config.headers["X-Session_id"] = localStorage.getItem("sessionId");
     return config;
   },
   (error) => {

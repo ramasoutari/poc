@@ -275,7 +275,6 @@ export function RHFUploadField({
           type: file.type,
           lastModified: file.lastModified,
         });
-        console.log("oringinal size", updatedFile);
 
         let compressedFile;
         try {
@@ -290,7 +289,7 @@ export function RHFUploadField({
         if (compressedFileSizeKiloBytes > Number(maxFileSize)) {
           error = t("file_size_cant_be_larger_than", {
             size: getSizeInMB(maxFileSize),
-            unit: t["megabyte"],
+            unit: t("megabyte"),
           });
           setError(name, { message: error });
           return;
@@ -399,7 +398,7 @@ export function RHFUploadField({
       if (maxFileSize && compressedFileSize > Number(maxFileSize)) {
         error = t("file_size_cant_be_larger_than", {
           size: getSizeInMB(maxFileSize),
-          unit: t["megabyte"],
+          unit: t("megabyte"),
         });
       }
 
