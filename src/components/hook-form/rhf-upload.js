@@ -218,12 +218,12 @@ export function RHFUploadField({
 
     // Validate file name and extension
     if (!file.name) {
-      error = t?.translateValue("cannot_upload_file");
+      error = t("cannot_upload_file");
     } else if (
       // fileExt.length !== 2 ||
       !fileExt[0]
     ) {
-      error = t?.translateValue("cannot_upload_file");
+      error = t("cannot_upload_file");
     } else if (
       allowedExtensionsList?.length > 0 &&
       !allowedExtensionsList?.includes(fileExt[fileExt.length - 1])
@@ -388,7 +388,7 @@ export function RHFUploadField({
         }
       } catch (compressionError) {
         console.error("Error:", compressionError);
-        setError(name, { message: t?.translateValue("Error") });
+        setError(name, { message: t("Error") });
         return;
       }
     } else {
@@ -397,7 +397,7 @@ export function RHFUploadField({
       const compressedFileSize = compressedFile.size / 1024;
 
       if (maxFileSize && compressedFileSize > Number(maxFileSize)) {
-        error = t?.translateValue("file_size_cant_be_larger_than", {
+        error = t("file_size_cant_be_larger_than", {
           size: getSizeInMB(maxFileSize),
           unit: t["megabyte"],
         });
@@ -524,7 +524,7 @@ export function RHFUploadField({
         }
       } catch (error) {
         console.error("Error uploading non-image file:", error);
-        setError(name, { message: t?.translateValue("file_read_failed") });
+        setError(name, { message: t("file_read_failed") });
         return;
       }
     }
@@ -533,7 +533,6 @@ export function RHFUploadField({
   const reader = new FileReader();
 
   const uploadFiles = async (files) => {
-    console.log("jjejejejejejejejej");
     // check if files count is more than maximum allowed files
 
     // if files count is more than maximum allowed files
@@ -543,41 +542,30 @@ export function RHFUploadField({
       (field.value && field.value.length + files.length > maximimFiles)
     ) {
       setError(name, {
-        message: t?.translateValue("maximum_files_allowed", {
+        message: t("maximum_files_allowed", {
           max: maximimFiles,
         }),
       });
-      console.log("hiiiiiiiiiii");
       return;
     } else {
       clearErrors(name);
     }
-    console.log("hiiiiiiiiiii");
-
     try {
       let uploadedFilesIds = [];
 
       setLoading(true);
-      console.log("111");
       for (let i = 0; i < files.length; i++) {
-        console.log("2222");
         const file = files[i];
         reader.readAsDataURL(file);
-        console.log("3333");
 
         reader.onloadend = function () {
-          console.log("44444");
-
           const base64Data = reader.result.split(",")[1];
           file.base64 = base64Data;
         };
-        console.log("5555");
 
         const uploadedFileId = await uploadFile(file);
 
         if (uploadedFileId) {
-          console.log("66666");
-
           uploadedFilesIds.push(uploadedFileId);
           file.id = uploadedFilesIds[0];
           const updatedFiles = !multiple ? [file] : [...currentFiles, file];

@@ -53,7 +53,6 @@ export function AuthProvider({ children }) {
 
       if (accessToken) {
         setSession(accessToken);
-       
 
         const response = await axiosInstance.get(`${HOST_API}/me`, {
           headers: {
@@ -185,16 +184,16 @@ export function AuthProvider({ children }) {
       const response = await axiosInstance.post(`${HOST_API}/loginWithSanad`, {
         code: data.sanadCode,
         verifier: data.sanadState,
-      },
-      );
+      });
 
       const user = response?.data?.user;
       const { token, ...userWithoutToken } = user;
       let myUser = {
         ...userWithoutToken,
       };
-
-      setSession(token);
+      localStorage.setItem("sessionId", user?.sessionId);
+      localStorage.setItem("accessToken", user?.token);
+      setSession(user?.token);
 
       onSuccess?.();
       dispatch({
