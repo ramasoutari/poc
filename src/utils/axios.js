@@ -30,13 +30,11 @@ axiosInstance.interceptors.response.use(
 axiosInstance.interceptors.request.use(
   (config) => {
     const language = localStorage.getItem("i18nextLng");
-
+    const accessToken = localStorage.getItem("accessToken");
+    const x_session_id = localStorage.getItem("sessionId");
     config.headers["Accept-language"] = language;
-    config.headers["lang"] = language;
-    config.headers["Authorization"] = `Bearer ${localStorage.getItem(
-      "accessToken"
-    )}`;
-    // config.headers["X-Session_id"] = localStorage.getItem("sessionId");
+    config.headers["Authorization"] = `Bearer ${accessToken}`;
+    config.headers["x-session-id"] = x_session_id;
     return config;
   },
   (error) => {
